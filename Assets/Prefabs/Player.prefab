@@ -242,6 +242,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 78491921699914233}
+  - component: {fileID: 3276683595175715962}
+  - component: {fileID: 4814418892433255776}
   - component: {fileID: 307233065}
   - component: {fileID: 6106064112569594434}
   - component: {fileID: 78491921699914232}
@@ -272,6 +274,58 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3276683595175715962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78491921699914239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectInterest: 1
+  DefaultInterestGroups: []
+  DestroyWhenStateAuthorityLeaves: 0
+  AllowStateAuthorityOverride: 1
+  AoiPositionSource: {fileID: 0}
+  Flags: 2305
+  NetworkGuid:
+    RawGuidValue: 6be73dc5f2331f044a9d79409a9181bb
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 4814418892433255776}
+  SimulationBehaviours: []
+--- !u!114 &4814418892433255776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78491921699914239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1710889294, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  InterpolationSpace: 0
+  InterpolationTarget: {fileID: 78491921203677602}
+  InterpolateErrorCorrection: 1
+  InterpolatedErrorCorrectionSettings:
+    MinRate: 3.3
+    MaxRate: 10
+    PosBlendStart: 0.25
+    PosBlendEnd: 1
+    PosMinCorrection: 0.025
+    PosTeleportDistance: 2
+    RotBlendStart: 0.1
+    RotBlendEnd: 0.5
+    RotTeleportRadians: 1.5
+  UseLegacySharedModeInterpolation: 0
+  TargetInterpolationDelay: 0.03
 --- !u!114 &307233065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,11 +364,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerInput: {fileID: 307233065}
   _rigidbody: {fileID: 78491921699914235}
-  _moveSpeed: 5
-  _rotateSpeed: 90
   _maxMoveSpeed: 5
   _acceleration: 2
   _deceleration: 3
+  _rotateSpeed: 90
 --- !u!114 &78491921699914228
 MonoBehaviour:
   m_ObjectHideFlags: 0
