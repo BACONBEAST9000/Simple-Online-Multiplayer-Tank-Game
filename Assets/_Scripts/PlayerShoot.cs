@@ -23,7 +23,7 @@ public class PlayerShoot : MonoBehaviour {
     }
 
     private void WhenPlayerPressesShootButton(PlayerInput input) {
-        if (input.ShootInputPressed && NoCurrentShootDelay() && !WallAhead()) {
+        if ((input.Buttons & PlayerInput.SHOOT_INPUT) != 0 && NoCurrentShootDelay() && !WallAhead()) {
             Shoot();
             _lastShotTime = Time.time;
         }

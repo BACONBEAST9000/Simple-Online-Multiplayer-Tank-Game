@@ -9,8 +9,9 @@ public class HandlePlayerInput : MonoBehaviour {
     private bool _shootInput;
 
     private void Update() {
-        CheckInput();
+        //CheckInput();
     }
+
 
     private void CheckInput() {
         PlayerInput input = new PlayerInput();
@@ -21,9 +22,11 @@ public class HandlePlayerInput : MonoBehaviour {
         _shootInput = Input.GetKeyDown(KeyCode.Space);
 
         input.MoveInput = _moveInput;
-        input.ShootInputPressed = _shootInput;
+
+        if (_shootInput) {
+            input.Buttons |= PlayerInput.SHOOT_INPUT;
+        }
         
         OnPlayerInput?.Invoke(input);
     }
-
 }

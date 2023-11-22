@@ -1,7 +1,8 @@
+using Fusion;
 using System;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IDamageable {
+public class Player : NetworkBehaviour, IDamageable {
 
     private PlayerData _playerData;
     public PlayerData Data {
@@ -9,7 +10,7 @@ public class Player : MonoBehaviour, IDamageable {
         private set => _playerData = value;
     }
 
-    private void Awake() {
+    public override void Spawned() {
         Data = new PlayerData {
             PlayerName = "Player",
             Lives = 3

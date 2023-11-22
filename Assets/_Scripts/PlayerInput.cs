@@ -1,6 +1,10 @@
-﻿using UnityEngine;
+﻿using Fusion;
+using UnityEngine;
 
-public struct PlayerInput {
-    public Vector2 MoveInput { get; set; }
-    public bool ShootInputPressed { get; set; }
+public struct PlayerInput : INetworkInput{
+    public const byte SHOOT_INPUT = 0x01;
+
+    public byte Buttons;
+
+    public Vector2 MoveInput;
 }

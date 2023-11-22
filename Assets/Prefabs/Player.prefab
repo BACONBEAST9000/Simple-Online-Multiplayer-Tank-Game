@@ -297,6 +297,8 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 4814418892433255776}
+  - {fileID: 6106064112569594434}
+  - {fileID: 78491921699914232}
   SimulationBehaviours: []
 --- !u!114 &4814418892433255776
 MonoBehaviour:
@@ -333,7 +335,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 78491921699914239}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f215ab8804c39f54ca110f51136276be, type: 3}
   m_Name: 
@@ -350,6 +352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5a96b0d77119224596b7c93400746c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
 --- !u!114 &78491921699914232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -362,6 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bddc3682e7024e8408045ea762372c20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
   _playerInput: {fileID: 307233065}
   _rigidbody: {fileID: 78491921699914235}
   _maxMoveSpeed: 5

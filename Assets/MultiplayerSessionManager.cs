@@ -1,9 +1,11 @@
 using Fusion;
+using Fusion.Sockets;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPlayerLeft {
+public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPlayerLeft, INetworkRunnerCallbacks {
     private const string SESSION_NAME = "TestRoom";
 
     [SerializeField] private NetworkPrefabRef _playerPrefab;
@@ -13,11 +15,14 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
 
     private NetworkRunner _runner;
 
+    private Vector2 _moveInput;
+    private bool _shootInput;
+
     public void PlayerJoined(PlayerRef player) {
         print("Player joined");
         if (Runner.IsServer) {
-            //Vector3 spawnPosition = _playerOrderedSpawnPositions[player.RawEncoded % _playerOrderedSpawnPositions.Length].position;
-            Vector3 spawnPosition = transform.position;
+            Vector3 spawnPosition = _playerOrderedSpawnPositions[player.RawEncoded % _playerOrderedSpawnPositions.Length].position;
+            //Vector3 spawnPosition = transform.position;
             NetworkObject networkPlayerObject = Runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
 
             _spawnedPlayers.Add(player, networkPlayerObject);
@@ -65,5 +70,80 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         }
     }
 
-    
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
+        
+    }
+
+    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {
+        
+    }
+
+    public void OnInput(NetworkRunner runner, NetworkInput input) {
+        PlayerInput playerInputData = new PlayerInput();
+
+        _moveInput.x = Input.GetAxisRaw("Horizontal");
+        _moveInput.y = Input.GetAxisRaw("Vertical");
+
+        _shootInput = Input.GetKeyDown(KeyCode.Space);
+
+        playerInputData.MoveInput = _moveInput;
+
+        if (_shootInput) {
+            playerInputData.Buttons |= PlayerInput.SHOOT_INPUT;
+        }
+
+        input.Set(playerInputData);
+    }
+
+    public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) {
+        
+    }
+
+    public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) {
+        
+    }
+
+    public void OnConnectedToServer(NetworkRunner runner) {
+        
+    }
+
+    public void OnDisconnectedFromServer(NetworkRunner runner) {
+        
+    }
+
+    public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) {
+        
+    }
+
+    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) {
+        
+    }
+
+    public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) {
+        
+    }
+
+    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) {
+        
+    }
+
+    public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) {
+        
+    }
+
+    public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) {
+        
+    }
+
+    public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data) {
+        
+    }
+
+    public void OnSceneLoadDone(NetworkRunner runner) {
+        
+    }
+
+    public void OnSceneLoadStart(NetworkRunner runner) {
+        
+    }
 }
