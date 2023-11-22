@@ -1,26 +1,35 @@
+using Fusion;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour, IDamageable {
+public class Bullet : NetworkBehaviour {
 
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private float _secondsOfLifeTime = 6f;
+    
+    [Networked] private TickTimer Life { get; set; }
 
-    public void Start() {
-        Destroy(gameObject, _secondsOfLifeTime);
-    }
-
-    public void Initalize(Vector3 directionOfFire, float force) {
+    public void Initialize(Vector3 directionOfFire, float force) {
+        Life = TickTimer.CreateFromSeconds(Runner, _secondsOfLifeTime);
         _rigidbody.AddForce(directionOfFire * force, ForceMode.Impulse);
     }
 
-    private void OnCollisionEnter(Collision collision) {
-        if (collision.collider.TryGetComponent(out IDamageable damageable)) {
-            damageable.OnDamage();
-            Destroy(gameObject);
+    public override void FixedUpdateNetwork() {
+        if (Life.Expired(Runner)) {
+            Despawn();
         }
     }
 
-    public void OnDamage() {
-        Destroy(gameObject);
+
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.collider.TryGetComponent(out Bullet bullet)) {
+            Despawn();
+        }
+        
+        if (collision.collider.TryGetComponent(out IDamageable damageable)) {
+            damageable.OnDamage();
+            Despawn();
+        }
     }
+
+    private void Despawn() => Runner.Despawn(Object);
 }

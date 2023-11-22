@@ -244,7 +244,6 @@ GameObject:
   - component: {fileID: 78491921699914233}
   - component: {fileID: 3276683595175715962}
   - component: {fileID: 4814418892433255776}
-  - component: {fileID: 307233065}
   - component: {fileID: 6106064112569594434}
   - component: {fileID: 78491921699914232}
   - component: {fileID: 78491921699914228}
@@ -299,6 +298,7 @@ MonoBehaviour:
   - {fileID: 4814418892433255776}
   - {fileID: 6106064112569594434}
   - {fileID: 78491921699914232}
+  - {fileID: 78491921699914228}
   SimulationBehaviours: []
 --- !u!114 &4814418892433255776
 MonoBehaviour:
@@ -328,18 +328,6 @@ MonoBehaviour:
     RotTeleportRadians: 1.5
   UseLegacySharedModeInterpolation: 0
   TargetInterpolationDelay: 0.03
---- !u!114 &307233065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 78491921699914239}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f215ab8804c39f54ca110f51136276be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6106064112569594434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,7 +354,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
-  _playerInput: {fileID: 307233065}
   _rigidbody: {fileID: 78491921699914235}
   _maxMoveSpeed: 5
   _acceleration: 2
@@ -384,11 +371,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c62dfc6cd172524d8203c1a49f8044c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerInput: {fileID: 307233065}
+  _interpolationDataSource: 0
   _bulletPrefab: {fileID: 8029772854575541321, guid: 460ce9d2cf700bd438a700005f706004,
     type: 3}
   _bulletSpawnTransform: {fileID: 78491921371898752}
-  _shootDelay: 1
+  _shootDelaySeconds: 0.75
   _shootForce: 7
   _checkIfWallRaycastDistance: 1
   _wallLayer:

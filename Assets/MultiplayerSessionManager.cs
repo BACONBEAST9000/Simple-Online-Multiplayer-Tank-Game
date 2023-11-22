@@ -18,6 +18,10 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     private Vector2 _moveInput;
     private bool _shootInput;
 
+    private void Update() {
+        _shootInput = _shootInput | Input.GetKeyDown(KeyCode.Space);
+    }
+
     public void PlayerJoined(PlayerRef player) {
         print("Player joined");
         if (Runner.IsServer) {
@@ -84,13 +88,13 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         _moveInput.x = Input.GetAxisRaw("Horizontal");
         _moveInput.y = Input.GetAxisRaw("Vertical");
 
-        _shootInput = Input.GetKeyDown(KeyCode.Space);
-
         playerInputData.MoveInput = _moveInput;
 
         if (_shootInput) {
             playerInputData.Buttons |= PlayerInput.SHOOT_INPUT;
         }
+
+        _shootInput = false;
 
         input.Set(playerInputData);
     }
