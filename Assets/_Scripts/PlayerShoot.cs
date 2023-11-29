@@ -16,6 +16,7 @@ public class PlayerShoot : NetworkBehaviour {
     [SerializeField] private LayerMask _wallLayer;
 
     [Networked] private TickTimer ShootDelay { get; set; }
+    [Networked] private NetworkButtons _previousButtons { get; set; }
 
     public override void FixedUpdateNetwork() {
         if (!GetInput(out PlayerInput input)) {
@@ -30,7 +31,7 @@ public class PlayerShoot : NetworkBehaviour {
 
     private bool ShouldShoot(PlayerInput input) => NoShootDelay() && ShootButtonPressed(input) && NoWallAhead();
 
-    private static bool ShootButtonPressed(PlayerInput input) => (input.Buttons & PlayerInput.SHOOT_INPUT) != 0;
+    private bool ShootButtonPressed(PlayerInput input) => input.Buttons.WasPressed(_previousButtons, TankButtons.Shoot);
 
     private bool NoShootDelay() => ShootDelay.ExpiredOrNotRunning(Runner);
 

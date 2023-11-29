@@ -2,9 +2,10 @@
 using UnityEngine;
 
 public struct PlayerInput : INetworkInput{
-    public const byte SHOOT_INPUT = 0x01;
-
-    public byte Buttons;
-
     public Vector2 MoveInput;
+    public NetworkButtons Buttons;
+}
+
+enum TankButtons {
+    Shoot = 0,
 }

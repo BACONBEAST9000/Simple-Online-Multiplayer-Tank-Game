@@ -2,23 +2,33 @@ using Fusion;
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(NetworkObject))]
 public class Player : NetworkBehaviour, IDamageable {
 
-    private PlayerData _playerData;
-    public PlayerData Data {
-        get => _playerData;
-        private set => _playerData = value;
-    }
+    [Networked(OnChanged = nameof(ScoreChanged))]
+    public int Score { get; private set; }
+    
+    public PlayerData Data { get; private set; }
 
     public override void Spawned() {
         Data = new PlayerData {
-            PlayerName = "Player",
+            PlayerName = "Player" + UnityEngine.Random.Range(0, 10000),
             Lives = 3
         };
     }
 
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.P)) {
+            Score++;
+        }
+    }
+
+    public static void ScoreChanged(Changed<Player> playerData) {
+        print("Player data changed!");
+    }
+
     public void OnDamage() {
-        _playerData.DecrementLivesBy(1);
+        Data.DecrementLivesBy(1);
     }
 }
 
