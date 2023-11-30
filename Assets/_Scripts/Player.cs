@@ -6,6 +6,7 @@ using UnityEngine;
 public class Player : NetworkBehaviour, IDamageable {
 
     [Networked(OnChanged = nameof(ScoreChanged))]
+    [HideInInspector]
     public int Score { get; private set; }
     
     public PlayerData Data { get; private set; }
@@ -13,7 +14,7 @@ public class Player : NetworkBehaviour, IDamageable {
     public override void Spawned() {
         Data = new PlayerData {
             PlayerName = "Player" + UnityEngine.Random.Range(0, 10000),
-            Lives = 3
+            Points = 3
         };
     }
 
@@ -24,35 +25,35 @@ public class Player : NetworkBehaviour, IDamageable {
     }
 
     public static void ScoreChanged(Changed<Player> playerData) {
-        print("Player data changed!");
+        print("Player score changed! " + playerData.Behaviour.Score);
     }
 
-    public void OnDamage() {
-        Data.DecrementLivesBy(1);
+    public void OnDamage(IDamage damager) {
+        print("Damage: " + damager.Damage);
     }
 }
 
 public struct PlayerData {
     public string PlayerName;
-    public int Lives;
+    public int Points;
 
-    public void IncrementLivesBy(int amount) {
+    public void IncrementPointsBy(int amount) {
         if (amount < 0) {
             throw new ArgumentOutOfRangeException("amount");
         }
         
-        UpdateLivesBy(amount);
+        UpdatePointsBy(amount);
     }
     
-    public void DecrementLivesBy(int amount) {
+    public void DecrementPointsBy(int amount) {
         if (amount < 0) {
             throw new ArgumentOutOfRangeException("amount");
         }
 
-        UpdateLivesBy(-amount);
+        UpdatePointsBy(-amount);
     }
 
-    public void UpdateLivesBy(int amount) {
-        Lives = Mathf.Max(0, Lives + amount);
+    public void UpdatePointsBy(int amount) {
+        Points = Mathf.Max(0, Points + amount);
     }
 }

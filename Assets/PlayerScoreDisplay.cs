@@ -8,6 +8,6 @@ public class PlayerScoreDisplay : MonoBehaviour {
 
     public void AddEntry(PlayerData playerData) {
         _playerNameText.text = playerData.PlayerName;
-        _scoreText.text = $"Lives: {playerData.Lives}";
+        _scoreText.text = $"Lives: {playerData.Points}";
     }
 }

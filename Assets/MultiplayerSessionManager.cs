@@ -15,6 +15,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     private const string BUTTON_SHOOT = "Jump";
 
     public static event Action OnPlayerJoinedGame;
+    public static event Action OnPlayerConnectedToGame;
 
     [SerializeField] private Player _playerPrefab;
     [SerializeField] private Transform[] _playerOrderedSpawnPositions;
@@ -37,8 +38,14 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         }
     }
 
+    private void Update() {
+        if(Input.GetKeyDown(KeyCode.P))
+            print("Players in lobby: " + SpawnedPlayers.Count);
+    }
+
     public void PlayerJoined(PlayerRef playerRef) {
         print("Player joined");
+        print("Players in lobby: " + SpawnedPlayers.Count);
         if (Runner.IsServer) {
             Vector3 spawnPosition = _playerOrderedSpawnPositions[playerRef.RawEncoded % _playerOrderedSpawnPositions.Length].position;
             Player newPlayer = Runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, playerRef);
@@ -90,7 +97,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     }
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
-        
+        print("Players in lobby: " + SpawnedPlayers.Count);
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {
@@ -119,7 +126,8 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     }
 
     public void OnConnectedToServer(NetworkRunner runner) {
-        
+        print("Connected to server");
+        OnPlayerConnectedToGame?.Invoke();
     }
 
     public void OnDisconnectedFromServer(NetworkRunner runner) {
@@ -127,7 +135,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     }
 
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) {
-        
+        print("Connect request");
     }
 
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) {

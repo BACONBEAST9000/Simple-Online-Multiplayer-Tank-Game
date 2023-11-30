@@ -11,10 +11,14 @@ public class PlayerDetails : MonoBehaviour {
     private void OnEnable() {
         MultiplayerSessionManager.OnPlayerJoinedGame -= WhenPlayerJoinsGame;
         MultiplayerSessionManager.OnPlayerJoinedGame += WhenPlayerJoinsGame;
+
+        MultiplayerSessionManager.OnPlayerConnectedToGame -= WhenPlayerJoinsGame;
+        MultiplayerSessionManager.OnPlayerConnectedToGame += WhenPlayerJoinsGame;
     }
 
     private void OnDisable() {
         MultiplayerSessionManager.OnPlayerJoinedGame -= WhenPlayerJoinsGame;
+        MultiplayerSessionManager.OnPlayerConnectedToGame -= WhenPlayerJoinsGame;
     }
     
     private void WhenPlayerJoinsGame() {
@@ -28,7 +32,7 @@ public class PlayerDetails : MonoBehaviour {
         PlayerData currentPlayerData;
         foreach (var entry in allPlayers) {
             currentPlayerData = entry.Value.Data;
-            print($"{currentPlayerData.PlayerName} has {currentPlayerData.Lives} lives.");
+            print($"{currentPlayerData.PlayerName} has {currentPlayerData.Points} lives.");
 
             PlayerScoreDisplay newDisplay = Instantiate(_scoreDisplayPrefab, _parentUIObject);
             newDisplay.AddEntry(currentPlayerData);

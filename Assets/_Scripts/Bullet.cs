@@ -1,12 +1,13 @@
 using Fusion;
 using UnityEngine;
 
-public class Bullet : NetworkBehaviour {
+public class Bullet : NetworkBehaviour, IDamage {
 
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private float _secondsOfLifeTime = 6f;
     
     [Networked] private TickTimer Life { get; set; }
+    public int Damage { get; private set; } = 1;
 
     public void Initialize(Vector3 directionOfFire, float force) {
         Life = TickTimer.CreateFromSeconds(Runner, _secondsOfLifeTime);
@@ -26,7 +27,7 @@ public class Bullet : NetworkBehaviour {
         }
         
         if (collision.collider.TryGetComponent(out IDamageable damageable)) {
-            damageable.OnDamage();
+            damageable.OnDamage(this);
             Despawn();
         }
     }
