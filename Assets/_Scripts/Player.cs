@@ -6,19 +6,22 @@ using UnityEngine;
 public class Player : NetworkBehaviour, IDamageable {
 
     public static event Action<PlayerRef, int> OnScoreUpdated;
+    public static event Action<PlayerRef, string> OnNameUpdated;
     public static event Action<PlayerRef, Player> OnSpawned;
 
-    [Networked(OnChanged = nameof(ScoreChanged))]
+    [Networked(OnChanged = nameof(OnScoreChanged))]
     [HideInInspector]
     public int Score { get; private set; }
-    
-    public PlayerData Data { get; private set; }
+
+    [HideInInspector]
+    [Networked(OnChanged = nameof(OnNameChanged))]
+    public NetworkString<_16> NickName { get; private set; }
 
     public override void Spawned() {
-        Data = new PlayerData {
-            PlayerName = "Player" + UnityEngine.Random.Range(0, 10000),
-            Points = 0
-        };
+        if (Object.HasInputAuthority) {
+            var name = FindObjectOfType<PlayerData>().NickName;
+            RpcSetNickName(name);
+        }
 
         OnSpawned?.Invoke(Object.InputAuthority, this);
     }
@@ -29,9 +32,25 @@ public class Player : NetworkBehaviour, IDamageable {
         }
     }
 
-    public static void ScoreChanged(Changed<Player> playerData) {
+    // RPC used to send player information to the Host
+    [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
+    private void RpcSetNickName(string nickName) {
+        if (string.IsNullOrEmpty(nickName)) return;
+        NickName = nickName;
+
+        print("Name changed to " + nickName);
+    }
+
+    public void IncrementScoreBy(int value) => Score += value;
+
+    public static void OnScoreChanged(Changed<Player> playerData) {
         OnScoreUpdated?.Invoke(playerData.Behaviour.Object.InputAuthority, playerData.Behaviour.Score);
         print("Player score changed! " + playerData.Behaviour.Score);
+    }
+    
+    private static void OnNameChanged(Changed<Player> playerData) {
+        OnNameUpdated?.Invoke(playerData.Behaviour.Object.InputAuthority, playerData.Behaviour.NickName.ToString());
+        print("Player name changed! " + playerData.Behaviour.NickName);
     }
 
     public void OnDamage(Bullet damager) {
@@ -42,34 +61,10 @@ public class Player : NetworkBehaviour, IDamageable {
         if (damager.Owner == this) {
             Score--;
             print("Self damage. Score now " + Score);
+            return;
         }
         
-        
+        damager.Owner.IncrementScoreBy(1);
         print($"Damaged by {damager.Owner} for {damager.Damage} damage!");
-    }
-}
-
-public struct PlayerData {
-    public string PlayerName;
-    public int Points;
-
-    public void IncrementPointsBy(int amount) {
-        if (amount < 0) {
-            throw new ArgumentOutOfRangeException("amount");
-        }
-        
-        UpdatePointsBy(amount);
-    }
-    
-    public void DecrementPointsBy(int amount) {
-        if (amount < 0) {
-            throw new ArgumentOutOfRangeException("amount");
-        }
-
-        UpdatePointsBy(-amount);
-    }
-
-    public void UpdatePointsBy(int amount) {
-        Points = Mathf.Max(0, Points + amount);
     }
 }

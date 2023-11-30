@@ -22,6 +22,9 @@ public class PlayerDisplayManager : MonoBehaviour {
         Player.OnSpawned -= WhenPlayerSpawned;
         Player.OnSpawned += WhenPlayerSpawned;
 
+        Player.OnNameUpdated -= WhenPlayerNameUpdated;
+        Player.OnNameUpdated += WhenPlayerNameUpdated;
+
         Player.OnScoreUpdated -= WhenPlayerScoreUpdated;
         Player.OnScoreUpdated += WhenPlayerScoreUpdated;
     }
@@ -31,11 +34,16 @@ public class PlayerDisplayManager : MonoBehaviour {
         MultiplayerSessionManager.OnPlayerJoinedGame -= WhenPlayerJoinsGame;
         MultiplayerSessionManager.OnPlayerConnectedToGame -= WhenPlayerJoinsGame;
         Player.OnSpawned -= WhenPlayerSpawned;
+        Player.OnNameUpdated -= WhenPlayerNameUpdated;
         Player.OnScoreUpdated -= WhenPlayerScoreUpdated;
     }
     
     private void WhenPlayerSpawned(PlayerRef playerRef, Player player) {
         AddEntry(playerRef, player);
+    }
+    
+    private void WhenPlayerNameUpdated(PlayerRef playerRef, string newName) {
+        UpdateName(playerRef, newName);
     }
 
     private void WhenPlayerScoreUpdated(PlayerRef playerRef, int newScore) {

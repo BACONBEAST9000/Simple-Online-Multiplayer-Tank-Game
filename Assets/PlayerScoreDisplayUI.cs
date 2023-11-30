@@ -7,10 +7,8 @@ public class PlayerScoreDisplayUI : MonoBehaviour {
     [SerializeField] private TMP_Text _scoreText;
 
     public void UpdateEntry(Player player) {
-        var playerData = player.Data;
-
-        UpdateNameText(playerData.PlayerName);
-        UpdateScoreText(playerData.Points);
+        UpdateNameText(player.NickName.ToString());
+        UpdateScoreText(player.Score);
     }
 
     public void UpdateNameText(string newName) => _playerNameText.text = newName;

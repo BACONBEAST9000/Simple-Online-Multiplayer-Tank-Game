@@ -2,6 +2,7 @@ using Fusion;
 using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,6 +19,8 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     public static event Action OnPlayerConnectedToGame;
 
     [SerializeField] private Player _playerPrefab;
+    [SerializeField] private PlayerData _playerDataPrefab;
+    [SerializeField] private TMP_InputField _nameInputField;
     [SerializeField] private Transform[] _playerOrderedSpawnPositions;
 
     private Dictionary<PlayerRef, Player> _spawnedPlayers = new();
@@ -39,8 +42,25 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     }
 
     private void Update() {
-        if(Input.GetKeyDown(KeyCode.P))
-            print("Players in lobby: " + SpawnedPlayers.Count);
+        if (Input.GetKeyDown(KeyCode.P)) {
+            //print("Players in lobby: " + SpawnedPlayers.Count);
+            //print();
+        }
+
+    }
+
+    private void UpdatePlayerData() {
+        var playerData = FindObjectOfType<PlayerData>();
+        if (playerData == null) {
+            playerData = Instantiate(_playerDataPrefab);
+        }
+
+        if (string.IsNullOrWhiteSpace(_nameInputField.text)) {
+            playerData.NickName = PlayerData.GetRandomNickName();
+        }
+        else {
+            playerData.NickName = _nameInputField.text;
+        }
     }
 
     public void PlayerJoined(PlayerRef playerRef) {
@@ -64,6 +84,8 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
 
 
     private async void StartGame(GameMode mode) {
+        UpdatePlayerData();
+
         _runner = gameObject.AddComponent<NetworkRunner>();
         _runner.ProvideInput = true;
 
@@ -77,23 +99,26 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         print("Game Started!");
     }
 
-    private void OnGUI() {
-        HostAndClientButtons();
-    }
+    //private void OnGUI() {
+    //    HostAndClientButtons();
+    //}
 
-    private void HostAndClientButtons() {
-        if (_runner != null) {
-            return;
-        }
+    //private void HostAndClientButtons() {
+    //    if (_runner != null) {
+    //        return;
+    //    }
 
-        if (GUI.Button(new Rect(0, 0, 200, 40), "Host")) {
-            StartGame(GameMode.Host);
-        }
+    //    if (GUI.Button(new Rect(0, 0, 200, 40), "Host")) {
+    //        StartGame(GameMode.Host);
+    //    }
 
-        if (GUI.Button(new Rect(0, 50, 200, 40), "Client")) {
-            StartGame(GameMode.Client);
-        }
-    }
+    //    if (GUI.Button(new Rect(0, 50, 200, 40), "Client")) {
+    //        StartGame(GameMode.Client);
+    //    }
+    //}
+
+    public void StartHostGame() => StartGame(GameMode.Host);
+    public void StartClientGame() => StartGame(GameMode.Client);
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
         print("Players in lobby: " + SpawnedPlayers.Count);
