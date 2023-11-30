@@ -6,6 +6,7 @@ public class PlayerShoot : NetworkBehaviour {
     [Header("References")]
     [SerializeField] private Bullet _bulletPrefab;
     [SerializeField] private Transform _bulletSpawnTransform;
+    [SerializeField] private Player _player;
 
     [Header("Properties")]
     [SerializeField] private float _shootDelaySeconds = 0.5f;
@@ -44,7 +45,7 @@ public class PlayerShoot : NetworkBehaviour {
                     Quaternion.identity,
                     Object.InputAuthority,
                     (runner, o) => {
-                        o.GetComponent<Bullet>().Initialize(_bulletSpawnTransform.forward, _shootForce);
+                        o.GetComponent<Bullet>().Initialize(_bulletSpawnTransform.forward, _shootForce, _player);
                     }
                 );
     }

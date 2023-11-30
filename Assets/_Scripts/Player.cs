@@ -5,6 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(NetworkObject))]
 public class Player : NetworkBehaviour, IDamageable {
 
+    public static event Action<PlayerRef, int> OnScoreUpdated;
+    public static event Action<PlayerRef, Player> OnSpawned;
+
     [Networked(OnChanged = nameof(ScoreChanged))]
     [HideInInspector]
     public int Score { get; private set; }
@@ -14,8 +17,10 @@ public class Player : NetworkBehaviour, IDamageable {
     public override void Spawned() {
         Data = new PlayerData {
             PlayerName = "Player" + UnityEngine.Random.Range(0, 10000),
-            Points = 3
+            Points = 0
         };
+
+        OnSpawned?.Invoke(Object.InputAuthority, this);
     }
 
     private void Update() {
@@ -25,11 +30,22 @@ public class Player : NetworkBehaviour, IDamageable {
     }
 
     public static void ScoreChanged(Changed<Player> playerData) {
+        OnScoreUpdated?.Invoke(playerData.Behaviour.Object.InputAuthority, playerData.Behaviour.Score);
         print("Player score changed! " + playerData.Behaviour.Score);
     }
 
-    public void OnDamage(IDamage damager) {
-        print("Damage: " + damager.Damage);
+    public void OnDamage(Bullet damager) {
+        if (damager == null) {
+            return;
+        }
+
+        if (damager.Owner == this) {
+            Score--;
+            print("Self damage. Score now " + Score);
+        }
+        
+        
+        print($"Damaged by {damager.Owner} for {damager.Damage} damage!");
     }
 }
 

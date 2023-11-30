@@ -1,7 +1,7 @@
 using Fusion;
 using UnityEngine;
 
-public class Bullet : NetworkBehaviour, IDamage {
+public class Bullet : NetworkBehaviour {
 
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private float _secondsOfLifeTime = 6f;
@@ -9,9 +9,12 @@ public class Bullet : NetworkBehaviour, IDamage {
     [Networked] private TickTimer Life { get; set; }
     public int Damage { get; private set; } = 1;
 
-    public void Initialize(Vector3 directionOfFire, float force) {
+    public Player Owner { get; private set; }
+
+    public void Initialize(Vector3 directionOfFire, float force, Player owner) {
         Life = TickTimer.CreateFromSeconds(Runner, _secondsOfLifeTime);
         _rigidbody.AddForce(directionOfFire * force, ForceMode.Impulse);
+        Owner = owner;
     }
 
     public override void FixedUpdateNetwork() {

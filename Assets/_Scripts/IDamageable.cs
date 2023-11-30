@@ -1,3 +1,3 @@
 ﻿public interface IDamageable {
-    public void OnDamage(IDamage damager);
+    public void OnDamage(Bullet bulletThatDidDamage);
 }

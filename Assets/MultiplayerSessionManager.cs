@@ -45,7 +45,6 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
 
     public void PlayerJoined(PlayerRef playerRef) {
         print("Player joined");
-        print("Players in lobby: " + SpawnedPlayers.Count);
         if (Runner.IsServer) {
             Vector3 spawnPosition = _playerOrderedSpawnPositions[playerRef.RawEncoded % _playerOrderedSpawnPositions.Length].position;
             Player newPlayer = Runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, playerRef);

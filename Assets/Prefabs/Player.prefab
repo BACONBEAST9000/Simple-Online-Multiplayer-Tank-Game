@@ -341,6 +341,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  _Score: 0
 --- !u!114 &78491921699914232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,6 +376,7 @@ MonoBehaviour:
   _bulletPrefab: {fileID: 8029772854575541321, guid: 460ce9d2cf700bd438a700005f706004,
     type: 3}
   _bulletSpawnTransform: {fileID: 78491921371898752}
+  _player: {fileID: 6106064112569594434}
   _shootDelaySeconds: 0.75
   _shootForce: 7
   _checkIfWallRaycastDistance: 1
