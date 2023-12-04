@@ -32,6 +32,8 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
 
     Player player;
 
+    PlayerRefSet _playerRefsSet;
+
     private void Awake() {
         if (Instance == null) {
             Instance = this;
@@ -43,8 +45,19 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.P)) {
-            //print("Players in lobby: " + SpawnedPlayers.Count);
-            //print();
+            print("Players in lobby: " + Runner.ActivePlayers);
+            foreach (PlayerRef player in Runner.ActivePlayers) {
+
+                if (!Runner.TryGetPlayerObject(player, out var playerObject)) {
+                    continue;
+                }
+
+                if (!playerObject.TryGetComponent(out Player p)) {
+                    continue;
+                }
+
+                print(p.NickName);
+            }
         }
 
     }
@@ -68,6 +81,8 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         if (Runner.IsServer) {
             Vector3 spawnPosition = _playerOrderedSpawnPositions[playerRef.RawEncoded % _playerOrderedSpawnPositions.Length].position;
             Player newPlayer = Runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, playerRef);
+
+            Runner.SetPlayerObject(playerRef, newPlayer.Object);
 
             _spawnedPlayers.Add(playerRef, newPlayer);
             OnPlayerJoinedGame?.Invoke();

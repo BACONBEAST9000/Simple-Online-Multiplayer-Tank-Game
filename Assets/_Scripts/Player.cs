@@ -26,12 +26,6 @@ public class Player : NetworkBehaviour, IDamageable {
         OnSpawned?.Invoke(Object.InputAuthority, this);
     }
 
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.P)) {
-            Score++;
-        }
-    }
-
     // RPC used to send player information to the Host
     [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
     private void RpcSetNickName(string nickName) {
@@ -45,12 +39,12 @@ public class Player : NetworkBehaviour, IDamageable {
 
     public static void OnScoreChanged(Changed<Player> playerData) {
         OnScoreUpdated?.Invoke(playerData.Behaviour.Object.InputAuthority, playerData.Behaviour.Score);
-        print("Player score changed! " + playerData.Behaviour.Score);
+        //print("Player score changed! " + playerData.Behaviour.Score);
     }
     
     private static void OnNameChanged(Changed<Player> playerData) {
         OnNameUpdated?.Invoke(playerData.Behaviour.Object.InputAuthority, playerData.Behaviour.NickName.ToString());
-        print("Player name changed! " + playerData.Behaviour.NickName);
+        //print("Player name changed! " + playerData.Behaviour.NickName);
     }
 
     public void OnDamage(Bullet damager) {
@@ -60,11 +54,15 @@ public class Player : NetworkBehaviour, IDamageable {
 
         if (damager.Owner == this) {
             Score--;
-            print("Self damage. Score now " + Score);
+            RespawnManager.Instance.Respawn(this);
+            //print("Self damage. Score now " + Score);
             return;
         }
         
         damager.Owner.IncrementScoreBy(1);
-        print($"Damaged by {damager.Owner} for {damager.Damage} damage!");
+
+        RespawnManager.Instance.Respawn(this);
+
+        //print($"Damaged by {damager.Owner} for {damager.Damage} damage!");
     }
 }

@@ -27,4 +27,9 @@ public class DebugManager : MonoBehaviour {
         _logStringBuilder.Append(condition + "\n");
         _debugText.text = _logStringBuilder.ToString();
     }
+
+    public void Clear() {
+        _logStringBuilder.Clear();
+        _debugText.text = string.Empty;
+    }
 }
