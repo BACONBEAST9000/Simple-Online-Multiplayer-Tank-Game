@@ -4,6 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(NetworkObject))]
 public class Player : NetworkBehaviour, IDamageable {
+    public const float RESPAWN_DELAY_SECONDS = 2;
 
     public static event Action<PlayerRef, int> OnScoreUpdated;
     public static event Action<PlayerRef, string> OnNameUpdated;
@@ -17,6 +18,8 @@ public class Player : NetworkBehaviour, IDamageable {
     [Networked(OnChanged = nameof(OnNameChanged))]
     public NetworkString<_16> NickName { get; private set; }
 
+    [Networked] private TickTimer _respawnTimer { get; set; }
+
     public override void Spawned() {
         if (Object.HasInputAuthority) {
             var name = FindObjectOfType<PlayerData>().NickName;
@@ -24,6 +27,14 @@ public class Player : NetworkBehaviour, IDamageable {
         }
 
         OnSpawned?.Invoke(Object.InputAuthority, this);
+    }
+
+    public override void FixedUpdateNetwork() {
+        if (_respawnTimer.Expired(Runner)) {
+            print("Respawn timer end");
+            RespawnManager.Instance.Respawn(this);
+            _respawnTimer = default;
+        }
     }
 
     // RPC used to send player information to the Host
@@ -36,6 +47,7 @@ public class Player : NetworkBehaviour, IDamageable {
     }
 
     public void IncrementScoreBy(int value) => Score += value;
+    public void DecrementScoreBy(int value) => Score = Mathf.Max(0, Score - value);
 
     public static void OnScoreChanged(Changed<Player> playerData) {
         OnScoreUpdated?.Invoke(playerData.Behaviour.Object.InputAuthority, playerData.Behaviour.Score);
@@ -53,16 +65,12 @@ public class Player : NetworkBehaviour, IDamageable {
         }
 
         if (damager.Owner == this) {
-            Score--;
-            RespawnManager.Instance.Respawn(this);
-            //print("Self damage. Score now " + Score);
-            return;
+            DecrementScoreBy(1);
+        }
+        else {
+            damager.Owner.IncrementScoreBy(1);
         }
         
-        damager.Owner.IncrementScoreBy(1);
-
-        RespawnManager.Instance.Respawn(this);
-
-        //print($"Damaged by {damager.Owner} for {damager.Damage} damage!");
+        _respawnTimer = TickTimer.CreateFromSeconds(Runner, RESPAWN_DELAY_SECONDS);
     }
 }

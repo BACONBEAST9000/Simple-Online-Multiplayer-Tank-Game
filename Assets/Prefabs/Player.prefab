@@ -245,6 +245,7 @@ GameObject:
   - component: {fileID: 3276683595175715962}
   - component: {fileID: 4814418892433255776}
   - component: {fileID: 6106064112569594434}
+  - component: {fileID: 491863125254404042}
   - component: {fileID: 78491921699914232}
   - component: {fileID: 78491921699914228}
   - component: {fileID: 78491921699914235}
@@ -299,7 +300,8 @@ MonoBehaviour:
   - {fileID: 6106064112569594434}
   - {fileID: 78491921699914232}
   - {fileID: 78491921699914228}
-  SimulationBehaviours: []
+  SimulationBehaviours:
+  - {fileID: 491863125254404042}
 --- !u!114 &4814418892433255776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,6 +344,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   _Score: 0
+  _NickName:
+    _length: 0
+    _data:
+      Data: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+--- !u!114 &491863125254404042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78491921699914239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e904b25a84efb0b408188a259beb1988, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderers:
+  - {fileID: 78491921831636555}
+  - {fileID: 78491921457164037}
+  - {fileID: 78491921951711849}
+  - {fileID: 78491923050830862}
+  - {fileID: 78491921623799409}
 --- !u!114 &78491921699914232
 MonoBehaviour:
   m_ObjectHideFlags: 0
