@@ -10,10 +10,6 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     public static MultiplayerSessionManager Instance;
     
     private const string SESSION_NAME = "TestRoom";
-
-    private const string AXIS_HORIZONTAL = "Horizontal";
-    private const string AXIS_VERTICAL = "Vertical";
-    private const string BUTTON_SHOOT = "Jump";
     private const string GAME_SCENE_NAME = "MainGame";
 
     public static event Action OnPlayerJoinedGame;
@@ -28,12 +24,6 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     public Dictionary<PlayerRef, Player> SpawnedPlayers => _spawnedPlayers;
 
     private NetworkRunner _runner;
-
-    private Vector2 _moveInput;
-
-    Player player;
-
-    PlayerRefSet _playerRefsSet;
 
     private void Awake() {
         if (Instance == null) {
@@ -117,24 +107,6 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         //_runner.SetActiveScene(GAME_SCENE_NAME);
     }
 
-    //private void OnGUI() {
-    //    HostAndClientButtons();
-    //}
-
-    //private void HostAndClientButtons() {
-    //    if (_runner != null) {
-    //        return;
-    //    }
-
-    //    if (GUI.Button(new Rect(0, 0, 200, 40), "Host")) {
-    //        StartGame(GameMode.Host);
-    //    }
-
-    //    if (GUI.Button(new Rect(0, 50, 200, 40), "Client")) {
-    //        StartGame(GameMode.Client);
-    //    }
-    //}
-
     public void StartHostGame() => StartGame(GameMode.Host);
     public void StartClientGame() => StartGame(GameMode.Client);
 
@@ -147,16 +119,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     }
 
     public void OnInput(NetworkRunner runner, NetworkInput input) {
-        PlayerInput playerInputData = new PlayerInput();
-
-        _moveInput.x = Input.GetAxisRaw(AXIS_HORIZONTAL);
-        _moveInput.y = Input.GetAxisRaw(AXIS_VERTICAL);
-
-        playerInputData.MoveInput = _moveInput;
-
-        playerInputData.Buttons.Set(TankButtons.Shoot, Input.GetButton(BUTTON_SHOOT));
-
-        input.Set(playerInputData);
+        
     }
 
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) {

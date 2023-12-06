@@ -385,9 +385,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   _rigidbody: {fileID: 78491921699914235}
-  _maxMoveSpeed: 5
-  _acceleration: 2
-  _deceleration: 3
+  _maxMoveSpeed: 4
+  _minMoveSpeed: 3
+  _acceleration: 3
+  _deceleration: 4
   _rotateSpeed: 90
 --- !u!114 &78491921699914228
 MonoBehaviour:

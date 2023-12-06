@@ -13,7 +13,6 @@ public class Player : NetworkBehaviour, IDamageable {
     public static event Action<PlayerRef, string> OnNameUpdated;
     public static event Action<PlayerRef, Player> OnSpawned;
 
-
     [Networked(OnChanged = nameof(OnScoreChanged))]
     [HideInInspector]
     public int Score { get; private set; }
@@ -71,11 +70,9 @@ public class Player : NetworkBehaviour, IDamageable {
 
     private static void OnPlayerAliveChanged(Changed<Player> playerData) {
         if (playerData.Behaviour.IsAlive) {
-            print("Show Player - Alive: True");
             playerData.Behaviour.TestVisuals.ShowPlayer();
             return;
         }
-        print("Destroy Player - Alive: False");
         playerData.Behaviour.TestVisuals.DestroyedEffect();
     }
 
