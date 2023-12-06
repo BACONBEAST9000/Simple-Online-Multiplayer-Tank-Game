@@ -6,9 +6,13 @@ using UnityEngine;
 public class Player : NetworkBehaviour, IDamageable {
     public const float RESPAWN_DELAY_SECONDS = 2;
 
+    public static event Action<PlayerRef> OnPlayerDestroyed;
+    public static event Action<PlayerRef> OnPlayerRespawned;
+
     public static event Action<PlayerRef, int> OnScoreUpdated;
     public static event Action<PlayerRef, string> OnNameUpdated;
     public static event Action<PlayerRef, Player> OnSpawned;
+
 
     [Networked(OnChanged = nameof(OnScoreChanged))]
     [HideInInspector]
@@ -20,7 +24,17 @@ public class Player : NetworkBehaviour, IDamageable {
 
     [Networked] private TickTimer _respawnTimer { get; set; }
 
+    [Networked(OnChanged = nameof(OnPlayerAliveChanged))]
+    [HideInInspector]
+    public NetworkBool IsAlive { get; private set; } = true;
+
+    
+    [SerializeField] public PlayerVisuals TestVisuals;
+    
     public override void Spawned() {
+        print(IsAlive);
+        IsAlive = true;
+
         if (Object.HasInputAuthority) {
             var name = FindObjectOfType<PlayerData>().NickName;
             RpcSetNickName(name);
@@ -31,9 +45,9 @@ public class Player : NetworkBehaviour, IDamageable {
 
     public override void FixedUpdateNetwork() {
         if (_respawnTimer.Expired(Runner)) {
-            print("Respawn timer end");
-            RespawnManager.Instance.Respawn(this);
+            IsAlive = true;
             _respawnTimer = default;
+            RespawnManager.Instance.Respawn(this);
         }
     }
 
@@ -42,8 +56,6 @@ public class Player : NetworkBehaviour, IDamageable {
     private void RpcSetNickName(string nickName) {
         if (string.IsNullOrEmpty(nickName)) return;
         NickName = nickName;
-
-        print("Name changed to " + nickName);
     }
 
     public void IncrementScoreBy(int value) => Score += value;
@@ -51,12 +63,20 @@ public class Player : NetworkBehaviour, IDamageable {
 
     public static void OnScoreChanged(Changed<Player> playerData) {
         OnScoreUpdated?.Invoke(playerData.Behaviour.Object.InputAuthority, playerData.Behaviour.Score);
-        //print("Player score changed! " + playerData.Behaviour.Score);
     }
     
     private static void OnNameChanged(Changed<Player> playerData) {
         OnNameUpdated?.Invoke(playerData.Behaviour.Object.InputAuthority, playerData.Behaviour.NickName.ToString());
-        //print("Player name changed! " + playerData.Behaviour.NickName);
+    }
+
+    private static void OnPlayerAliveChanged(Changed<Player> playerData) {
+        if (playerData.Behaviour.IsAlive) {
+            print("Show Player - Alive: True");
+            playerData.Behaviour.TestVisuals.ShowPlayer();
+            return;
+        }
+        print("Destroy Player - Alive: False");
+        playerData.Behaviour.TestVisuals.DestroyedEffect();
     }
 
     public void OnDamage(Bullet damager) {
@@ -70,7 +90,10 @@ public class Player : NetworkBehaviour, IDamageable {
         else {
             damager.Owner.IncrementScoreBy(1);
         }
-        
+
+        IsAlive = false;
+        TestVisuals.DestroyedEffect();
+        OnPlayerDestroyed?.Invoke(Object.InputAuthority);
         _respawnTimer = TickTimer.CreateFromSeconds(Runner, RESPAWN_DELAY_SECONDS);
     }
 }
