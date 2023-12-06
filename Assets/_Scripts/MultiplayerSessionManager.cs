@@ -14,6 +14,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     private const string AXIS_HORIZONTAL = "Horizontal";
     private const string AXIS_VERTICAL = "Vertical";
     private const string BUTTON_SHOOT = "Jump";
+    private const string GAME_SCENE_NAME = "MainGame";
 
     public static event Action OnPlayerJoinedGame;
     public static event Action OnPlayerConnectedToGame;
@@ -112,6 +113,8 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         };
         await _runner.StartGame(game);
         print("Game Started!");
+        
+        //_runner.SetActiveScene(GAME_SCENE_NAME);
     }
 
     //private void OnGUI() {

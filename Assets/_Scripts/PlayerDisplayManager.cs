@@ -37,18 +37,12 @@ public class PlayerDisplayManager : MonoBehaviour {
         Player.OnNameUpdated -= WhenPlayerNameUpdated;
         Player.OnScoreUpdated -= WhenPlayerScoreUpdated;
     }
-    
-    private void WhenPlayerSpawned(PlayerRef playerRef, Player player) {
-        AddEntry(playerRef, player);
-    }
-    
-    private void WhenPlayerNameUpdated(PlayerRef playerRef, string newName) {
-        UpdateName(playerRef, newName);
-    }
 
-    private void WhenPlayerScoreUpdated(PlayerRef playerRef, int newScore) {
-        UpdateScore(playerRef, newScore);
-    }
+    private void WhenPlayerSpawned(PlayerRef playerRef, Player player) => AddEntry(playerRef, player);
+
+    private void WhenPlayerNameUpdated(PlayerRef playerRef, string newName) => UpdateName(playerRef, newName);
+
+    private void WhenPlayerScoreUpdated(PlayerRef playerRef, int newScore) => UpdateScore(playerRef, newScore);
 
     public void AddEntry(PlayerRef playerRef, Player player) {
         if (_playerEntries.ContainsKey(playerRef)) {
@@ -101,7 +95,7 @@ public class PlayerDisplayManager : MonoBehaviour {
     
     public void UpdateScore(PlayerRef playerRef, int newScore) {
         if(!_playerEntries.TryGetValue(playerRef, out PlayerScoreDisplayUI playerDisplay)) {
-            Debug.LogWarning("Couldn't find entry to update name of", this);
+            Debug.LogWarning("Couldn't find entry to update score of", this);
             return;
         }
 
