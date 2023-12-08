@@ -16,7 +16,40 @@ public class PlayerMovement : NetworkBehaviour {
     private float _currentMoveSpeed = 0f;
     private Vector2 _moveInput;
 
+    private bool _canMove = true;
+
+    private void OnEnable() {
+        Player.OnPlayerDestroyed -= WhenPlayerDestroyed;
+        Player.OnPlayerDestroyed += WhenPlayerDestroyed;
+
+        Player.OnPlayerRespawned -= WhenPlayerRespawned;
+        Player.OnPlayerRespawned += WhenPlayerRespawned;
+    }
+
+    private void OnDisable() {
+        Player.OnPlayerDestroyed -= WhenPlayerDestroyed;
+        Player.OnPlayerRespawned -= WhenPlayerRespawned;
+    }
+
+    private void WhenPlayerDestroyed(PlayerRef playerRef) {
+        if (playerRef != Object.InputAuthority) return;
+
+        _canMove = false;
+    }
+    
+    private void WhenPlayerRespawned(PlayerRef playerRef) {
+        if (playerRef != Object.InputAuthority) return;
+
+        _canMove = true;
+    }
+
+    public override void Spawned() {
+        _canMove = true;
+    }
+
     public override void FixedUpdateNetwork() {
+        if (!_canMove) return;
+        
         if (!GetInput(out PlayerInput input)) {
             _moveInput = Vector2.zero;
             return;
@@ -24,17 +57,17 @@ public class PlayerMovement : NetworkBehaviour {
 
         _moveInput = input.MoveInput;
 
-        HandleTurning(input);
-        HandleAcceleration(input);
+        HandleTurning();
+        HandleAcceleration();
     }
 
-    private void HandleTurning(PlayerInput playerInput) {
+    private void HandleTurning() {
         float rotation = _moveInput.x * _rotateSpeed * Runner.DeltaTime;
         Quaternion turnRotation = Quaternion.Euler(0f, rotation, 0f);
         _rigidbody.MoveRotation(_rigidbody.rotation * turnRotation);
     }
 
-    private void HandleAcceleration(PlayerInput playerInput) {
+    private void HandleAcceleration() {
         float targetMoveSpeed = _moveInput.y * ((_moveInput.y > 0) ? _maxMoveSpeed : _minMoveSpeed);
 
         float moveAmount = (targetMoveSpeed > _currentMoveSpeed ? _acceleration : _deceleration) * Runner.DeltaTime;

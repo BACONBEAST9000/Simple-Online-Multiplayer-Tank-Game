@@ -27,11 +27,11 @@ public class Player : NetworkBehaviour, IDamageable {
     [HideInInspector]
     public NetworkBool IsAlive { get; private set; } = true;
 
-    
+    [SerializeField] private Collider _collider;
+
     [SerializeField] public PlayerVisuals TestVisuals;
     
     public override void Spawned() {
-        print(IsAlive);
         IsAlive = true;
 
         if (Object.HasInputAuthority) {
@@ -45,6 +45,7 @@ public class Player : NetworkBehaviour, IDamageable {
     public override void FixedUpdateNetwork() {
         if (_respawnTimer.Expired(Runner)) {
             IsAlive = true;
+            _collider.enabled = true;
             _respawnTimer = default;
             RespawnManager.Instance.Respawn(this);
         }
@@ -71,6 +72,7 @@ public class Player : NetworkBehaviour, IDamageable {
     private static void OnPlayerAliveChanged(Changed<Player> playerData) {
         if (playerData.Behaviour.IsAlive) {
             playerData.Behaviour.TestVisuals.ShowPlayer();
+            OnPlayerRespawned?.Invoke(playerData.Behaviour.Object.InputAuthority);
             return;
         }
         playerData.Behaviour.TestVisuals.DestroyedEffect();
@@ -89,6 +91,7 @@ public class Player : NetworkBehaviour, IDamageable {
         }
 
         IsAlive = false;
+        _collider.enabled = false;
         TestVisuals.DestroyedEffect();
         OnPlayerDestroyed?.Invoke(Object.InputAuthority);
         _respawnTimer = TickTimer.CreateFromSeconds(Runner, RESPAWN_DELAY_SECONDS);

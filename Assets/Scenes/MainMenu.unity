@@ -1307,6 +1307,7 @@ GameObject:
   m_Component:
   - component: {fileID: 588085575}
   - component: {fileID: 588085576}
+  - component: {fileID: 588085577}
   m_Layer: 0
   m_Name: Multiplayer Session Manager
   m_TagString: Untagged
@@ -1351,6 +1352,18 @@ MonoBehaviour:
   - {fileID: 1349394142}
   - {fileID: 99587284}
   - {fileID: 1137604395}
+--- !u!114 &588085577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 588085574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f81be823aeb4934b9ae49a2b22ca849, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &625342358
 GameObject:
   m_ObjectHideFlags: 0
