@@ -96,6 +96,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         _runner.ProvideInput = true;
 
         StartGameArgs game = new StartGameArgs() {
+            PlayerCount = 4,
             GameMode = mode,
             SessionName = SESSION_NAME,
             Scene = SceneManager.GetActiveScene().buildIndex,

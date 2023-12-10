@@ -30,7 +30,12 @@ public class Player : NetworkBehaviour, IDamageable {
     [SerializeField] private Collider _collider;
 
     [SerializeField] public PlayerVisuals TestVisuals;
-    
+
+    [Networked]
+    public bool IsReady { get; private set; }
+
+    [Networked] private NetworkButtons _previousButtons { get; set; }
+
     public override void Spawned() {
         IsAlive = true;
 
@@ -49,6 +54,17 @@ public class Player : NetworkBehaviour, IDamageable {
             _respawnTimer = default;
             RespawnManager.Instance.Respawn(this);
         }
+
+        if (GetInput(out PlayerInput input)) {
+            if (IsReadyButtonPressed(input)) {
+                IsReady = !IsReady;
+                print($"Player ID: {Object.InputAuthority} is READY SET TO: {IsReady}");
+            }
+        }
+    }
+
+    private bool IsReadyButtonPressed(PlayerInput input) {
+        return input.Buttons.WasPressed(_previousButtons, TankButtons.Ready);
     }
 
     // RPC used to send player information to the Host

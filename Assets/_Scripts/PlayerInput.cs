@@ -7,5 +7,6 @@ public struct PlayerInput : INetworkInput{
 }
 
 enum TankButtons {
-    Shoot = 0,
+    Ready = 0,
+    Shoot = 1,
 }
