@@ -70,14 +70,22 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     public void PlayerJoined(PlayerRef playerRef) {
         print("Player joined");
         if (Runner.IsServer) {
-            Vector3 spawnPosition = _playerOrderedSpawnPositions[playerRef.RawEncoded % _playerOrderedSpawnPositions.Length].position;
-            Player newPlayer = Runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, playerRef);
+            Player newPlayer = SpawnPlayer(playerRef);
 
-            Runner.SetPlayerObject(playerRef, newPlayer.Object);
+            Vector3 spawnPosition = _playerOrderedSpawnPositions[playerRef.RawEncoded % _playerOrderedSpawnPositions.Length].position;
+            newPlayer.transform.position = spawnPosition;
 
             _spawnedPlayers.Add(playerRef, newPlayer);
             OnPlayerJoinedGame?.Invoke();
         }
+    }
+
+    public Player SpawnPlayer(PlayerRef playerRef) {
+        
+        Player newPlayer = Runner.Spawn(_playerPrefab, transform.position, Quaternion.identity, playerRef);
+
+        Runner.SetPlayerObject(playerRef, newPlayer.Object);
+        return newPlayer;
     }
 
     public void PlayerLeft(PlayerRef player) {
@@ -89,7 +97,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     }
 
 
-    private async void StartGame(GameMode mode) {
+    private async void StartSession(GameMode mode) {
         UpdatePlayerData();
 
         _runner = gameObject.AddComponent<NetworkRunner>();
@@ -108,8 +116,20 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         //_runner.SetActiveScene(GAME_SCENE_NAME);
     }
 
-    public void StartHostGame() => StartGame(GameMode.Host);
-    public void StartClientGame() => StartGame(GameMode.Client);
+    public void StartHostSession() => StartSession(GameMode.Host);
+    public void StartClientSession() => StartSession(GameMode.Client);
+
+    public void StartGame() {
+        print("Start Game - Game shouldn't allow for late joins, and game scene should load");
+        Runner.SessionInfo.IsOpen = false;
+        Runner.SessionInfo.IsVisible = false;
+
+        LoadGameScene();
+    }
+
+    private void LoadGameScene() {
+        Runner.SetActiveScene(GAME_SCENE_NAME);
+    }
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
         print("Players in lobby: " + SpawnedPlayers.Count);

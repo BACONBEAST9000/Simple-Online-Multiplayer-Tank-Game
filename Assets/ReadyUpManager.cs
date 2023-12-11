@@ -1,9 +1,12 @@
 using Fusion;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class ReadyUpManager : NetworkBehaviour {
 
     private static List<Player> _readyPlayers = new();
+
+    [SerializeField] private bool _allowSoloPlayForTesting;
 
     private void OnEnable() {
         Player.OnPlayerToggledReady -= WhenPlayerTogglesReady;
@@ -25,11 +28,19 @@ public class ReadyUpManager : NetworkBehaviour {
 
     private bool _displayedReadyToPlay = false;
     public override void FixedUpdateNetwork() {
-        if (!_displayedReadyToPlay && _readyPlayers.Count == PlayerManager.GetAllPlayers.Count) {
+        if (ValadNumberOfPlayersReady()) {
             print("ALL PLAYERS ARE READY TO PLAY!");
             _displayedReadyToPlay = true;
+            MultiplayerSessionManager.Instance.StartGame();
         }
     }
+
+    private bool ValadNumberOfPlayersReady() {
+        return !_displayedReadyToPlay && ValidNumberOfPlayers && AllPlayersReady;
+    }
+
+    private bool ValidNumberOfPlayers => _allowSoloPlayForTesting || _readyPlayers.Count > 1;
+    private bool AllPlayersReady => _readyPlayers.Count == PlayerManager.GetAllPlayers.Count;
 
     public void ReadyPlayer(Player readyPlayer) {
         _readyPlayers.Add(readyPlayer);
