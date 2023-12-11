@@ -44,7 +44,6 @@ public class RespawnManager : NetworkBehaviour {
                 continue;
             }
 
-            print("Player position: " + playerComponent.transform.position);
             playerPositions.Add(playerComponent.transform.position);
         }
 

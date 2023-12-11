@@ -6,7 +6,7 @@ public struct PlayerInput : INetworkInput{
     public NetworkButtons Buttons;
 }
 
-enum TankButtons {
+enum ActionButtons {
     Ready = 0,
     Shoot = 1,
 }

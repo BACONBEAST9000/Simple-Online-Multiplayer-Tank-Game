@@ -32,7 +32,7 @@ public class PlayerShoot : NetworkBehaviour {
 
     private bool ShouldShoot(PlayerInput input) => NoShootDelay() && ShootButtonPressed(input) && NoWallAhead();
 
-    private bool ShootButtonPressed(PlayerInput input) => input.Buttons.WasPressed(_previousButtons, TankButtons.Shoot);
+    private bool ShootButtonPressed(PlayerInput input) => input.Buttons.WasPressed(_previousButtons, ActionButtons.Shoot);
 
     private bool NoShootDelay() => ShootDelay.ExpiredOrNotRunning(Runner);
 

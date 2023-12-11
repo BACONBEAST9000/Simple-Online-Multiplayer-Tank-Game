@@ -8,6 +8,7 @@ public class Player : NetworkBehaviour, IDamageable {
 
     public static event Action<PlayerRef> OnPlayerDestroyed;
     public static event Action<PlayerRef> OnPlayerRespawned;
+    public static event Action<Player, bool> OnPlayerToggledReady;
 
     public static event Action<PlayerRef, int> OnScoreUpdated;
     public static event Action<PlayerRef, string> OnNameUpdated;
@@ -36,8 +37,11 @@ public class Player : NetworkBehaviour, IDamageable {
 
     [Networked] private NetworkButtons _previousButtons { get; set; }
 
+    public int PlayerID { get; private set; }
+
     public override void Spawned() {
         IsAlive = true;
+        PlayerID = Object.InputAuthority;
 
         if (Object.HasInputAuthority) {
             var name = FindObjectOfType<PlayerData>().NickName;
@@ -45,6 +49,8 @@ public class Player : NetworkBehaviour, IDamageable {
         }
 
         OnSpawned?.Invoke(Object.InputAuthority, this);
+
+        PlayerManager.AddPlayer(this);
     }
 
     public override void FixedUpdateNetwork() {
@@ -58,13 +64,14 @@ public class Player : NetworkBehaviour, IDamageable {
         if (GetInput(out PlayerInput input)) {
             if (IsReadyButtonPressed(input)) {
                 IsReady = !IsReady;
+                OnPlayerToggledReady?.Invoke(this, IsReady);
                 print($"Player ID: {Object.InputAuthority} is READY SET TO: {IsReady}");
             }
         }
     }
 
     private bool IsReadyButtonPressed(PlayerInput input) {
-        return input.Buttons.WasPressed(_previousButtons, TankButtons.Ready);
+        return input.Buttons.WasPressed(_previousButtons, ActionButtons.Ready);
     }
 
     // RPC used to send player information to the Host

@@ -12,6 +12,12 @@ public class PlayerInputHandler : SimulationBehaviour, INetworkRunnerCallbacks {
 
     private Vector2 _moveInput;
 
+    private bool _toggleReadyInput;
+
+    private void Update() {
+        _toggleReadyInput = _toggleReadyInput || Input.GetKeyDown(KeyCode.R);
+    }
+
     public void OnInput(NetworkRunner runner, NetworkInput input) {
         PlayerInput playerInputData = new PlayerInput();
 
@@ -20,9 +26,12 @@ public class PlayerInputHandler : SimulationBehaviour, INetworkRunnerCallbacks {
 
         playerInputData.MoveInput = _moveInput;
 
-        playerInputData.Buttons.Set(TankButtons.Shoot, Input.GetButton(BUTTON_SHOOT));
+        playerInputData.Buttons.Set(ActionButtons.Ready, _toggleReadyInput);
+        playerInputData.Buttons.Set(ActionButtons.Shoot, Input.GetButton(BUTTON_SHOOT));
 
         input.Set(playerInputData);
+        
+        _toggleReadyInput = false;
     }
 
     #region Other Unused Callbacks from INetworkRunnerCallbacks
