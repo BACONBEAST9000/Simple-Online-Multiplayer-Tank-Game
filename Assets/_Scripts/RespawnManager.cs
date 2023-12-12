@@ -1,7 +1,6 @@
 using Fusion;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class RespawnManager : NetworkBehaviour {
@@ -9,28 +8,13 @@ public class RespawnManager : NetworkBehaviour {
     public static RespawnManager Instance;
 
     [SerializeField] private List<Transform> _spawnPoints;
-    [SerializeField] private bool _spawnPlayersOnSpawned = true;
-
+    
     private void Awake() {
         if (Instance == null) {
             Instance = this;
         }
         else {
             Destroy(this);
-        }
-    }
-
-    public override void Spawned() {
-        if(_spawnPlayersOnSpawned)
-            SpawnPlayers();
-    }
-
-    public void SpawnPlayers() {
-        int positionIndex = 0;
-        foreach (PlayerRef playerRef in Runner.ActivePlayers) {
-            Player player = MultiplayerSessionManager.Instance.SpawnPlayer(playerRef);
-            player.transform.position = _spawnPoints[positionIndex].position;
-            positionIndex++;
         }
     }
 

@@ -1,8 +1,11 @@
 using Fusion;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ReadyUpManager : NetworkBehaviour {
+
+    public static event Action OnAllPlayersReady;
 
     private static List<Player> _readyPlayers = new();
 
@@ -31,7 +34,7 @@ public class ReadyUpManager : NetworkBehaviour {
         if (ValadNumberOfPlayersReady()) {
             print("ALL PLAYERS ARE READY TO PLAY!");
             _displayedReadyToPlay = true;
-            MultiplayerSessionManager.Instance.StartGame();
+            OnAllPlayersReady?.Invoke();
         }
     }
 

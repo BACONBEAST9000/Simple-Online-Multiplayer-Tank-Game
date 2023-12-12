@@ -22,10 +22,23 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     [SerializeField] private TMP_InputField _nameInputField;
     [SerializeField] private Transform[] _playerOrderedSpawnPositions;
 
-    private Dictionary<PlayerRef, Player> _spawnedPlayers = new();
-    public Dictionary<PlayerRef, Player> SpawnedPlayers => _spawnedPlayers;
+    private static Dictionary<PlayerRef, Player> _spawnedPlayers = new();
+    public static Dictionary<PlayerRef, Player> SpawnedPlayers => _spawnedPlayers;
 
     private NetworkRunner _runner;
+
+    private void OnEnable() {
+        ReadyUpManager.OnAllPlayersReady -= WhenAllPlayersAreReady;
+        ReadyUpManager.OnAllPlayersReady += WhenAllPlayersAreReady;
+    }
+
+    private void OnDisable() {
+        ReadyUpManager.OnAllPlayersReady -= WhenAllPlayersAreReady;
+    }
+    
+    private void WhenAllPlayersAreReady() {
+        StartGame();
+    }
 
     private void Awake() {
         if (Instance == null) {
@@ -38,7 +51,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.P)) {
-            print("Players in lobby: " + Runner.ActivePlayers);
+            print("Players in lobby: ");
             foreach (PlayerRef player in Runner.ActivePlayers) {
 
                 if (!Runner.TryGetPlayerObject(player, out var playerObject)) {
@@ -52,7 +65,6 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
                 print(p.NickName);
             }
         }
-
     }
 
     private void UpdatePlayerData() {
@@ -127,18 +139,23 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
 
     public void StartGame() {
         print("Start Game - Game shouldn't allow for late joins, and game scene should load");
-        Runner.SessionInfo.IsOpen = false;
-        Runner.SessionInfo.IsVisible = false;
-
+        CloseGameSession();
         LoadGameScene();
     }
 
-    private void LoadGameScene() {
-        Runner.SetActiveScene(GAME_SCENE_NAME);
+    private void CloseGameSession() {
+        Runner.SessionInfo.IsOpen = false;
+        Runner.SessionInfo.IsVisible = false;
     }
+
+    private void LoadGameScene() => Runner.SetActiveScene(GAME_SCENE_NAME);
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
         print("Players in lobby: " + SpawnedPlayers.Count);
+        print("Listing all players:");
+        foreach (var spawnedPlayer in SpawnedPlayers) {
+            print($"PlayerID: {spawnedPlayer.Key}, Player: {spawnedPlayer.Value.NickName}");
+        }
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {
