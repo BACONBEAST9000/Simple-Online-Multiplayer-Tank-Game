@@ -14,6 +14,8 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
 
     public static event Action OnPlayerJoinedGame;
     public static event Action OnPlayerConnectedToGame;
+    public static event Action OnConnectingStart;
+    public static event Action OnConnectingEnd;
 
     [SerializeField] private Player _playerPrefab;
     [SerializeField] private PlayerData _playerDataPrefab;
@@ -110,7 +112,11 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
             Scene = SceneManager.GetActiveScene().buildIndex,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
         };
+
+        OnConnectingStart?.Invoke();
         await _runner.StartGame(game);
+        OnConnectingEnd?.Invoke();
+        
         print("Game Started!");
         
         //_runner.SetActiveScene(GAME_SCENE_NAME);
@@ -148,7 +154,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     }
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) {
-        
+        print("Shutdown! The reason message: " + shutdownReason);
     }
 
     public void OnConnectedToServer(NetworkRunner runner) {
@@ -157,7 +163,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     }
 
     public void OnDisconnectedFromServer(NetworkRunner runner) {
-        
+        print("Disconnected from server");
     }
 
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) {
@@ -165,7 +171,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     }
 
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) {
-        
+        print("Failed to connect! " + reason);
     }
 
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) {
