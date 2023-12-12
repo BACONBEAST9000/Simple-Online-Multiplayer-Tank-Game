@@ -3161,6 +3161,7 @@ GameObject:
   - component: {fileID: 1270916486}
   - component: {fileID: 1270916487}
   - component: {fileID: 1270916488}
+  - component: {fileID: 1270916489}
   m_Layer: 5
   m_Name: Players Score
   m_TagString: Untagged
@@ -3201,6 +3202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ced4f7fbf1cacb4c85ea4da26f8a686, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
   _parentUIObject: {fileID: 1270916486}
   _scoreDisplayPrefab: {fileID: 4546925457391899491, guid: 709d18677429a4045a86720803a8683a,
     type: 3}
@@ -3230,6 +3232,30 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1270916489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1270916485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectInterest: 1
+  DefaultInterestGroups: []
+  DestroyWhenStateAuthorityLeaves: 0
+  AllowStateAuthorityOverride: 1
+  AoiPositionSource: {fileID: 0}
+  Flags: 2561
+  NetworkGuid:
+    RawGuidValue: 3c2cee45134442a19c196c8e50567107
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 1270916487}
+  SimulationBehaviours: []
 --- !u!1 &1301148590
 GameObject:
   m_ObjectHideFlags: 0
@@ -4079,7 +4105,6 @@ MonoBehaviour:
   - {fileID: 1137604395}
   - {fileID: 244999422}
   - {fileID: 1046295356}
-  _spawnPlayersOnSpawned: 0
 --- !u!4 &1820303070
 Transform:
   m_ObjectHideFlags: 0

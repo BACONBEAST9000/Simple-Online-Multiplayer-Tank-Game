@@ -43,7 +43,7 @@ public class ReadyUpManager : NetworkBehaviour {
     }
 
     private bool ValidNumberOfPlayers => _allowSoloPlayForTesting || _readyPlayers.Count > 1;
-    private bool AllPlayersReady => _readyPlayers.Count == PlayerManager.GetAllPlayers.Count;
+    private bool AllPlayersReady => _readyPlayers.Count == PlayerManager.GetPlayerCount;
 
     public void ReadyPlayer(Player readyPlayer) {
         _readyPlayers.Add(readyPlayer);

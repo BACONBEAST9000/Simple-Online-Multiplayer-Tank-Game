@@ -22,8 +22,8 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     [SerializeField] private TMP_InputField _nameInputField;
     [SerializeField] private Transform[] _playerOrderedSpawnPositions;
 
-    private static Dictionary<PlayerRef, Player> _spawnedPlayers = new();
-    public static Dictionary<PlayerRef, Player> SpawnedPlayers => _spawnedPlayers;
+    //private static Dictionary<PlayerRef, Player> _spawnedPlayers = new();
+    //public static Dictionary<PlayerRef, Player> SpawnedPlayers => _spawnedPlayers;
 
     private NetworkRunner _runner;
 
@@ -88,26 +88,28 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
 
             Vector3 spawnPosition = _playerOrderedSpawnPositions[playerRef.RawEncoded % _playerOrderedSpawnPositions.Length].position;
             newPlayer.transform.position = spawnPosition;
-
-            _spawnedPlayers.Add(playerRef, newPlayer);
             OnPlayerJoinedGame?.Invoke();
         }
     }
 
     public Player SpawnPlayer(PlayerRef playerRef) {
-        
         Player newPlayer = Runner.Spawn(_playerPrefab, transform.position, Quaternion.identity, playerRef);
 
+        print($"Spawn Player: {playerRef}, new player object: {((newPlayer && newPlayer.Object != null) ? newPlayer.Object : "newPlayer.Object is null")}");
+
         Runner.SetPlayerObject(playerRef, newPlayer.Object);
+
+        PlayerManager.UpdatePlayerWithReference(playerRef, newPlayer);
+
+        print($"Spawned Player - {playerRef} : {newPlayer}");
         return newPlayer;
     }
 
-    public void PlayerLeft(PlayerRef player) {
+    public void PlayerLeft(PlayerRef playerRef) {
         print("Player left");
-        if (_spawnedPlayers.TryGetValue(player, out Player playerThatLeft)) {
-            Runner.Despawn(playerThatLeft.Object);
-            _spawnedPlayers.Remove(player);
-        }
+
+        Player playerThatLeftGame = PlayerManager.GetPlayerWithReference(playerRef);
+        Runner.Despawn(playerThatLeftGame.Object);
     }
 
 
@@ -151,9 +153,9 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     private void LoadGameScene() => Runner.SetActiveScene(GAME_SCENE_NAME);
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
-        print("Players in lobby: " + SpawnedPlayers.Count);
+        print("Players in lobby: " + PlayerManager.GetPlayerCount);
         print("Listing all players:");
-        foreach (var spawnedPlayer in SpawnedPlayers) {
+        foreach (var spawnedPlayer in PlayerManager.GetAllPlayers) {
             print($"PlayerID: {spawnedPlayer.Key}, Player: {spawnedPlayer.Value.NickName}");
         }
     }
@@ -212,10 +214,10 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     }
 
     public void OnSceneLoadDone(NetworkRunner runner) {
-        
+        print("Scene Load Done!");
     }
 
     public void OnSceneLoadStart(NetworkRunner runner) {
-        
+        print("Scene Load Start");
     }
 }

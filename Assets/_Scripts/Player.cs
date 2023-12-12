@@ -30,6 +30,7 @@ public class Player : NetworkBehaviour, IDamageable {
 
     [SerializeField] private Collider _collider;
 
+    // TODO: Rework this
     [SerializeField] public PlayerVisuals TestVisuals;
 
     [Networked]
@@ -48,9 +49,14 @@ public class Player : NetworkBehaviour, IDamageable {
             RpcSetNickName(name);
         }
 
+        print($"I, {NickName} have just spawned. Time to invoke OnSpawned event!");
         OnSpawned?.Invoke(Object.InputAuthority, this);
 
         PlayerManager.AddPlayer(this);
+    }
+
+    public override void Despawned(NetworkRunner runner, bool hasState) {
+        PlayerManager.RemovePlayer(this);
     }
 
     public override void FixedUpdateNetwork() {

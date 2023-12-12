@@ -2,7 +2,7 @@ using Fusion;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerDisplayManager : MonoBehaviour {
+public class PlayerDisplayManager : NetworkBehaviour {
 
     [SerializeField] private RectTransform _parentUIObject;
     [SerializeField] private PlayerScoreDisplayUI _scoreDisplayPrefab;
@@ -13,12 +13,6 @@ public class PlayerDisplayManager : MonoBehaviour {
     private Dictionary<PlayerRef, int> _playerScores = new();
 
     private void OnEnable() {
-        MultiplayerSessionManager.OnPlayerJoinedGame -= WhenPlayerJoinsGame;
-        MultiplayerSessionManager.OnPlayerJoinedGame += WhenPlayerJoinsGame;
-
-        MultiplayerSessionManager.OnPlayerConnectedToGame -= WhenPlayerJoinsGame;
-        MultiplayerSessionManager.OnPlayerConnectedToGame += WhenPlayerJoinsGame;
-
         Player.OnSpawned -= WhenPlayerSpawned;
         Player.OnSpawned += WhenPlayerSpawned;
 
@@ -31,8 +25,6 @@ public class PlayerDisplayManager : MonoBehaviour {
 
 
     private void OnDisable() {
-        MultiplayerSessionManager.OnPlayerJoinedGame -= WhenPlayerJoinsGame;
-        MultiplayerSessionManager.OnPlayerConnectedToGame -= WhenPlayerJoinsGame;
         Player.OnSpawned -= WhenPlayerSpawned;
         Player.OnNameUpdated -= WhenPlayerNameUpdated;
         Player.OnScoreUpdated -= WhenPlayerScoreUpdated;
@@ -65,6 +57,8 @@ public class PlayerDisplayManager : MonoBehaviour {
         _playerEntries.Add(playerRef, scoreDisplay);
 
         scoreDisplay.UpdateEntry(player);
+
+        print($"Added entry! {player.NickName} with {player.Score} score.");
     }
 
     public void RemoveEntry(PlayerRef playerRef) {
@@ -101,18 +95,5 @@ public class PlayerDisplayManager : MonoBehaviour {
 
         _playerScores[playerRef] = newScore;
         playerDisplay.UpdateScoreText(newScore);
-    }
-
-    private void WhenPlayerJoinsGame() {
-        //var allPlayers = MultiplayerSessionManager.Instance.SpawnedPlayers;
-
-        //PlayerData currentPlayerData;
-        //foreach (var entry in allPlayers) {
-        //    currentPlayerData = entry.Value.Data;
-        //    print($"{currentPlayerData.PlayerName} with {currentPlayerData.Points} points.");
-
-        //    PlayerScoreDisplayUI newDisplay = Instantiate(_scoreDisplayPrefab, _parentUIObject);
-        //    newDisplay.UpdateEntry(entry.Value);
-        //}
     }
 }

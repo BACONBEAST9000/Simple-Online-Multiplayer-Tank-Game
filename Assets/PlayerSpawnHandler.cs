@@ -14,6 +14,8 @@ public class PlayerSpawnHandler : NetworkBehaviour {
     }
 
     public void SpawnPlayers() {
+        if (Object.HasStateAuthority == false) return;
+
         int positionIndex = 0;
         foreach (PlayerRef playerRef in Runner.ActivePlayers) {
             Player player = MultiplayerSessionManager.Instance.SpawnPlayer(playerRef);
