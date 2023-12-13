@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// TODO: Refactor
 public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPlayerLeft, INetworkRunnerCallbacks {
     public static MultiplayerSessionManager Instance;
     
@@ -44,24 +45,6 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         }
         else {
             Destroy(this);
-        }
-    }
-
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.P)) {
-            print("Players in lobby: ");
-            foreach (PlayerRef player in Runner.ActivePlayers) {
-
-                if (!Runner.TryGetPlayerObject(player, out var playerObject)) {
-                    continue;
-                }
-
-                if (!playerObject.TryGetComponent(out Player p)) {
-                    continue;
-                }
-
-                print(p.NickName);
-            }
         }
     }
 

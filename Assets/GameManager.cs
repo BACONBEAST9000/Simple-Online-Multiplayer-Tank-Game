@@ -16,5 +16,6 @@ public class GameManager : MonoBehaviour {
 
     private void WhenGameTimerEnds() {
         _gameEndScreen.gameObject.SetActive(true);
+        GameStateManager.ChangeState(GameState.GameEnd);
     }
 }

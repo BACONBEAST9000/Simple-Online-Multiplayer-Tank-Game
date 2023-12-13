@@ -107,22 +107,28 @@ public class Player : NetworkBehaviour, IDamageable {
         playerData.Behaviour.TestVisuals.DestroyedEffect();
     }
 
+    
     public void OnDamage(Bullet damager) {
         if (damager == null) {
             return;
         }
 
-        if (damager.Owner == this) {
-            DecrementScoreBy(1);
-        }
-        else {
-            damager.Owner.IncrementScoreBy(1);
+        if (IsGameStateWhereScoreCanBeUpdated) {
+            if (damager.Owner == this) {
+                DecrementScoreBy(1);
+            }
+            else {
+                damager.Owner.IncrementScoreBy(1);
+            }
         }
 
+        // TODO: Refactor
         IsAlive = false;
         _collider.enabled = false;
         TestVisuals.DestroyedEffect();
         OnPlayerDestroyed?.Invoke(Object.InputAuthority);
         _respawnTimer = TickTimer.CreateFromSeconds(Runner, RESPAWN_DELAY_SECONDS);
     }
+
+    private bool IsGameStateWhereScoreCanBeUpdated => GameStateManager.CurrentState == GameState.Game;
 }

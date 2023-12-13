@@ -19,7 +19,7 @@ public class GameStateManager : MonoBehaviour {
         }
     }
 
-    public void ChangeState(GameState newState) {
+    public static void ChangeState(GameState newState) {
         CurrentState = newState;
         print("GAME STATE CHANGED: " + newState);
         OnStateChanged?.Invoke(newState);
