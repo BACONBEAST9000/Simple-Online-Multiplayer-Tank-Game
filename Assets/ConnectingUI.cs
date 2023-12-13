@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ConnectingUI : MonoBehaviour {
 
     [SerializeField] private RectTransform _UIElement;
+    [SerializeField] private Button _cancelConnectionButton;
 
     private void OnEnable() {
         MultiplayerSessionManager.OnConnectingStart -= WhenConnecting;
@@ -21,7 +23,17 @@ public class ConnectingUI : MonoBehaviour {
         MultiplayerSessionManager.OnConnectingStart -= WhenConnecting;
         MultiplayerSessionManager.OnConnectingEnd -= WhenConnectingEnds;
     }
-    
+
+    private void Awake() {
+        _cancelConnectionButton.onClick.AddListener(() => {
+            MultiplayerSessionManager.Instance.ShutdownSession();
+        });
+    }
+
+    private void OnDestroy() {
+        _cancelConnectionButton.onClick.RemoveAllListeners();
+    }
+
     private void WhenConnecting() {
         Show();
     }

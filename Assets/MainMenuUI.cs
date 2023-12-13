@@ -10,14 +10,22 @@ public class MainMenuUI : MonoBehaviour {
     private void OnEnable() {
         MultiplayerSessionManager.OnConnectingStart -= WhenConnecting;
         MultiplayerSessionManager.OnConnectingStart += WhenConnecting;
+
+        MultiplayerSessionManager.OnSessionShutdown -= WhenSessionShutdown;
+        MultiplayerSessionManager.OnSessionShutdown += WhenSessionShutdown;
     }
 
     private void OnDisable() {
         MultiplayerSessionManager.OnConnectingStart -= WhenConnecting;
+        MultiplayerSessionManager.OnSessionShutdown -= WhenSessionShutdown;
     }
 
     private void WhenConnecting() {
         Hide();
+    }
+    
+    private void WhenSessionShutdown() {
+        Show();
     }
 
     private void Awake() {

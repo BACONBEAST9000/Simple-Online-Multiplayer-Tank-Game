@@ -16,14 +16,12 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     public static event Action OnPlayerConnectedToGame;
     public static event Action OnConnectingStart;
     public static event Action OnConnectingEnd;
+    public static event Action OnSessionShutdown;
 
     [SerializeField] private Player _playerPrefab;
     [SerializeField] private PlayerData _playerDataPrefab;
     [SerializeField] private TMP_InputField _nameInputField;
     [SerializeField] private Transform[] _playerOrderedSpawnPositions;
-
-    //private static Dictionary<PlayerRef, Player> _spawnedPlayers = new();
-    //public static Dictionary<PlayerRef, Player> SpawnedPlayers => _spawnedPlayers;
 
     private NetworkRunner _runner;
 
@@ -130,17 +128,14 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         OnConnectingStart?.Invoke();
         await _runner.StartGame(game);
         OnConnectingEnd?.Invoke();
-        
-        print("Game Started!");
-        
-        //_runner.SetActiveScene(GAME_SCENE_NAME);
     }
 
     public void StartHostSession() => StartSession(GameMode.Host);
     public void StartClientSession() => StartSession(GameMode.Client);
 
+    public void ShutdownSession() => _runner.Shutdown();
+
     public void StartGame() {
-        print("Start Game - Game shouldn't allow for late joins, and game scene should load");
         CloseGameSession();
         LoadGameScene();
     }
@@ -174,6 +169,8 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) {
         print("Shutdown! The reason message: " + shutdownReason);
+        SceneManager.LoadScene(0);
+        OnSessionShutdown?.Invoke();
     }
 
     public void OnConnectedToServer(NetworkRunner runner) {
