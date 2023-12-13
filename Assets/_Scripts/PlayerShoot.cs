@@ -1,4 +1,5 @@
 using Fusion;
+using System;
 using UnityEngine;
 
 public class PlayerShoot : NetworkBehaviour {
@@ -30,7 +31,9 @@ public class PlayerShoot : NetworkBehaviour {
         }
     }
 
-    private bool ShouldShoot(PlayerInput input) => NoShootDelay() && ShootButtonPressed(input) && NoWallAhead();
+    private bool ShouldShoot(PlayerInput input) => IsGameStateWhereCanShoot() && NoShootDelay() && ShootButtonPressed(input) && NoWallAhead();
+
+    private bool IsGameStateWhereCanShoot() => GameStateManager.CurrentState != GameState.GameEnd;
 
     private bool ShootButtonPressed(PlayerInput input) => input.Buttons.WasPressed(_previousButtons, ActionButtons.Shoot);
 
