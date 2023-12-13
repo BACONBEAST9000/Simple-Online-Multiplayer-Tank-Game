@@ -47,6 +47,8 @@ public class PlayerManager : NetworkBehaviour {
         return GetAllPlayers.Where(player => player.Key == playerRef).FirstOrDefault().Value;
     }
 
+    public static List<Player> GetPlayersInOrderOfDescendingScore => GetAllPlayers.Values.OrderByDescending(player => player.Score).ToList();
+
     private void Update() {
         if (Input.GetKeyDown(KeyCode.L)) {
             foreach (var player in _players) {
