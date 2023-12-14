@@ -2088,7 +2088,7 @@ GameObject:
   - component: {fileID: 718201986}
   - component: {fileID: 718201988}
   m_Layer: 0
-  m_Name: Time Left
+  m_Name: Game Timer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2109,7 +2109,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   _startOnSpawned: 1
   _repeatOnTimerEnd: 0
-  _timerSeconds: 50
+  _timerSeconds: 20
 --- !u!4 &718201987
 Transform:
   m_ObjectHideFlags: 0
@@ -4885,6 +4885,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameEndScreen: {fileID: 1142299267}
   _gameTimer: {fileID: 718201986}
+  _testingStopGameFromEndng: 1
 --- !u!4 &2041083334
 Transform:
   m_ObjectHideFlags: 0

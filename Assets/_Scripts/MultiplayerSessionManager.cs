@@ -90,7 +90,10 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         print("Player left");
 
         Player playerThatLeftGame = PlayerManager.GetPlayerWithReference(playerRef);
-        Runner.Despawn(playerThatLeftGame.Object);
+
+        if (playerThatLeftGame) {
+            Runner.Despawn(playerThatLeftGame.Object);
+        }
     }
 
 

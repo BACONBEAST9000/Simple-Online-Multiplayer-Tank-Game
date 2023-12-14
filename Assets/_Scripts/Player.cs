@@ -13,6 +13,7 @@ public class Player : NetworkBehaviour, IDamageable {
     public static event Action<PlayerRef, int> OnScoreUpdated;
     public static event Action<PlayerRef, string> OnNameUpdated;
     public static event Action<PlayerRef, Player> OnSpawned;
+    public static event Action<PlayerRef, Player> OnDespawned;
 
     [Networked(OnChanged = nameof(OnScoreChanged))]
     [HideInInspector]
@@ -50,12 +51,13 @@ public class Player : NetworkBehaviour, IDamageable {
         }
 
         print($"I, {NickName} have just spawned. Time to invoke OnSpawned event!");
-        OnSpawned?.Invoke(Object.InputAuthority, this);
+        OnSpawned?.Invoke(PlayerID, this);
 
         PlayerManager.AddPlayer(this);
     }
 
     public override void Despawned(NetworkRunner runner, bool hasState) {
+        OnDespawned?.Invoke(PlayerID, this);
         PlayerManager.RemovePlayer(this);
     }
 

@@ -4,6 +4,7 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField] private RectTransform _gameEndScreen;
     [SerializeField] private NetworkTimer _gameTimer;
+    [SerializeField] private bool _testingStopGameFromEndng = false;
 
     private void OnEnable() {
         _gameTimer.OnTimerEnd -= WhenGameTimerEnds;
@@ -15,6 +16,9 @@ public class GameManager : MonoBehaviour {
     }
 
     private void WhenGameTimerEnds() {
+        if (_testingStopGameFromEndng)
+            return;
+        
         _gameEndScreen.gameObject.SetActive(true);
         GameStateManager.ChangeState(GameState.GameEnd);
     }

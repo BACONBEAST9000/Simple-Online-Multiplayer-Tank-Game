@@ -21,6 +21,9 @@ public class PlayerDisplayManager : NetworkBehaviour {
 
         Player.OnScoreUpdated -= WhenPlayerScoreUpdated;
         Player.OnScoreUpdated += WhenPlayerScoreUpdated;
+
+        Player.OnDespawned -= WhenPlayerDespawns;
+        Player.OnDespawned += WhenPlayerDespawns;
     }
 
 
@@ -28,9 +31,12 @@ public class PlayerDisplayManager : NetworkBehaviour {
         Player.OnSpawned -= WhenPlayerSpawned;
         Player.OnNameUpdated -= WhenPlayerNameUpdated;
         Player.OnScoreUpdated -= WhenPlayerScoreUpdated;
+        Player.OnDespawned -= WhenPlayerDespawns;
     }
 
     private void WhenPlayerSpawned(PlayerRef playerRef, Player player) => AddEntry(playerRef, player);
+
+    private void WhenPlayerDespawns(PlayerRef playerRef, Player player) => RemoveEntry(playerRef);
 
     private void WhenPlayerNameUpdated(PlayerRef playerRef, string newName) => UpdateName(playerRef, newName);
 
