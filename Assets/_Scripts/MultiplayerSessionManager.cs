@@ -134,11 +134,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     private void LoadGameScene() => Runner.SetActiveScene(GAME_SCENE_NAME);
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
-        print("Players in lobby: " + PlayerManager.GetPlayerCount);
-        print("Listing all players:");
-        foreach (var spawnedPlayer in PlayerManager.GetAllPlayers) {
-            print($"PlayerID: {spawnedPlayer.Key}, Player: {spawnedPlayer.Value.NickName}");
-        }
+
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {

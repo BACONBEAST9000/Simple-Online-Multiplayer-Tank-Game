@@ -2,50 +2,19 @@ using Fusion;
 using System;
 using UnityEngine;
 
-public class PlayerVisuals : SimulationBehaviour {
-
+public class PlayerVisuals : NetworkBehaviour {
+    
+    // Property name may change based on material shader used. Assuming default is used.
+    private const string EMISSION_COLOR_PROPERTY_NAME = "_EmissionColor";
+    
     [SerializeField] private MeshRenderer[] _meshRenderers;
     [SerializeField] private ParticleSystem _destroyedSFX;
 
-    private bool _isShown = true;
+    [Networked(OnChanged = nameof(OnPlayerColourChanged))]
+    public Color PlayerColour { get; private set; }
 
-    private void OnEnable() {
-        Player.OnPlayerDestroyed -= WhenPlayerDestroyed;
-        Player.OnPlayerDestroyed += WhenPlayerDestroyed;
-
-        Player.OnPlayerRespawned -= WhenPlayerRespawns;
-        Player.OnPlayerRespawned += WhenPlayerRespawns;
-    }
-
-
-    private void OnDisable() {
-        Player.OnPlayerDestroyed -= WhenPlayerDestroyed;
-        Player.OnPlayerRespawned -= WhenPlayerRespawns;
-    }
-
-    private void Update() {
-        if(Input.GetKeyDown(KeyCode.C)) {
-            ChangeColour(new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f)));
-        }
-
-        if (Input.GetKeyDown(KeyCode.H)) {
-            _isShown = !_isShown;
-            TogglePlayerVisibility(_isShown);
-        }
-    }
-    
-    private void WhenPlayerDestroyed(PlayerRef playerRef) {
-        //if (playerRef != Object.InputAuthority) return;
-
-        ////print($"Player ID: {playerRef.PlayerId} got hit! Should now disappear!");
-        //DestroyedEffect();
-    }
-    
-    private void WhenPlayerRespawns(PlayerRef playerRef) {
-        //if (playerRef != Object.InputAuthority) return;
-
-        ////print($"Player ID: {playerRef.PlayerId} respawned! Should now appear!");
-        //ShowPlayer();
+    public override void Spawned() {
+        PlayerColour = PlayerColourManager.GetPlayerColour(Object.InputAuthority, Runner);
     }
 
     public void DestroyedEffect() {
@@ -57,12 +26,19 @@ public class PlayerVisuals : SimulationBehaviour {
     public void HidePlayer() => TogglePlayerVisibility(false);
     public void TogglePlayerVisibility(bool isVisible) => ForEachMeshRenderer((MeshRenderer renderer) => renderer.enabled = isVisible);
 
+    public static void OnPlayerColourChanged(Changed<PlayerVisuals> changed) {
+        changed.Behaviour.ChangeColour(changed.Behaviour.PlayerColour);
+    }
+
     private void ChangeColour(Color newColour) {
         ForEachMeshRenderer(ChangeMaterialColourTo(newColour));
     }
 
     private Action<MeshRenderer> ChangeMaterialColourTo(Color newColour) {
-        return (MeshRenderer renderer) => renderer.material.color = newColour;
+        return ((MeshRenderer renderer) => {
+            renderer.material.color = newColour;
+            renderer.material.SetColor(EMISSION_COLOR_PROPERTY_NAME, newColour);
+        });
     }
 
     private void ForEachMeshRenderer(Action<MeshRenderer> action) {
