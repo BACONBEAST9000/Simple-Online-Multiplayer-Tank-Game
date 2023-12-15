@@ -353,7 +353,7 @@ MonoBehaviour:
   _IsAlive:
     _value: 0
   _collider: {fileID: 78491921699914234}
-  TestVisuals: {fileID: 491863125254404042}
+  _playerVisuals: {fileID: 491863125254404042}
   _IsReady: 0
 --- !u!114 &491863125254404042
 MonoBehaviour:

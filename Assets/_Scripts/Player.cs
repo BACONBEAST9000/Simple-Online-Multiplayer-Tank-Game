@@ -32,7 +32,8 @@ public class Player : NetworkBehaviour, IDamageable {
     [SerializeField] private Collider _collider;
 
     // TODO: Rework this
-    [SerializeField] public PlayerVisuals TestVisuals;
+    [SerializeField] private PlayerVisuals _playerVisuals;
+    public PlayerVisuals GetPlayerVisuals => _playerVisuals;
 
     [Networked]
     public bool IsReady { get; private set; }
@@ -50,7 +51,6 @@ public class Player : NetworkBehaviour, IDamageable {
             RpcSetNickName(name);
         }
 
-        print($"I, {NickName} have just spawned. Time to invoke OnSpawned event!");
         OnSpawned?.Invoke(PlayerID, this);
 
         PlayerManager.AddPlayer(this);
@@ -102,11 +102,11 @@ public class Player : NetworkBehaviour, IDamageable {
 
     private static void OnPlayerAliveChanged(Changed<Player> playerData) {
         if (playerData.Behaviour.IsAlive) {
-            playerData.Behaviour.TestVisuals.ShowPlayer();
+            playerData.Behaviour._playerVisuals.ShowPlayer();
             OnPlayerRespawned?.Invoke(playerData.Behaviour.Object.InputAuthority);
             return;
         }
-        playerData.Behaviour.TestVisuals.DestroyedEffect();
+        playerData.Behaviour._playerVisuals.DestroyedEffect();
     }
 
     
@@ -127,7 +127,7 @@ public class Player : NetworkBehaviour, IDamageable {
         // TODO: Refactor
         IsAlive = false;
         _collider.enabled = false;
-        TestVisuals.DestroyedEffect();
+        _playerVisuals.DestroyedEffect();
         OnPlayerDestroyed?.Invoke(Object.InputAuthority);
         _respawnTimer = TickTimer.CreateFromSeconds(Runner, RESPAWN_DELAY_SECONDS);
     }

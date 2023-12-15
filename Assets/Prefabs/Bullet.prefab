@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 8210214270198462346}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8210214271497762386}
@@ -93,6 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8210214271497762386}
   - component: {fileID: 8029772854575541321}
+  - component: {fileID: 6699884371812932575}
   - component: {fileID: 8907423764228437288}
   - component: {fileID: 5514076358448922813}
   - component: {fileID: 7498165497977471058}
@@ -135,6 +136,21 @@ MonoBehaviour:
   _interpolationDataSource: 0
   _rigidbody: {fileID: 5514076358448922813}
   _secondsOfLifeTime: 6
+  _bulletVisual: {fileID: 6699884371812932575}
+--- !u!114 &6699884371812932575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8210214271497762385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94b9f855519d10c42b29ef0eee2ce5c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  _renderer: {fileID: 8210214270198462341}
 --- !u!135 &8907423764228437288
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -146,7 +162,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.125
+  m_Radius: 0.15
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5514076358448922813
 Rigidbody:
@@ -187,6 +203,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 8029772854575541321}
+  - {fileID: 6699884371812932575}
   - {fileID: 2881800460350272744}
   SimulationBehaviours: []
 --- !u!114 &2881800460350272744

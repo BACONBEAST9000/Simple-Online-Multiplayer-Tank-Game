@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerShoot : NetworkBehaviour {
 
+    public static event Action<Bullet, Player> OnPlayerShotBullet;
+
     [Header("References")]
     [SerializeField] private Bullet _bulletPrefab;
     [SerializeField] private Transform _bulletSpawnTransform;
@@ -47,8 +49,10 @@ public class PlayerShoot : NetworkBehaviour {
                     _bulletSpawnTransform.position,
                     Quaternion.identity,
                     Object.InputAuthority,
-                    (runner, o) => {
-                        o.GetComponent<Bullet>().Initialize(_bulletSpawnTransform.forward, _shootForce, _player);
+                    (runner, networkObject) => {
+                        Bullet bulletToShoot = networkObject.GetComponent<Bullet>();
+                        bulletToShoot.Initialize(_bulletSpawnTransform.forward, _shootForce, _player);
+                        OnPlayerShotBullet?.Invoke(bulletToShoot, _player);
                     }
                 );
     }

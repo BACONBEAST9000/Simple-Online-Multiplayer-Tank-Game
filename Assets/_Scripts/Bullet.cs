@@ -5,7 +5,10 @@ public class Bullet : NetworkBehaviour {
 
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private float _secondsOfLifeTime = 6f;
-    
+    [SerializeField] private BulletVisual _bulletVisual;
+
+    public BulletVisual GetBulletVisual => _bulletVisual;
+
     [Networked] private TickTimer Life { get; set; }
     public int Damage { get; private set; } = 1;
 
