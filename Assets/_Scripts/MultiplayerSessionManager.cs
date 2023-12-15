@@ -68,10 +68,9 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
             Player newPlayer = SpawnPlayer(playerRef);
 
             Transform spawnPoint = _playerOrderedSpawnPositions[playerRef.RawEncoded % _playerOrderedSpawnPositions.Length];
-            // TODO: This is a duplicate instance of assigning player's spawn position and rotation!
-            newPlayer.transform.position = spawnPoint.position;
-            newPlayer.transform.rotation = spawnPoint.rotation;
-            
+
+            PlayerSpawnHandler.SetPlayerToTransform(spawnPoint, newPlayer);
+
             OnPlayerJoinedGame?.Invoke();
         }
     }

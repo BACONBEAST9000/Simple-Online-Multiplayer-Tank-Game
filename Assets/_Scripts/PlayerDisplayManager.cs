@@ -63,8 +63,6 @@ public class PlayerDisplayManager : NetworkBehaviour {
         _playerEntries.Add(playerRef, scoreDisplay);
 
         scoreDisplay.UpdateEntry(player);
-
-        print($"Added entry! {player.NickName} with {player.Score} score.");
     }
 
     public void RemoveEntry(PlayerRef playerRef) {

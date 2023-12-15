@@ -19,11 +19,15 @@ public class PlayerSpawnHandler : NetworkBehaviour {
         int positionIndex = 0;
         foreach (PlayerRef playerRef in Runner.ActivePlayers) {
             Player player = MultiplayerSessionManager.Instance.SpawnPlayer(playerRef);
-            // TODO: This is a duplicate instance of assigning player's spawn position and rotation!
-            player.transform.position = _spawnPoints[positionIndex].position;
-            player.transform.rotation = _spawnPoints[positionIndex].rotation;
+
+            SetPlayerToTransform(_spawnPoints[positionIndex], player);
 
             positionIndex++;
         }
+    }
+
+    public static void SetPlayerToTransform(Transform transformPoint, Player player) {
+        player.transform.position = transformPoint.position;
+        player.transform.rotation = transformPoint.rotation;
     }
 }

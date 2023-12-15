@@ -23,9 +23,7 @@ public class RespawnManager : NetworkBehaviour {
             ? _spawnPoints[Random.Range(0, _spawnPoints.Count - 1)]
             : GetFarthestSpawnPoint(player);
 
-        // TODO: This is a duplicate instance of assigning player's spawn position and rotation!
-        player.transform.position = respawnPoint.position;
-        player.transform.rotation = respawnPoint.rotation;
+        PlayerSpawnHandler.SetPlayerToTransform(respawnPoint, player);
     }
 
     public Transform GetFarthestSpawnPoint(Player player) {
