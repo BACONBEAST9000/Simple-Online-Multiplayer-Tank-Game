@@ -19,14 +19,16 @@ public class RespawnManager : NetworkBehaviour {
     }
 
     public void Respawn(Player player) {
-        Vector3 respawnPoint = (Runner.ActivePlayers.ToList().Count < 2)
-            ? _spawnPoints[Random.Range(0, _spawnPoints.Count - 1)].position
-            : GetFarthestPoint(player);
+        Transform respawnPoint = (Runner.ActivePlayers.ToList().Count < 2)
+            ? _spawnPoints[Random.Range(0, _spawnPoints.Count - 1)]
+            : GetFarthestSpawnPoint(player);
 
-        player.transform.position = respawnPoint;
+        // TODO: This is a duplicate instance of assigning player's spawn position and rotation!
+        player.transform.position = respawnPoint.position;
+        player.transform.rotation = respawnPoint.rotation;
     }
 
-    public Vector3 GetFarthestPoint(Player player) {
+    public Transform GetFarthestSpawnPoint(Player player) {
         List<Vector3> playerPositions = new List<Vector3>();
         
         foreach (PlayerRef playerRef in Runner.ActivePlayers) {
@@ -46,7 +48,7 @@ public class RespawnManager : NetworkBehaviour {
             playerPositions.Add(playerComponent.transform.position);
         }
 
-        Vector3 farthestPosition = Vector3.zero;
+        Transform farthestSpawnPoint = null;
         float farthestDistance = float.MinValue;
 
         foreach (Transform spawnPoint in _spawnPoints) {
@@ -59,10 +61,9 @@ public class RespawnManager : NetworkBehaviour {
 
             if (totalDistance > farthestDistance) {
                 farthestDistance = totalDistance;
-                farthestPosition = spawnPoint.position;
+                farthestSpawnPoint = spawnPoint;
             }
         }
-
-        return farthestPosition;
+        return farthestSpawnPoint;
     }
 }
