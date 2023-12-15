@@ -10,6 +10,8 @@ public class PlayerVisuals : NetworkBehaviour {
     [SerializeField] private MeshRenderer[] _meshRenderers;
     [SerializeField] private ParticleSystem _destroyedSFX;
 
+    public ParticleSystem GetDestroyedParticleEffect => _destroyedSFX;
+
     [Networked(OnChanged = nameof(OnPlayerColourChanged))]
     public Color PlayerColour { get; private set; }
 
@@ -27,7 +29,15 @@ public class PlayerVisuals : NetworkBehaviour {
     public void TogglePlayerVisibility(bool isVisible) => ForEachMeshRenderer((MeshRenderer renderer) => renderer.enabled = isVisible);
 
     public static void OnPlayerColourChanged(Changed<PlayerVisuals> changed) {
-        changed.Behaviour.ChangeColour(changed.Behaviour.PlayerColour);
+        Color newColour = changed.Behaviour.PlayerColour;
+
+        changed.Behaviour.ChangeColour(newColour);
+        changed.Behaviour.ChangeDestroyedParticleEffectColour(newColour);
+    }
+
+    private void ChangeDestroyedParticleEffectColour(Color newColour) {
+        var mainParticleModule = GetDestroyedParticleEffect.main;
+        mainParticleModule.startColor = newColour;
     }
 
     private void ChangeColour(Color newColour) {
