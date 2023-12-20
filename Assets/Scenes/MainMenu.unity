@@ -3222,9 +3222,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ced4f7fbf1cacb4c85ea4da26f8a686, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
   _parentUIObject: {fileID: 1270916486}
-  _scoreDisplayPrefab: {fileID: 4546925457391899491, guid: 709d18677429a4045a86720803a8683a,
+  _playerDisplayPrefab: {fileID: 4546925457391899491, guid: 709d18677429a4045a86720803a8683a,
     type: 3}
 --- !u!114 &1270916488
 MonoBehaviour:
@@ -3272,9 +3271,9 @@ MonoBehaviour:
   Flags: 2561
   NetworkGuid:
     RawGuidValue: 3c2cee45134442a19c196c8e50567107
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 1270916487}
+  NestedObjects:
+  - {fileID: 7897377039860516567}
+  NetworkedBehaviours: []
   SimulationBehaviours: []
 --- !u!1 &1301148590
 GameObject:
@@ -4813,8 +4812,35 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8627451979329003055, guid: 709d18677429a4045a86720803a8683a,
+        type: 3}
+      propertyPath: Flags
+      value: 133633
+      objectReference: {fileID: 0}
+    - target: {fileID: 8627451979329003055, guid: 709d18677429a4045a86720803a8683a,
+        type: 3}
+      propertyPath: NetworkGuid.RawGuidValue.Array.data[0]
+      value: 5926982257347887664
+      objectReference: {fileID: 0}
+    - target: {fileID: 8627451979329003055, guid: 709d18677429a4045a86720803a8683a,
+        type: 3}
+      propertyPath: NetworkGuid.RawGuidValue.Array.data[1]
+      value: 8337846471185895838
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 709d18677429a4045a86720803a8683a, type: 3}
+--- !u!114 &7897377039860516567 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8627451979329003055, guid: 709d18677429a4045a86720803a8683a,
+    type: 3}
+  m_PrefabInstance: {fileID: 7897377039860516566}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8586280952631228578
 PrefabInstance:
   m_ObjectHideFlags: 0

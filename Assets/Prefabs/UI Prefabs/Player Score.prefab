@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7897377038725224494}
   - component: {fileID: 7897377038725224481}
   m_Layer: 5
-  m_Name: Lives Text
+  m_Name: Score Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1000000
+  m_text: 10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b233c64c68141bf409f6d1ff3f960962, type: 2}
   m_sharedMaterial: {fileID: 3318624750316781391, guid: b233c64c68141bf409f6d1ff3f960962,
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Player
+  m_text: Player Name Here
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b233c64c68141bf409f6d1ff3f960962, type: 2}
   m_sharedMaterial: {fileID: 3318624750316781391, guid: b233c64c68141bf409f6d1ff3f960962,
@@ -380,6 +380,7 @@ GameObject:
   - component: {fileID: 7897377039762324173}
   - component: {fileID: 7897377039762324170}
   - component: {fileID: 4546925457391899491}
+  - component: {fileID: 8627451979329003055}
   m_Layer: 5
   m_Name: Player Score
   m_TagString: Untagged
@@ -450,3 +451,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerNameText: {fileID: 7897377038811762948}
   _scoreText: {fileID: 7897377038725224481}
+--- !u!114 &8627451979329003055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7897377039762324172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectInterest: 1
+  DefaultInterestGroups: []
+  DestroyWhenStateAuthorityLeaves: 0
+  AllowStateAuthorityOverride: 1
+  AoiPositionSource: {fileID: 0}
+  Flags: 2305
+  NetworkGuid:
+    RawGuidValue: 709d18677429a4045a86720803a8683a
+  NestedObjects: []
+  NetworkedBehaviours: []
+  SimulationBehaviours: []
