@@ -35,8 +35,9 @@ public class Player : NetworkBehaviour, IDamageable {
     [SerializeField] private PlayerVisuals _playerVisuals;
     public PlayerVisuals GetPlayerVisuals => _playerVisuals;
 
-    [Networked]
-    public bool IsReady { get; private set; }
+    [Networked(OnChanged = nameof(OnPlayerReadyChanged))]
+    [HideInInspector]
+    public NetworkBool IsReady { get; private set; }
 
     [Networked] private NetworkButtons _previousButtons { get; set; }
 
@@ -72,8 +73,7 @@ public class Player : NetworkBehaviour, IDamageable {
         if (GetInput(out PlayerInput input)) {
             if (IsReadyButtonPressed(input)) {
                 IsReady = !IsReady;
-                OnPlayerToggledReady?.Invoke(this, IsReady);
-                print($"Player ID: {Object.InputAuthority} is READY SET TO: {IsReady}");
+                //OnPlayerToggledReady?.Invoke(this, IsReady);
             }
         }
     }
@@ -109,6 +109,12 @@ public class Player : NetworkBehaviour, IDamageable {
         playerData.Behaviour._playerVisuals.DestroyedEffect();
     }
 
+    private static void OnPlayerReadyChanged(Changed<Player> playerData) {
+        Player playerWhoToggledReady = playerData.Behaviour;
+        print($"Player ID: {playerWhoToggledReady} is READY SET TO: {playerWhoToggledReady.IsReady}");
+
+        OnPlayerToggledReady?.Invoke(playerWhoToggledReady, playerWhoToggledReady.IsReady);
+    }
     
     public void OnDamage(Bullet damager) {
         if (damager == null) {

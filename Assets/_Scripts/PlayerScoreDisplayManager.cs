@@ -2,7 +2,7 @@ using Fusion;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerScoreDisplayManager : PlayerDetailsDisplay {    
+public class PlayerScoreDisplayManager : PlayerDetailsDisplayManager {    
     private Dictionary<PlayerRef, string> _playerNames = new();
     private Dictionary<PlayerRef, int> _playerScores = new();
 
@@ -36,7 +36,7 @@ public class PlayerScoreDisplayManager : PlayerDetailsDisplay {
         _playerScores.Add(playerRef, score);
     }
 
-    public void RemoveEntry(PlayerRef playerRef) {
+    public new void RemoveEntry(PlayerRef playerRef) {
        base.RemoveEntry(playerRef);
 
         _playerNames.Remove(playerRef);

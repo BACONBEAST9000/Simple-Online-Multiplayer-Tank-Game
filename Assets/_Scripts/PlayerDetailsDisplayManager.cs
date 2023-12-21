@@ -2,7 +2,7 @@ using Fusion;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerDetailsDisplay : MonoBehaviour {
+public class PlayerDetailsDisplayManager : MonoBehaviour {
 
     [SerializeField] protected RectTransform _parentUIObject;
     [SerializeField] protected PlayerDisplayUI _playerDisplayPrefab;
