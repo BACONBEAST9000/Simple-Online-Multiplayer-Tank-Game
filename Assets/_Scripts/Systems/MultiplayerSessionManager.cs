@@ -19,6 +19,8 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     public static event Action OnConnectingStart;
     public static event Action OnConnectingEnd;
     public static event Action OnSessionShutdown;
+    public static event Action OnSceneStartedLoading;
+    public static event Action OnSceneLoaded;
 
     [SerializeField] private Player _playerPrefab;
     [SerializeField] private PlayerData _playerDataPrefab;
@@ -38,12 +40,6 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     
     private void WhenAllPlayersAreReady() {
         StartGame();
-    }
-
-    private void Update() {
-        if (Input.GetKey(KeyCode.Alpha1)) {
-            LoadMenuScene();
-        }
     }
 
     private void Awake() {
@@ -86,13 +82,10 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     public Player SpawnPlayer(PlayerRef playerRef) {
         Player newPlayer = Runner.Spawn(_playerPrefab, transform.position, Quaternion.identity, playerRef);
 
-        print($"Spawn Player: {playerRef}, new player object: {((newPlayer && newPlayer.Object != null) ? newPlayer.Object : "newPlayer.Object is null")}");
-
         Runner.SetPlayerObject(playerRef, newPlayer.Object);
 
         PlayerManager.UpdatePlayerWithReference(playerRef, newPlayer);
 
-        print($"Spawned Player - {playerRef} : {newPlayer}");
         return newPlayer;
     }
 
@@ -124,6 +117,10 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         OnConnectingStart?.Invoke();
         await _runner.StartGame(game);
         OnConnectingEnd?.Invoke();
+
+        if (_runner && _runner.IsRunning) {
+            print("Session Started and Is RUNNING!");
+        }
     }
 
     public void StartHostSession() => StartSession(GameMode.Host);
@@ -136,10 +133,13 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         LoadGameScene();
     }
 
-    private void CloseGameSession() {
-        Runner.SessionInfo.IsOpen = false;
-        Runner.SessionInfo.IsVisible = false;
+    private void SetGameSessionOpen(bool isOpenToJoin) {
+        Runner.SessionInfo.IsOpen = isOpenToJoin;
+        Runner.SessionInfo.IsVisible = isOpenToJoin;
     }
+
+    private void OpenGameSession() => SetGameSessionOpen(true);
+    private void CloseGameSession() => SetGameSessionOpen(false);
 
     public void LoadMenuScene() => LoadScene(MENU_SCENE_NAME);
     public void LoadGameScene() => LoadScene(GAME_SCENE_NAME);
@@ -208,9 +208,11 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
 
     public void OnSceneLoadDone(NetworkRunner runner) {
         print("Scene Load Done!");
+        OnSceneLoaded?.Invoke();
     }
 
     public void OnSceneLoadStart(NetworkRunner runner) {
         print("Scene Load Start");
+        OnSceneStartedLoading?.Invoke();
     }
 }

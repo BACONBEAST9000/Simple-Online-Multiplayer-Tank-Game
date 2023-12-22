@@ -631,7 +631,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 298296979}
-  - component: {fileID: 298296980}
   m_Layer: 5
   m_Name: Lobby UI
   m_TagString: Untagged
@@ -660,23 +659,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &298296980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 298296978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce50acae8173b074b912c9b0223c6979, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _gameStateToCheck: 1
-  _changeActiveIfGameState: 1
-  _isActiveWhenGameState: 1
-  _changeActiveIfNotGameState: 1
-  _isActiveWhenNotGameState: 0
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1936,7 +1918,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 709151924}
-  - component: {fileID: 709151925}
   m_Layer: 5
   m_Name: Main Menu
   m_TagString: Untagged
@@ -1969,23 +1950,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &709151925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 709151923}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce50acae8173b074b912c9b0223c6979, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _gameStateToCheck: 0
-  _changeActiveIfGameState: 1
-  _isActiveWhenGameState: 1
-  _changeActiveIfNotGameState: 1
-  _isActiveWhenNotGameState: 0
 --- !u!1 &725668095
 GameObject:
   m_ObjectHideFlags: 0
@@ -3797,6 +3761,8 @@ GameObject:
   - component: {fileID: 1620529798}
   - component: {fileID: 1620529800}
   - component: {fileID: 1620529799}
+  - component: {fileID: 1620529802}
+  - component: {fileID: 1620529801}
   m_Layer: 0
   m_Name: UI Handler
   m_TagString: Untagged
@@ -3848,6 +3814,42 @@ MonoBehaviour:
   _UIElement: {fileID: 709151924}
   _hostGameButton: {fileID: 878719462}
   _joinGameButton: {fileID: 2059335736}
+--- !u!114 &1620529801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1620529797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce50acae8173b074b912c9b0223c6979, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _overrideTargetObject: {fileID: 298296978}
+  _gameStateToCheck: 1
+  _changeActiveIfGameState: 1
+  _isActiveWhenGameState: 1
+  _changeActiveIfNotGameState: 1
+  _isActiveWhenNotGameState: 0
+--- !u!114 &1620529802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1620529797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce50acae8173b074b912c9b0223c6979, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _overrideTargetObject: {fileID: 709151923}
+  _gameStateToCheck: 0
+  _changeActiveIfGameState: 1
+  _isActiveWhenGameState: 1
+  _changeActiveIfNotGameState: 1
+  _isActiveWhenNotGameState: 0
 --- !u!1 &1781895833
 GameObject:
   m_ObjectHideFlags: 0
@@ -4643,6 +4645,78 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3cd2c740bd2ddb8419cfee9acd305fdf, type: 3}
+--- !u!1 &2029505570
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2029505573}
+  - component: {fileID: 2029505572}
+  - component: {fileID: 2029505571}
+  m_Layer: 0
+  m_Name: Change to Lobby State If In Lobby
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2029505571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2029505570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectInterest: 1
+  DefaultInterestGroups: []
+  DestroyWhenStateAuthorityLeaves: 0
+  AllowStateAuthorityOverride: 1
+  AoiPositionSource: {fileID: 0}
+  Flags: 2561
+  NetworkGuid:
+    RawGuidValue: 00cdaeaeae944ac0b2f18752b3ec0d1c
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 2029505572}
+  SimulationBehaviours: []
+--- !u!114 &2029505572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2029505570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcb207671977676449ab114bf016c74e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  _sceneWhereStateChanges: 0
+  _gameStateToChangeTo: 1
+--- !u!4 &2029505573
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2029505570}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2052640761
 GameObject:
   m_ObjectHideFlags: 0

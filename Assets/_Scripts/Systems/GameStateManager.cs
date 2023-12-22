@@ -6,16 +6,22 @@ public class GameStateManager : MonoBehaviour {
     private static GameStateManager PrivateInstance;
 
     public static event Action<GameState> OnStateChanged;
-    public static GameState CurrentState { get; private set; } 
+    public static GameState CurrentState { get; private set; }
 
     private void Awake() {
         if (PrivateInstance == null) {
             PrivateInstance = this;
             DontDestroyOnLoad(gameObject);
-            CurrentState = GameState.Menu;
+            ChangeState(GameState.Menu);
         }
         else {
             Destroy(this);
+        }
+    }
+
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.Alpha1)) {
+            print("Current State: " + CurrentState);
         }
     }
 
@@ -24,12 +30,4 @@ public class GameStateManager : MonoBehaviour {
         print("GAME STATE CHANGED: " + newState);
         OnStateChanged?.Invoke(newState);
     }
-}
-
-public enum GameState {
-    Menu,
-    Lobby,
-    PreGameStart,
-    Game,
-    GameEnd
 }
