@@ -45,6 +45,7 @@ public class Player : NetworkBehaviour, IDamageable {
 
     public override void Spawned() {
         IsAlive = true;
+        IsReady = false;
         PlayerID = Object.InputAuthority;
 
         if (Object.HasInputAuthority) {
@@ -73,7 +74,6 @@ public class Player : NetworkBehaviour, IDamageable {
         if (GetInput(out PlayerInput input)) {
             if (IsReadyButtonPressed(input)) {
                 IsReady = !IsReady;
-                //OnPlayerToggledReady?.Invoke(this, IsReady);
             }
         }
     }

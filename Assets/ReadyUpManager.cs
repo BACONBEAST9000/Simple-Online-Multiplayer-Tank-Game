@@ -34,6 +34,7 @@ public class ReadyUpManager : NetworkBehaviour {
         if (ValadNumberOfPlayersReady()) {
             print("ALL PLAYERS ARE READY TO PLAY!");
             _displayedReadyToPlay = true;
+            _readyPlayers.Clear();
             OnAllPlayersReady?.Invoke();
         }
     }
@@ -43,7 +44,7 @@ public class ReadyUpManager : NetworkBehaviour {
     }
 
     private bool ValidNumberOfPlayers => _allowSoloPlayForTesting || _readyPlayers.Count > 1;
-    private bool AllPlayersReady => _readyPlayers.Count == PlayerManager.GetPlayerCount;
+    private bool AllPlayersReady => _readyPlayers.Count > 0 && _readyPlayers.Count == PlayerManager.GetPlayerCount;
 
     public void ReadyPlayer(Player readyPlayer) {
         _readyPlayers.Add(readyPlayer);

@@ -27,10 +27,4 @@ public class PlayerData : MonoBehaviour {
 
         DontDestroyOnLoad(gameObject);
     }
-
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.P)) {
-            print("_nickname: " + _nickname + ", NickName: " + NickName);
-        }
-    }
 }

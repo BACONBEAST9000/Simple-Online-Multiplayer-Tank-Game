@@ -11,6 +11,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     public static MultiplayerSessionManager Instance;
     
     private const string SESSION_NAME = "TestRoom";
+    private const string MENU_SCENE_NAME = "MainMenu";
     private const string GAME_SCENE_NAME = "MainGame";
 
     public static event Action OnPlayerJoinedGame;
@@ -39,6 +40,12 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         StartGame();
     }
 
+    private void Update() {
+        if (Input.GetKey(KeyCode.Alpha1)) {
+            LoadMenuScene();
+        }
+    }
+
     private void Awake() {
         if (Instance == null) {
             Instance = this;
@@ -64,6 +71,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
 
     public void PlayerJoined(PlayerRef playerRef) {
         print("Player joined");
+        
         if (Runner.IsServer) {
             Player newPlayer = SpawnPlayer(playerRef);
 
@@ -133,7 +141,10 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         Runner.SessionInfo.IsVisible = false;
     }
 
-    private void LoadGameScene() => Runner.SetActiveScene(GAME_SCENE_NAME);
+    public void LoadMenuScene() => LoadScene(MENU_SCENE_NAME);
+    public void LoadGameScene() => LoadScene(GAME_SCENE_NAME);
+
+    private void LoadScene(string sceneName) => Runner.SetActiveScene(sceneName);
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
 
@@ -153,6 +164,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) {
         print("Shutdown! The reason message: " + shutdownReason);
+        GameStateManager.ChangeState(GameState.Menu);
         SceneManager.LoadScene(0);
         OnSessionShutdown?.Invoke();
     }

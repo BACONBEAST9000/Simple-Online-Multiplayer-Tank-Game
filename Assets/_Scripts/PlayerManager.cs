@@ -7,9 +7,17 @@ using UnityEngine;
 /// Universally used class that has a reference to each player! Called from Spawned() and Despawned() in the Player class.
 /// </summary>
 public class PlayerManager : NetworkBehaviour {
-    
+
     public static Dictionary<PlayerRef, Player> _players = new();
     public static Dictionary<PlayerRef, Player> GetAllPlayers => _players;
+    public static List<PlayerRef> GetAllPlayersReferencesStartingWithHost() {
+        List<PlayerRef> playerRefs = GetAllPlayers.Keys.ToList();
+
+        playerRefs.Insert(0, playerRefs[playerRefs.Count - 1]);
+        playerRefs.RemoveAt(playerRefs.Count - 1);
+
+        return playerRefs;
+    }
 
     public static int GetPlayerCount => GetAllPlayers.Count;
 
@@ -48,12 +56,4 @@ public class PlayerManager : NetworkBehaviour {
     }
 
     public static List<Player> GetPlayersInOrderOfDescendingScore => GetAllPlayers.Values.OrderByDescending(player => player.Score).ToList();
-
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.L)) {
-            foreach (var player in _players) {
-                print($"{player.Value.NickName} - ID: {player.Value.PlayerID}");
-            }
-        }
-    }
 }
