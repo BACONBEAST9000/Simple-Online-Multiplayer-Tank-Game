@@ -3,6 +3,8 @@ using TMPro;
 using UnityEngine;
 
 public class DebugManager : MonoBehaviour {
+    private static DebugManager Instance;
+
     [SerializeField] private TextMeshProUGUI _debugText;
 
     private StringBuilder _logStringBuilder = new StringBuilder();
@@ -13,6 +15,16 @@ public class DebugManager : MonoBehaviour {
 
     private void OnDisable() {
         ClearEvents();
+    }
+
+    private void Awake() {
+        if (Instance == null) {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else {
+            Destroy(gameObject);
+        }
     }
 
     private void SetEvents() {
