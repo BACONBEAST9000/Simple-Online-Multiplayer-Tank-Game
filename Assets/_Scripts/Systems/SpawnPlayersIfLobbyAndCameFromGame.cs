@@ -1,13 +1,12 @@
 using Fusion;
 using UnityEngine;
 
-public class SpawnPlayersIfGameState : NetworkBehaviour {
+public class SpawnPlayersIfLobbyAndCameFromGame : NetworkBehaviour {
 
-    [SerializeField] private GameState _stateWhenShouldSpawn;
     [SerializeField] private PlayerSpawnHandler _spawnHandler;
 
     public override void Spawned() {
-        if (GameStateManager.CurrentState == _stateWhenShouldSpawn) {
+        if (GameStateManager.PreviousState == GameState.GameEnd && GameStateManager.CurrentState == GameState.Lobby) {
             _spawnHandler.SpawnPlayers();
         }
     }

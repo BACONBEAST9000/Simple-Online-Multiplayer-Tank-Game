@@ -7,6 +7,7 @@ public class GameStateManager : MonoBehaviour {
 
     public static event Action<GameState> OnStateChanged;
     public static GameState CurrentState { get; private set; }
+    public static GameState PreviousState { get; private set; }
 
     private void Awake() {
         if (PrivateInstance == null) {
@@ -26,6 +27,7 @@ public class GameStateManager : MonoBehaviour {
     }
 
     public static void ChangeState(GameState newState) {
+        PreviousState = CurrentState;
         CurrentState = newState;
         print("GAME STATE CHANGED: " + newState);
         OnStateChanged?.Invoke(newState);

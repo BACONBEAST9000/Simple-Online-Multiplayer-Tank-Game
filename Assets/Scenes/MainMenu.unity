@@ -2702,7 +2702,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
-  _stateWhenShouldSpawn: 4
+  _stateWhenShouldSpawn: 1
   _spawnHandler: {fileID: 1106894960}
 --- !u!1 &1112821403
 GameObject:
