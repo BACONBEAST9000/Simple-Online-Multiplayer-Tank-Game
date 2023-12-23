@@ -21,8 +21,13 @@ public class GameStateManager : MonoBehaviour {
     }
 
     public static void ChangeState(GameState newState) {
+        if (newState == CurrentState) {
+            return;
+        }
+
         PreviousState = CurrentState;
         CurrentState = newState;
+
         print("GAME STATE CHANGED: " + newState);
         OnStateChanged?.Invoke(newState);
     }

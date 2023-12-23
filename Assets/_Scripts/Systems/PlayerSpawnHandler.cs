@@ -8,13 +8,17 @@ public class PlayerSpawnHandler : NetworkBehaviour {
     [SerializeField] private List<Transform> _spawnPoints;
 
     public override void Spawned() {
-        if (_spawnPlayersOnSpawned || CurrentlyLobbyAfterGameEnded) {
+        if (_spawnPlayersOnSpawned || CurrentlyLobbyAfterGameEnded()) {
             SpawnPlayers();
         }
-        print("Just came back from a game: " + CurrentlyLobbyAfterGameEnded);
+        print("Just came back from a game: " + CurrentlyLobbyAfterGameEnded());
     }
 
-    private bool CurrentlyLobbyAfterGameEnded => GameStateManager.PreviousState == GameState.GameEnd && GameStateManager.CurrentState == GameState.Lobby;
+    private bool CurrentlyLobbyAfterGameEnded() {
+        print("Previous state while checking is: " + GameStateManager.PreviousState);
+        print("Current state while checking is: " + GameStateManager.CurrentState);
+        return GameStateManager.PreviousState == GameState.GameEnd && GameStateManager.CurrentState == GameState.Lobby;
+    }
 
     public void SpawnPlayers() {
         if (Object.HasStateAuthority == false) return;
