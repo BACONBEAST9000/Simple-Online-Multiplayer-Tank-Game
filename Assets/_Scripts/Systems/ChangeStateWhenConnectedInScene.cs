@@ -2,7 +2,7 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ChangeToStateWhenConnected : NetworkBehaviour {
+public class ChangeStateWhenConnectedInScene : NetworkBehaviour {
 
     [SerializeField] private Scenes _sceneWhereStateChanges;
     [SerializeField] private GameState _gameStateToChangeTo;
