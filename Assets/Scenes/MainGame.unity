@@ -4314,6 +4314,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1578447463}
   m_CullTransparentMesh: 1
+--- !u!1 &1746177956
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1746177958}
+  - component: {fileID: 1746177957}
+  m_Layer: 0
+  m_Name: UI Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1746177957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1746177956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce50acae8173b074b912c9b0223c6979, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _overrideTargetObject: {fileID: 1142299266}
+  _gameStateToCheck: 4
+  _changeActiveIfGameState: 1
+  _isActiveWhenGameState: 1
+  _changeActiveIfNotGameState: 1
+  _isActiveWhenNotGameState: 0
+--- !u!4 &1746177958
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1746177956}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1781895833
 GameObject:
   m_ObjectHideFlags: 0
@@ -5188,6 +5238,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2041083334}
   - component: {fileID: 2041083333}
+  - component: {fileID: 2041083335}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5207,7 +5258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f65059e7ae5234f8605b0a042c0bfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameEndScreen: {fileID: 1142299267}
+  _interpolationDataSource: 0
   _gameTimer: {fileID: 718201986}
   _testingStopGameFromEndng: 0
 --- !u!4 &2041083334
@@ -5225,6 +5276,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2041083335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2041083332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectInterest: 1
+  DefaultInterestGroups: []
+  DestroyWhenStateAuthorityLeaves: 0
+  AllowStateAuthorityOverride: 1
+  AoiPositionSource: {fileID: 0}
+  Flags: 2561
+  NetworkGuid:
+    RawGuidValue: 7beee1a1c3f5424799cec0ea1bbaedcd
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 2041083333}
+  SimulationBehaviours: []
 --- !u!1 &2052640761
 GameObject:
   m_ObjectHideFlags: 0

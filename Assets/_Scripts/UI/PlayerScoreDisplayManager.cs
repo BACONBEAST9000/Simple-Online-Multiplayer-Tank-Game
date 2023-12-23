@@ -44,6 +44,8 @@ public class PlayerScoreDisplayManager : PlayerDetailsDisplayManager {
     }
 
     public void UpdateName(PlayerRef playerRef, string newName) {
+        print($"{playerRef} appearently updated their name in {nameof(PlayerScoreDisplayManager)}.");
+        
         if(!_playerEntries.TryGetValue(playerRef, out PlayerDisplayUI playerDisplay)) {
             Debug.LogWarning("Couldn't find entry to update name of", this);
             return;

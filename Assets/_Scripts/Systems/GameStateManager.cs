@@ -20,12 +20,6 @@ public class GameStateManager : MonoBehaviour {
         }
     }
 
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) {
-            print("Current State: " + CurrentState);
-        }
-    }
-
     public static void ChangeState(GameState newState) {
         PreviousState = CurrentState;
         CurrentState = newState;

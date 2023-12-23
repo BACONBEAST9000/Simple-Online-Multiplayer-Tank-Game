@@ -1,8 +1,8 @@
+using Fusion;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : NetworkBehaviour {
 
-    [SerializeField] private RectTransform _gameEndScreen;
     [SerializeField] private NetworkTimer _gameTimer;
     [SerializeField] private bool _testingStopGameFromEndng = false;
 
@@ -19,7 +19,11 @@ public class GameManager : MonoBehaviour {
         if (_testingStopGameFromEndng)
             return;
         
-        _gameEndScreen.gameObject.SetActive(true);
+        RPC_EndGame();
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_EndGame() {
         GameStateManager.ChangeState(GameState.GameEnd);
     }
 }
