@@ -6,7 +6,9 @@ using UnityEngine;
 /// <summary>
 /// Universally used class that has a reference to each player! Called from Spawned() and Despawned() in the Player class.
 /// </summary>
-public class PlayerManager : NetworkBehaviour {
+public static class PlayerManager {
+
+    //public static PlayerManager Instance;
 
     public static Dictionary<PlayerRef, Player> _players = new();
     public static Dictionary<PlayerRef, Player> GetAllPlayers => _players;
@@ -21,9 +23,13 @@ public class PlayerManager : NetworkBehaviour {
 
     public static int GetPlayerCount => GetAllPlayers.Count;
 
-    private void Awake() {
-        DontDestroyOnLoad(this);
-    }
+    //private void Awake() {
+    //    if (Instance != null) {
+    //        Destroy(Instance);
+    //    }
+
+    //    Instance = this;
+    //}
 
     public static void AddPlayer(Player playerToAdd) {
         if (_players.ContainsKey(playerToAdd.PlayerID)) {

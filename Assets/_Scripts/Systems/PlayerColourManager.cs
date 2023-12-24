@@ -1,7 +1,11 @@
 using Fusion;
 using UnityEngine;
 
-public class PlayerColourManager : NetworkBehaviour {
+/// <summary>
+/// A non-static class that is used for static calls to get player colour based on player ID.
+/// Can set player colours in editor.
+/// </summary>
+public class PlayerColourManager : MonoBehaviour {
 
     public static Color[] PlayerColours { get; private set; }
 
