@@ -3,5 +3,6 @@
     Lobby,
     PreGameStart,
     Game,
-    GameEnd
+    GameEnd,
+    DEFAULT
 }

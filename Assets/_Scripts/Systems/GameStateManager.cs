@@ -6,7 +6,7 @@ public class GameStateManager : MonoBehaviour {
     private static GameStateManager PrivateInstance;
 
     public static event Action<GameState> OnStateChanged;
-    public static GameState CurrentState { get; private set; }
+    public static GameState CurrentState { get; private set; } = GameState.DEFAULT;
     public static GameState PreviousState { get; private set; }
 
     private void Awake() {

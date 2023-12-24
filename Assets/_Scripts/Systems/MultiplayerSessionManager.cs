@@ -138,8 +138,8 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         Runner.SessionInfo.IsVisible = isOpenToJoin;
     }
 
-    private void OpenGameSession() => SetGameSessionOpen(true);
-    private void CloseGameSession() => SetGameSessionOpen(false);
+    public void OpenGameSession() => SetGameSessionOpen(true);
+    public void CloseGameSession() => SetGameSessionOpen(false);
 
     public void LoadMenuScene() => LoadScene(MENU_SCENE_NAME);
     public void LoadGameScene() => LoadScene(GAME_SCENE_NAME);

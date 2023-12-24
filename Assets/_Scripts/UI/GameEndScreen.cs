@@ -22,6 +22,7 @@ public class GameEndScreen : MonoBehaviour {
 
         _continueButton.onClick.AddListener(() => {
             MultiplayerSessionManager.Instance.LoadMenuScene();
+            MultiplayerSessionManager.Instance.OpenGameSession();
         });
 
         _quitButton.onClick.AddListener(() => {
