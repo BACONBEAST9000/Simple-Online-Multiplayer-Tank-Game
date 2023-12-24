@@ -25,6 +25,10 @@ public class SetActiveOnGameState : MonoBehaviour {
         GameStateManager.OnStateChanged -= WhenStateChanges;
     }
 
+    private void Awake() {
+        WhenStateChanges(GameStateManager.CurrentState);
+    }
+
     private void WhenStateChanges(GameState newState) {
         GameObject objectToSetActiveState = _overrideTargetObject ?? gameObject;
         

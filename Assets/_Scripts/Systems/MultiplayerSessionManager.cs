@@ -47,7 +47,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
             Instance = this;
         }
         else {
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 
