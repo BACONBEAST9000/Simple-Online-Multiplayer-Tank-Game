@@ -167,6 +167,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         GameStateManager.ChangeState(GameState.Menu);
         SceneManager.LoadScene(0);
         OnSessionShutdown?.Invoke();
+        Destroy(gameObject);
     }
 
     public void OnConnectedToServer(NetworkRunner runner) {
