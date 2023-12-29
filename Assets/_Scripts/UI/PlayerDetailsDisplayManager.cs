@@ -49,7 +49,7 @@ public class PlayerDetailsDisplayManager : MonoBehaviour {
 
         _playerEntries.Add(player.PlayerID, display);
 
-        display.UpdateEntry(player);
+        display.Initalize(player);
     }
 
     protected virtual void RemoveEntry(Player player) {
