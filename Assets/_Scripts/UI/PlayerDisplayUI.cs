@@ -9,5 +9,13 @@ public abstract class PlayerDisplayUI : MonoBehaviour {
         UpdateEntry(player);
     }
 
+    protected virtual void UpdateEntryIfPlayer(Player player) {
+        if (player != UIPlayer) {
+            return;
+        }
+
+        UpdateEntry(player);
+    }
+
     public abstract void UpdateEntry(Player player);
 }

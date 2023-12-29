@@ -21,21 +21,9 @@ public class PlayerLobbyDisplayUI : PlayerDisplayUI {
         Player.OnPlayerToggledReady -= WhenPlayerTogglesReady;
     }
 
-    private void WhenPlayerNameUpdated(Player playerWithUpdatedName, string playerName) {
-        if (playerWithUpdatedName != UIPlayer) {
-            return;
-        }
+    private void WhenPlayerNameUpdated(Player playerWithUpdatedName, string playerName) => UpdateEntryIfPlayer(playerWithUpdatedName);
 
-        UpdateEntry(playerWithUpdatedName);
-    }
-
-    private void WhenPlayerTogglesReady(Player playerWhoToggledReady, bool isReady) {
-        if (playerWhoToggledReady != UIPlayer) {
-            return;
-        }
-        
-        UpdateEntry(playerWhoToggledReady);
-    }
+    private void WhenPlayerTogglesReady(Player playerWhoToggledReady, bool isReady) => UpdateEntryIfPlayer(playerWhoToggledReady);
 
     public override void UpdateEntry(Player player) {
         UpdateNameText(player.NickName.ToString());
