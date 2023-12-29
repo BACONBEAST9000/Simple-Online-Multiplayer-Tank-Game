@@ -6,14 +6,14 @@ using UnityEngine;
 public class Player : NetworkBehaviour, IDamageable {
     public const float RESPAWN_DELAY_SECONDS = 2;
 
-    public static event Action<PlayerRef> OnPlayerDestroyed;
-    public static event Action<PlayerRef> OnPlayerRespawned;
+    public static event Action<Player> OnPlayerDestroyed;
+    public static event Action<Player> OnPlayerRespawned;
     public static event Action<Player, bool> OnPlayerToggledReady;
 
-    public static event Action<PlayerRef, int> OnScoreUpdated;
-    public static event Action<PlayerRef, string> OnNameUpdated;
-    public static event Action<PlayerRef, Player> OnSpawned;
-    public static event Action<PlayerRef, Player> OnDespawned;
+    public static event Action<Player, int> OnScoreUpdated;
+    public static event Action<Player, string> OnNameUpdated;
+    public static event Action<Player> OnSpawned;
+    public static event Action<Player> OnDespawned;
 
     [Networked(OnChanged = nameof(OnScoreChanged))]
     [HideInInspector]
@@ -53,13 +53,13 @@ public class Player : NetworkBehaviour, IDamageable {
             RpcSetNickName(name);
         }
 
-        OnSpawned?.Invoke(PlayerID, this);
+        OnSpawned?.Invoke(this);
 
         PlayerManager.AddPlayer(this);
     }
 
     public override void Despawned(NetworkRunner runner, bool hasState) {
-        OnDespawned?.Invoke(PlayerID, this);
+        OnDespawned?.Invoke(this);
         PlayerManager.RemovePlayer(this);
     }
 
@@ -93,17 +93,17 @@ public class Player : NetworkBehaviour, IDamageable {
     public void DecrementScoreBy(int value) => Score = Mathf.Max(0, Score - value);
 
     public static void OnScoreChanged(Changed<Player> playerData) {
-        OnScoreUpdated?.Invoke(playerData.Behaviour.Object.InputAuthority, playerData.Behaviour.Score);
+        OnScoreUpdated?.Invoke(playerData.Behaviour, playerData.Behaviour.Score);
     }
     
     private static void OnNameChanged(Changed<Player> playerData) {
-        OnNameUpdated?.Invoke(playerData.Behaviour.Object.InputAuthority, playerData.Behaviour.NickName.ToString());
+        OnNameUpdated?.Invoke(playerData.Behaviour, playerData.Behaviour.NickName.ToString());
     }
 
     private static void OnPlayerAliveChanged(Changed<Player> playerData) {
         if (playerData.Behaviour.IsAlive) {
             playerData.Behaviour._playerVisuals.ShowPlayer();
-            OnPlayerRespawned?.Invoke(playerData.Behaviour.Object.InputAuthority);
+            OnPlayerRespawned?.Invoke(playerData.Behaviour);
             return;
         }
         playerData.Behaviour._playerVisuals.DestroyedEffect();
@@ -134,7 +134,7 @@ public class Player : NetworkBehaviour, IDamageable {
         IsAlive = false;
         _collider.enabled = false;
         _playerVisuals.DestroyedEffect();
-        OnPlayerDestroyed?.Invoke(Object.InputAuthority);
+        OnPlayerDestroyed?.Invoke(this);
         _respawnTimer = TickTimer.CreateFromSeconds(Runner, RESPAWN_DELAY_SECONDS);
     }
 

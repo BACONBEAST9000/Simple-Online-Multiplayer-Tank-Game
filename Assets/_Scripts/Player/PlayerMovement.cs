@@ -31,14 +31,14 @@ public class PlayerMovement : NetworkBehaviour {
         Player.OnPlayerRespawned -= WhenPlayerRespawned;
     }
 
-    private void WhenPlayerDestroyed(PlayerRef playerRef) {
-        if (playerRef != Object.InputAuthority) return;
+    private void WhenPlayerDestroyed(Player player) {
+        if (player.PlayerID != Object.InputAuthority) return;
 
         _canMove = false;
     }
     
-    private void WhenPlayerRespawned(PlayerRef playerRef) {
-        if (playerRef != Object.InputAuthority) return;
+    private void WhenPlayerRespawned(Player player) {
+        if (player.PlayerID != Object.InputAuthority) return;
 
         _canMove = true;
     }

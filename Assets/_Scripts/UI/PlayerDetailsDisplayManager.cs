@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerDetailsDisplayManager : MonoBehaviour {
 
-    [SerializeField] protected RectTransform _parentUIObject;
     [SerializeField] protected PlayerDisplayUI _playerDisplayPrefab;
 
     protected Dictionary<PlayerRef, PlayerDisplayUI> _playerEntries = new();
@@ -31,13 +30,13 @@ public class PlayerDetailsDisplayManager : MonoBehaviour {
         Player.OnDespawned -= WhenPlayerDespawns;
     }
 
-    protected virtual void WhenPlayerSpawned(PlayerRef playerRef, Player player) => AddEntry(playerRef, player);
+    protected virtual void WhenPlayerSpawned(Player player) => AddEntry(player);
 
-    protected virtual void WhenPlayerDespawns(PlayerRef playerRef, Player player) => RemoveEntry(playerRef);
+    protected virtual void WhenPlayerDespawns(Player player) => RemoveEntry(player);
 
-    protected virtual void AddEntry(PlayerRef playerRef, Player player) {
-        if (_playerEntries.ContainsKey(playerRef)) {
-            Debug.LogWarning($"Entries already contains Player Reference: {playerRef}.", this);
+    protected virtual void AddEntry(Player player) {
+        if (_playerEntries.ContainsKey(player.PlayerID)) {
+            Debug.LogWarning($"Entries already contains Player Reference: {player.PlayerID}.", this);
             return;
         }
 
@@ -48,13 +47,13 @@ public class PlayerDetailsDisplayManager : MonoBehaviour {
 
         PlayerDisplayUI display = Instantiate(_playerDisplayPrefab, transform);
 
-        _playerEntries.Add(playerRef, display);
+        _playerEntries.Add(player.PlayerID, display);
 
         display.UpdateEntry(player);
     }
 
-    protected virtual void RemoveEntry(PlayerRef playerRef) {
-        if (!_playerEntries.TryGetValue(playerRef, out PlayerDisplayUI playerDisplay)) {
+    protected virtual void RemoveEntry(Player player) {
+        if (!_playerEntries.TryGetValue(player.PlayerID, out PlayerDisplayUI playerDisplay)) {
             Debug.LogWarning("Couldn't find entry to remove", this);
             return;
         }
@@ -63,6 +62,6 @@ public class PlayerDetailsDisplayManager : MonoBehaviour {
             Destroy(playerDisplay.gameObject);
         }
 
-        _playerEntries.Remove(playerRef);
+        _playerEntries.Remove(player.PlayerID);
     }
 }

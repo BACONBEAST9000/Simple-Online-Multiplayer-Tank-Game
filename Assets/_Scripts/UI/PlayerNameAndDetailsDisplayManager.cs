@@ -1,22 +1,22 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerScoreDisplayManager : PlayerNameAndDetailsDisplayManager {
+public class PlayerNameAndDetailsDisplayManager : PlayerDetailsDisplayManager {
     protected override void ResubscribeToEvents() {
         base.ResubscribeToEvents();
 
-        Player.OnScoreUpdated -= WhenPlayerScoreUpdated;
-        Player.OnScoreUpdated += WhenPlayerScoreUpdated;
+        Player.OnNameUpdated -= WhenPlayerNameUpdated;
+        Player.OnNameUpdated += WhenPlayerNameUpdated;
     }
 
     protected override void UnsubscribeFromEvents() {
         base.UnsubscribeFromEvents();
 
-        Player.OnScoreUpdated -= WhenPlayerScoreUpdated;
+        Player.OnNameUpdated -= WhenPlayerNameUpdated;
     }
 
-    private void WhenPlayerScoreUpdated(Player player, int newScore) => UpdateScore(player, newScore);
-    
-    public void UpdateScore(Player player, int newScore) {
+    private void WhenPlayerNameUpdated(Player player, string newName) => UpdateName(player, newName);
+
+    protected virtual void UpdateName(Player player, string newName) {
         if (!_playerEntries.TryGetValue(player.PlayerID, out PlayerDisplayUI playerDisplay)) {
             Debug.LogWarning("Couldn't find entry to update name of", this);
             return;
