@@ -380,6 +380,7 @@ MonoBehaviour:
   - {fileID: 78491923050830862}
   - {fileID: 78491921623799409}
   _destroyedSFX: {fileID: 8799284315318900256}
+  _playerInvincibility: {fileID: 6688664076082182664}
   _PlayerColour: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &78491921699914232
 MonoBehaviour:
