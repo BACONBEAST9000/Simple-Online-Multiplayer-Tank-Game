@@ -248,6 +248,8 @@ GameObject:
   - component: {fileID: 491863125254404042}
   - component: {fileID: 78491921699914232}
   - component: {fileID: 78491921699914228}
+  - component: {fileID: 6688664076082182664}
+  - component: {fileID: 1738468249552305674}
   - component: {fileID: 78491921699914235}
   - component: {fileID: 78491921699914234}
   m_Layer: 0
@@ -303,6 +305,7 @@ MonoBehaviour:
   - {fileID: 491863125254404042}
   - {fileID: 78491921699914232}
   - {fileID: 78491921699914228}
+  - {fileID: 1738468249552305674}
   SimulationBehaviours: []
 --- !u!114 &4814418892433255776
 MonoBehaviour:
@@ -354,7 +357,9 @@ MonoBehaviour:
     _value: 0
   _collider: {fileID: 78491921699914234}
   _playerVisuals: {fileID: 491863125254404042}
-  _IsReady: 0
+  _IsReady:
+    _value: 0
+  _playerInvincibility: {fileID: 6688664076082182664}
 --- !u!114 &491863125254404042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -418,6 +423,36 @@ MonoBehaviour:
   _wallLayer:
     serializedVersion: 2
     m_Bits: 1024
+--- !u!114 &6688664076082182664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78491921699914239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ca38fe5b28427a459176d4c8afa17f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 6106064112569594434}
+  _networkTimer: {fileID: 1738468249552305674}
+--- !u!114 &1738468249552305674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78491921699914239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 350edab89ac2fab4d997319a3e736e15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  _startOnSpawned: 0
+  _repeatOnTimerEnd: 0
+  _timerSeconds: 0
 --- !u!54 &78491921699914235
 Rigidbody:
   m_ObjectHideFlags: 0

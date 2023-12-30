@@ -41,6 +41,8 @@ public class Player : NetworkBehaviour, IDamageable {
 
     [Networked] private NetworkButtons _previousButtons { get; set; }
 
+    [SerializeField] private PlayerInvincibility _playerInvincibility;
+
     public int PlayerID { get; private set; }
 
     public override void Spawned() {
@@ -118,6 +120,11 @@ public class Player : NetworkBehaviour, IDamageable {
     
     public void OnDamage(Bullet damager) {
         if (damager == null) {
+            return;
+        }
+
+        if (_playerInvincibility == null || _playerInvincibility.IsInvincible) {
+            print("Got hit while invincible!");
             return;
         }
 

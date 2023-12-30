@@ -2386,7 +2386,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   _startOnSpawned: 1
   _repeatOnTimerEnd: 0
-  _timerSeconds: 20
+  _timerSeconds: 180
 --- !u!4 &718201987
 Transform:
   m_ObjectHideFlags: 0

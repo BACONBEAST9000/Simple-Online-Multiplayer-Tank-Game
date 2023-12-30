@@ -1,11 +1,15 @@
 using Fusion;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class RespawnManager : NetworkBehaviour {
     
     public static RespawnManager Instance;
+
+    public static event Action<Player> OnRespawnedPlayer;
 
     [SerializeField] private List<Transform> _spawnPoints;
     
@@ -24,6 +28,7 @@ public class RespawnManager : NetworkBehaviour {
             : GetFarthestSpawnPoint(player);
 
         PlayerSpawnHandler.SetPlayerToTransform(respawnPoint, player);
+        OnRespawnedPlayer?.Invoke(player);
     }
 
     public Transform GetFarthestSpawnPoint(Player player) {
