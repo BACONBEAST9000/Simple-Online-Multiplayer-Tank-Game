@@ -22,6 +22,24 @@ public class PlayerVisuals : NetworkBehaviour {
     [Networked(OnChanged = nameof(OnPlayerColourChanged))]
     public Color PlayerColour { get; private set; }
 
+    private void OnEnable() {
+        _playerInvincibility.OnInvincibilityChanged -= WhenPlayerInvincibilityChanged;
+        _playerInvincibility.OnInvincibilityChanged += WhenPlayerInvincibilityChanged;
+    }
+
+    private void OnDisable() {
+        _playerInvincibility.OnInvincibilityChanged -= WhenPlayerInvincibilityChanged;
+    }
+
+    private void WhenPlayerInvincibilityChanged(bool isNowInvincible) {
+        if (isNowInvincible) {
+            StartInvincibleFlashEffect();
+        }
+        else {
+            StopInvincibleFlashEffect();
+        }
+    }
+
     public override void Spawned() {
         PlayerColour = PlayerColourManager.GetPlayerColour(Object.InputAuthority, Runner);
     }
@@ -31,29 +49,13 @@ public class PlayerVisuals : NetworkBehaviour {
         _destroyedSFX.Play();
     }
 
-    private void Update() {
-        if (_playerInvincibility == null) {
-            return;
-        }
-
-        if (_invincibleFlashCoroutine != null) {
-            if (_playerInvincibility.IsInvincible == false) {
-                StopInvincibleFlashEffect();
-            }
-            return;
-        }
-
-        if (_playerInvincibility.IsInvincible) {
-            StartInvincibleFlashEffect();
-        }
-    }
-
     public void StartInvincibleFlashEffect() {
+        StopInvincibleFlashEffect();
+        
         _invincibleFlashCoroutine = StartCoroutine(FlashCoroutine());
     }
 
     public void StopInvincibleFlashEffect() {
-        StopCoroutine(_invincibleFlashCoroutine);
         _invincibleFlashCoroutine = null;
         
         ForEachMeshRenderer(SetRendererAlpha(1f));
