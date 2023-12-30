@@ -9,6 +9,8 @@ public class PlayerVisuals : NetworkBehaviour {
     private const string EMISSION_COLOR_PROPERTY_NAME = "_EmissionColor";
     private const float FLASH_SPEED = 5f;
 
+    public event Action<Color> OnColourChanged;
+
     [SerializeField] private MeshRenderer[] _meshRenderers;
     [SerializeField] private ParticleSystem _destroyedSFX;
 
@@ -86,8 +88,11 @@ public class PlayerVisuals : NetworkBehaviour {
     public static void OnPlayerColourChanged(Changed<PlayerVisuals> changed) {
         Color newColour = changed.Behaviour.PlayerColour;
 
-        changed.Behaviour.ChangeColour(newColour);
-        changed.Behaviour.ChangeDestroyedParticleEffectColour(newColour);
+        PlayerVisuals playerVisuals = changed.Behaviour;
+        playerVisuals.ChangeColour(newColour);
+        playerVisuals.ChangeDestroyedParticleEffectColour(newColour);
+
+        playerVisuals.OnColourChanged?.Invoke(newColour);
     }
 
     private void ChangeDestroyedParticleEffectColour(Color newColour) {

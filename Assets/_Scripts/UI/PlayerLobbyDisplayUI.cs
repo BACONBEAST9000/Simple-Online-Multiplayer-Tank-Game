@@ -9,15 +9,19 @@ public class PlayerLobbyDisplayUI : PlayerNameDisplayUI {
 
     public override void Initalize(Player player) {
         base.Initalize(player);
-        
+
         Player.OnPlayerToggledReady -= WhenPlayerTogglesReady;
         Player.OnPlayerToggledReady += WhenPlayerTogglesReady;
 
-        _kickButton.gameObject.SetActive(!player.IsHost && player.HasStateAuthority);
+        _kickButton.gameObject.SetActive(ShouldShowForPlayer(player));
 
         _kickButton.onClick.AddListener(() => {
             MultiplayerSessionManager.Instance.KickPlayer(player);
         });
+    }
+
+    private static bool ShouldShowForPlayer(Player player) {
+        return !player.IsHost && player.HasStateAuthority;
     }
 
     protected override void OnDisable() {
