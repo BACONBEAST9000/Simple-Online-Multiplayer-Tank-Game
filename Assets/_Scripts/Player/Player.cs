@@ -45,6 +45,8 @@ public class Player : NetworkBehaviour, IDamageable {
 
     public int PlayerID { get; private set; }
 
+    public bool IsHost => PlayerID == Runner.SessionInfo.MaxPlayers - 1;
+
     public override void Spawned() {
         IsAlive = true;
         IsReady = false;

@@ -128,6 +128,8 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
 
     public void ShutdownSession() => _runner.Shutdown();
 
+    public void KickPlayer(Player player) => _runner.Disconnect(player.PlayerID); 
+
     public void StartGame() {
         CloseGameSession();
         LoadGameScene();
@@ -164,6 +166,10 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) {
         print("Shutdown! The reason message: " + shutdownReason);
+        Shutdown();
+    }
+
+    private void Shutdown() {
         GameStateManager.ChangeState(GameState.Menu);
         SceneManager.LoadScene(0);
         OnSessionShutdown?.Invoke();
@@ -177,6 +183,8 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
 
     public void OnDisconnectedFromServer(NetworkRunner runner) {
         print("Disconnected from server");
+
+        Shutdown();
     }
 
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) {
