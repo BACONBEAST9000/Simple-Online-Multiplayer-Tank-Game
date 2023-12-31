@@ -25,6 +25,8 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     [SerializeField] private Player _playerPrefab;
     [SerializeField] private PlayerData _playerDataPrefab;
     [SerializeField] private TMP_InputField _nameInputField;
+    
+    // TODO: Remove
     [SerializeField] private Transform[] _playerOrderedSpawnPositions;
 
     private NetworkRunner _runner;
