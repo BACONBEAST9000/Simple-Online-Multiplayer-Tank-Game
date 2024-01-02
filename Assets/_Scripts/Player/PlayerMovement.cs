@@ -24,11 +24,20 @@ public class PlayerMovement : NetworkBehaviour {
 
         Player.OnPlayerRespawned -= WhenPlayerRespawned;
         Player.OnPlayerRespawned += WhenPlayerRespawned;
+
+        GameStateManager.OnStateChanged -= WhenGameStateChanges;
+        GameStateManager.OnStateChanged += WhenGameStateChanges;
     }
+
 
     private void OnDisable() {
         Player.OnPlayerDestroyed -= WhenPlayerDestroyed;
         Player.OnPlayerRespawned -= WhenPlayerRespawned;
+        GameStateManager.OnStateChanged -= WhenGameStateChanges;
+    }
+    
+    private void WhenGameStateChanges(GameState newState) {
+        SetCanMove();
     }
 
     private void WhenPlayerDestroyed(Player player) {
@@ -40,12 +49,14 @@ public class PlayerMovement : NetworkBehaviour {
     private void WhenPlayerRespawned(Player player) {
         if (player.PlayerID != Object.InputAuthority) return;
 
-        _canMove = true;
+        SetCanMove();
     }
 
-    public override void Spawned() {
-        _canMove = true;
+    private static bool ShouldBeAbleToMove() {
+        return (GameStateManager.CurrentState != GameState.PreGameStart);
     }
+
+    private void SetCanMove() => _canMove = ShouldBeAbleToMove();
 
     public override void FixedUpdateNetwork() {
         if (!_canMove) return;

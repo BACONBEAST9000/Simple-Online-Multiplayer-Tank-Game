@@ -154,7 +154,7 @@ PrefabInstance:
     - target: {fileID: 872061727862059408, guid: a5d609e71646b3745aa07deb155bd5cc,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 872061727862059415, guid: a5d609e71646b3745aa07deb155bd5cc,
         type: 3}
@@ -2123,7 +2123,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &441183180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2220,7 +2220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
-  _testModeEnabled: 0
+  _testModeEnabled: 1
   _gameStateText: {fileID: 126819225}
 --- !u!114 &441183185
 MonoBehaviour:
@@ -2239,7 +2239,7 @@ MonoBehaviour:
   DestroyWhenStateAuthorityLeaves: 0
   AllowStateAuthorityOverride: 1
   AoiPositionSource: {fileID: 0}
-  Flags: 133633
+  Flags: 2561
   NetworkGuid:
     RawGuidValue: 440ac23bceb0488aae3e38c6c2a3dc72
   NestedObjects: []
@@ -2588,7 +2588,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
-  _allowSoloPlayForTesting: 0
+  _allowSoloPlayForTesting: 1
 --- !u!4 &535246575
 Transform:
   m_ObjectHideFlags: 0

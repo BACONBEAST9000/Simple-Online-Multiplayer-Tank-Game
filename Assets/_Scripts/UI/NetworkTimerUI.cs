@@ -2,15 +2,19 @@ using Fusion;
 using TMPro;
 using UnityEngine;
 
-public class NetworkTimerUI : NetworkBehaviour {
+public abstract class NetworkTimerUI : NetworkBehaviour {
     
-    [SerializeField] private NetworkTimer _gameTimer;
-    [SerializeField] private TMP_Text _timeText;
+    [SerializeField] protected NetworkTimer _gameTimer;
+    [SerializeField] protected TMP_Text _timeText;
 
-    private int _previousTimeLeft;
-    private int _currentTimeLeft;
+    protected int _previousTimeLeft;
+    protected int _currentTimeLeft;
 
     public override void FixedUpdateNetwork() {
+        UpdateTime();
+    }
+
+    private void UpdateTime() {
         _currentTimeLeft = (int)_gameTimer.GetTimeLeft();
 
         if (_currentTimeLeft != _previousTimeLeft) {
@@ -19,12 +23,5 @@ public class NetworkTimerUI : NetworkBehaviour {
         }
     }
 
-    private void UpdateTimeText() {
-        int minutes = Mathf.FloorToInt((float)(_currentTimeLeft / 60F));
-        int seconds = Mathf.FloorToInt((float)(_currentTimeLeft - minutes * 60));
-
-        string timeLeftString = string.Format("{00:00}:{1:00}", minutes, seconds);
-
-        _timeText.text = timeLeftString;
-    }
+    protected abstract void UpdateTimeText();
 }
