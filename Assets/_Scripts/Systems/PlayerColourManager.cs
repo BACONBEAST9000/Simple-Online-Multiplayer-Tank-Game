@@ -1,22 +1,21 @@
 using Fusion;
 using UnityEngine;
 
-/// <summary>
-/// A non-static class that is used for static calls to get player colour based on player ID.
-/// Can set player colours in editor.
-/// </summary>
-public class PlayerColourManager : MonoBehaviour {
+public static class PlayerColourManager {
 
-    public static Color[] PlayerColours { get; private set; }
+    private const string PLAYER_COLOURS_RESOURCES_FILENAME = "PlayerColours";
 
-    // Only to be copied into a static array. Used to set in editor.
-    [SerializeField] private Color[] _setPlayerColours;
+    private static ColourList _colorManager;
 
-    private void Awake() {
-        if (PlayerColours == null) {
-            PlayerColours = _setPlayerColours;
+    public static ColourList PlayerColours {
+        get {
+            if (_colorManager == null) {
+                _colorManager = Resources.Load<ColourList>(PLAYER_COLOURS_RESOURCES_FILENAME);
+            }
+            return _colorManager;
         }
     }
+
 
     /// <summary>
     /// Returns colour based on PlayerID which is from 0 to MAX PLAYERS - 1. Host gets first colour in array.
@@ -27,6 +26,6 @@ public class PlayerColourManager : MonoBehaviour {
     public static Color GetPlayerColour(PlayerRef playerRef, NetworkRunner runner) {
         // Note that playerRef is current player index with the host being: MAX PLAYERS ALLOWED - 1.
         int colourIndex = (playerRef == runner.SessionInfo.MaxPlayers - 1) ? 0 : playerRef + 1;
-        return PlayerColours[colourIndex];
+        return PlayerColours.Colours[colourIndex];
     }
 }

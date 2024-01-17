@@ -23,7 +23,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     public static event Action OnSceneLoaded;
 
     [SerializeField] private Player _playerPrefab;
-    [SerializeField] private PlayerData _playerDataPrefab;
+    [SerializeField] private LocalPlayerData _playerDataPrefab;
     [SerializeField] private TMP_InputField _nameInputField;
     
     // TODO: Remove
@@ -54,13 +54,13 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     }
 
     private void UpdatePlayerData() {
-        var playerData = FindObjectOfType<PlayerData>();
+        var playerData = FindObjectOfType<LocalPlayerData>();
         if (playerData == null) {
             playerData = Instantiate(_playerDataPrefab);
         }
 
         if (string.IsNullOrWhiteSpace(_nameInputField.text)) {
-            playerData.NickName = PlayerData.GetRandomNickName();
+            playerData.NickName = LocalPlayerData.GetRandomNickName();
         }
         else {
             playerData.NickName = _nameInputField.text;

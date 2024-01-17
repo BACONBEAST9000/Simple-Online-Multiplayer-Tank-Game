@@ -10,5 +10,4 @@ public class GameTimerUI : NetworkTimerUI {
 
         _timeText.text = timeLeftString;
     }
-
 }

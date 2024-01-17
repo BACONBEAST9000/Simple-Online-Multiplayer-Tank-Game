@@ -1,7 +1,6 @@
 using Fusion;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -23,33 +22,20 @@ public class RespawnManager : NetworkBehaviour {
     }
 
     public void Respawn(Player player) {
-        Transform respawnPoint = (Runner.ActivePlayers.ToList().Count < 2)
-            ? _spawnPoints[Random.Range(0, _spawnPoints.Count - 1)]
-            : GetFarthestSpawnPoint(player);
+        Transform respawnPoint = (PlayerManager.GetPlayerCount < 2)
+            ? GetRandomSpawnPoint()
+            : GetFarthestSpawnPointFromOtherPlayers();
 
         PlayerSpawnHandler.SetPlayerToTransform(respawnPoint, player);
         OnRespawnedPlayer?.Invoke(player);
     }
 
-    public Transform GetFarthestSpawnPoint(Player player) {
-        List<Vector3> playerPositions = new List<Vector3>();
-        
-        foreach (PlayerRef playerRef in Runner.ActivePlayers) {
+    private Transform GetRandomSpawnPoint() {
+        return _spawnPoints[Random.Range(0, _spawnPoints.Count - 1)];
+    }
 
-            if (!Runner.TryGetPlayerObject(playerRef, out var playerObject)) {
-                continue;
-            }
-
-            if (!playerObject.TryGetComponent(out Player playerComponent)) {
-                continue;
-            }
-
-            if (playerComponent == player) {
-                continue;
-            }
-
-            playerPositions.Add(playerComponent.transform.position);
-        }
+    public Transform GetFarthestSpawnPointFromOtherPlayers() {
+        List<Vector3> playerPositions = PlayerManager.GetAllPlayerTankPositions;
 
         Transform farthestSpawnPoint = null;
         float farthestDistance = float.MinValue;
@@ -67,6 +53,7 @@ public class RespawnManager : NetworkBehaviour {
                 farthestSpawnPoint = spawnPoint;
             }
         }
+        
         return farthestSpawnPoint;
     }
 }

@@ -19,8 +19,8 @@ public class Player : NetworkBehaviour, IDamageable {
     [HideInInspector]
     public int Score { get; private set; }
 
-    [HideInInspector]
     [Networked(OnChanged = nameof(OnNameChanged))]
+    [HideInInspector]
     public NetworkString<_16> NickName { get; private set; }
 
     [Networked] private TickTimer _respawnTimer { get; set; }
@@ -53,7 +53,7 @@ public class Player : NetworkBehaviour, IDamageable {
         PlayerID = Object.InputAuthority;
 
         if (Object.HasInputAuthority) {
-            var name = FindObjectOfType<PlayerData>().NickName;
+            var name = FindObjectOfType<LocalPlayerData>().NickName;
             RpcSetNickName(name);
         }
 
@@ -121,11 +121,7 @@ public class Player : NetworkBehaviour, IDamageable {
     }
     
     public void OnDamage(Bullet damager) {
-        if (damager == null) {
-            return;
-        }
-
-        if (_playerInvincibility == null || _playerInvincibility.IsInvincible) {
+        if (damager == null || PlayerIsInvincible()) {
             return;
         }
 
@@ -138,12 +134,20 @@ public class Player : NetworkBehaviour, IDamageable {
             }
         }
 
-        // TODO: Refactor
+        OnDefeated();
+    }
+
+    // TODO: Refactor
+    private void OnDefeated() {
         IsAlive = false;
         _collider.enabled = false;
         _playerVisuals.DestroyedEffect();
         OnPlayerDestroyed?.Invoke(this);
         _respawnTimer = TickTimer.CreateFromSeconds(Runner, RESPAWN_DELAY_SECONDS);
+    }
+
+    private bool PlayerIsInvincible() {
+        return _playerInvincibility == null || _playerInvincibility.IsInvincible;
     }
 
     private bool IsGameStateWhereScoreCanBeUpdated => GameStateManager.CurrentState == GameState.Game;

@@ -8,10 +8,12 @@ using UnityEngine;
 /// </summary>
 public static class PlayerManager {
 
-    //public static PlayerManager Instance;
-
     public static Dictionary<PlayerRef, Player> _players = new();
     public static Dictionary<PlayerRef, Player> GetAllPlayers => _players;
+
+    public static List<Player> GetAllPlayerTanks => GetAllPlayers.Values.ToList();
+    public static List<Vector3> GetAllPlayerTankPositions => GetAllPlayerTanks.Select(player => player.transform.position).ToList();
+
     public static List<PlayerRef> GetAllPlayersReferencesStartingWithHost() {
         List<PlayerRef> playerRefs = GetAllPlayers.Keys.ToList();
 
@@ -22,14 +24,6 @@ public static class PlayerManager {
     }
 
     public static int GetPlayerCount => GetAllPlayers.Count;
-
-    //private void Awake() {
-    //    if (Instance != null) {
-    //        Destroy(Instance);
-    //    }
-
-    //    Instance = this;
-    //}
 
     public static void AddPlayer(Player playerToAdd) {
         if (_players.ContainsKey(playerToAdd.PlayerID)) {
