@@ -12,6 +12,7 @@ public class DebugTesting : NetworkBehaviour {
     private void Awake() {
         if (_privateInstance == null) {
             _privateInstance = this;
+            WhenStateChanges(GameStateManager.CurrentState);
             DontDestroyOnLoad(gameObject);
         }
         else {

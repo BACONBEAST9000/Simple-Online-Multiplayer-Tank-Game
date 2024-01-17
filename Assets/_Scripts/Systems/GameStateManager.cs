@@ -1,24 +1,13 @@
 using System;
 using UnityEngine;
 
-public class GameStateManager : MonoBehaviour {
+public static class GameStateManager {
 
-    private static GameStateManager PrivateInstance;
+    //private static GameStateManager PrivateInstance;
 
     public static event Action<GameState> OnStateChanged;
-    public static GameState CurrentState { get; private set; } = GameState.DEFAULT;
+    public static GameState CurrentState { get; private set; } = GameState.Menu;
     public static GameState PreviousState { get; private set; }
-
-    private void Awake() {
-        if (PrivateInstance == null) {
-            PrivateInstance = this;
-            DontDestroyOnLoad(gameObject);
-            ChangeState(GameState.Menu);
-        }
-        else {
-            Destroy(this);
-        }
-    }
 
     public static void ChangeState(GameState newState) {
         if (newState == CurrentState) {
@@ -27,8 +16,6 @@ public class GameStateManager : MonoBehaviour {
 
         PreviousState = CurrentState;
         CurrentState = newState;
-
-        print("GAME STATE CHANGED: " + newState);
         OnStateChanged?.Invoke(newState);
     }
 }
