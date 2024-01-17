@@ -134,6 +134,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
 
     public void StartGame() {
         CloseGameSession();
+        GameStateManager.ChangeState(GameState.PreGameStart);
         LoadGameScene();
     }
 

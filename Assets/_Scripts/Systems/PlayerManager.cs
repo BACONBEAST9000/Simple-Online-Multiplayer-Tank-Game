@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-/// <summary>
-/// Universally used class that has a reference to each player! Called from Spawned() and Despawned() in the Player class.
-/// </summary>
 public static class PlayerManager {
 
     public static Dictionary<PlayerRef, Player> _players = new();
