@@ -36,7 +36,7 @@ public class PlayerInvincibility : MonoBehaviour {
     }
 
     private void OnDisable() {
-        RespawnManager.OnRespawnedPlayer -= WhenPlayerRespawns;
+        _networkTimer.OnTimerEnd -= WhenInvincibilityTimerEnds;
         RespawnManager.OnRespawnedPlayer -= WhenPlayerRespawns;
     }
 

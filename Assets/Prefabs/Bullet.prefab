@@ -136,7 +136,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   _rigidbody: {fileID: 5514076358448922813}
   _secondsOfLifeTime: 6
-  _bulletVisual: {fileID: 6699884371812932575}
+  <BulletVisual>k__BackingField: {fileID: 6699884371812932575}
 --- !u!114 &6699884371812932575
 MonoBehaviour:
   m_ObjectHideFlags: 0

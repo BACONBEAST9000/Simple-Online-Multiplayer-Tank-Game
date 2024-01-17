@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class PlayerVisuals : NetworkBehaviour {
     
-    // Property name may change based on material shader used. Assuming default is used.
-    private const string EMISSION_COLOR_PROPERTY_NAME = "_EmissionColor";
     private const float FLASH_SPEED = 5f;
 
     public event Action<Color> OnColourChanged;
@@ -107,7 +105,7 @@ public class PlayerVisuals : NetworkBehaviour {
     private Action<MeshRenderer> ChangeMaterialColourTo(Color newColour) {
         return ((MeshRenderer renderer) => {
             renderer.material.color = newColour;
-            renderer.material.SetColor(EMISSION_COLOR_PROPERTY_NAME, newColour);
+            renderer.material.SetColor(Utils.EMISSION_COLOR_PROPERTY_NAME, newColour);
         });
     }
 
