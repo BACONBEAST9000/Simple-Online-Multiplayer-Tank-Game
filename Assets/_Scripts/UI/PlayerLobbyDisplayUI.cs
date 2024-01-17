@@ -10,8 +10,8 @@ public class PlayerLobbyDisplayUI : PlayerNameDisplayUI {
     public override void Initalize(Player player) {
         base.Initalize(player);
 
-        Player.OnPlayerToggledReady -= WhenPlayerTogglesReady;
-        Player.OnPlayerToggledReady += WhenPlayerTogglesReady;
+        PlayerReadyUp.OnPlayerToggledReady -= WhenPlayerTogglesReady;
+        PlayerReadyUp.OnPlayerToggledReady += WhenPlayerTogglesReady;
 
         _kickButton.gameObject.SetActive(ShouldShowForPlayer(player));
 
@@ -27,7 +27,7 @@ public class PlayerLobbyDisplayUI : PlayerNameDisplayUI {
     protected override void OnDisable() {
         base.OnDisable();
 
-        Player.OnPlayerToggledReady -= WhenPlayerTogglesReady;
+        PlayerReadyUp.OnPlayerToggledReady -= WhenPlayerTogglesReady;
 
         _kickButton.onClick?.RemoveAllListeners();
     }
@@ -36,7 +36,7 @@ public class PlayerLobbyDisplayUI : PlayerNameDisplayUI {
 
     public override void UpdateEntry(Player player) {
         UpdateNameText(player.NickName.ToString());
-        UpdateReadyText(player.IsReady);
+        UpdateReadyText(player.ReadyUp.IsReady);
     }
 
     private void UpdateNameText(string newName) => PlayerNameText.text = newName;

@@ -12,12 +12,12 @@ public class ReadyUpManager : NetworkBehaviour {
     [SerializeField] private bool _allowSoloPlayForTesting;
 
     private void OnEnable() {
-        Player.OnPlayerToggledReady -= WhenPlayerTogglesReady;
-        Player.OnPlayerToggledReady += WhenPlayerTogglesReady;
+        PlayerReadyUp.OnPlayerToggledReady -= WhenPlayerTogglesReady;
+        PlayerReadyUp.OnPlayerToggledReady += WhenPlayerTogglesReady;
     }
 
     private void OnDisable() {
-        Player.OnPlayerToggledReady -= WhenPlayerTogglesReady;
+        PlayerReadyUp.OnPlayerToggledReady -= WhenPlayerTogglesReady;
     }
 
     private void WhenPlayerTogglesReady(Player player, bool isPlayerReady) {

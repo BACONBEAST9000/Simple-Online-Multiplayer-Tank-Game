@@ -6,6 +6,11 @@ public abstract class PlayerNameDisplayUI : PlayerDisplayUI {
 
     [SerializeField] protected TMP_Text PlayerNameText;
     [SerializeField] private Image _backgroundPanel;
+    
+    protected virtual void OnDisable() {
+        Player.OnNameUpdated -= WhenPlayerNameUpdated;
+        UIPlayer.Visuals.OnColourChanged -= WhenPlayerColourChanged;
+    }
 
     public override void Initalize(Player player) {
         base.Initalize(player);
@@ -14,19 +19,14 @@ public abstract class PlayerNameDisplayUI : PlayerDisplayUI {
         Player.OnNameUpdated += WhenPlayerNameUpdated;
 
         if (_backgroundPanel) {
-            UIPlayer.GetPlayerVisuals.OnColourChanged -= WhenPlayerColourChanged;
-            UIPlayer.GetPlayerVisuals.OnColourChanged += WhenPlayerColourChanged;
+            UIPlayer.Visuals.OnColourChanged -= WhenPlayerColourChanged;
+            UIPlayer.Visuals.OnColourChanged += WhenPlayerColourChanged;
             
         }
     }
 
     private void WhenPlayerColourChanged(Color newColor) {
         _backgroundPanel.color = newColor;
-    }
-
-    protected virtual void OnDisable() {
-        Player.OnNameUpdated -= WhenPlayerNameUpdated;
-        UIPlayer.GetPlayerVisuals.OnColourChanged -= WhenPlayerColourChanged;
     }
 
     protected void WhenPlayerNameUpdated(Player player, string playerName) => UpdateEntryIfPlayer(player);

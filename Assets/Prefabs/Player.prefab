@@ -246,6 +246,7 @@ GameObject:
   - component: {fileID: 4814418892433255776}
   - component: {fileID: 6106064112569594434}
   - component: {fileID: 491863125254404042}
+  - component: {fileID: 8783976540221669435}
   - component: {fileID: 78491921699914232}
   - component: {fileID: 78491921699914228}
   - component: {fileID: 6688664076082182664}
@@ -303,6 +304,7 @@ MonoBehaviour:
   - {fileID: 4814418892433255776}
   - {fileID: 6106064112569594434}
   - {fileID: 491863125254404042}
+  - {fileID: 8783976540221669435}
   - {fileID: 78491921699914232}
   - {fileID: 78491921699914228}
   - {fileID: 1738468249552305674}
@@ -348,6 +350,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  <Visuals>k__BackingField: {fileID: 491863125254404042}
+  _collider: {fileID: 78491921699914234}
+  _playerInvincibility: {fileID: 6688664076082182664}
+  <ReadyUp>k__BackingField: {fileID: 8783976540221669435}
   _Score: 0
   _NickName:
     _length: 0
@@ -355,11 +361,6 @@ MonoBehaviour:
       Data: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   _IsAlive:
     _value: 0
-  _collider: {fileID: 78491921699914234}
-  _playerVisuals: {fileID: 491863125254404042}
-  _IsReady:
-    _value: 0
-  _playerInvincibility: {fileID: 6688664076082182664}
 --- !u!114 &491863125254404042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -382,6 +383,22 @@ MonoBehaviour:
   _destroyedSFX: {fileID: 8799284315318900256}
   _playerInvincibility: {fileID: 6688664076082182664}
   _PlayerColour: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &8783976540221669435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78491921699914239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 714769a35de89b349853380b8d38bf6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  _player: {fileID: 6106064112569594434}
+  _IsReady:
+    _value: 0
 --- !u!114 &78491921699914232
 MonoBehaviour:
   m_ObjectHideFlags: 0

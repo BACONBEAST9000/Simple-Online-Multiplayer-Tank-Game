@@ -15,7 +15,7 @@ public class BulletVisual : NetworkBehaviour {
     }
 
     private void WhenPlayerShoots(Bullet bullet, Player player) {
-        RPC_SetMaterialColour(player.GetPlayerVisuals.PlayerColour);
+        RPC_SetMaterialColour(player.Visuals.PlayerColour);
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
