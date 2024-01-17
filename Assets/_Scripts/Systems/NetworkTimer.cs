@@ -21,7 +21,6 @@ public class NetworkTimer : NetworkBehaviour {
 
     public override void FixedUpdateNetwork() {
         if (Timer.Expired(Runner)) {
-            print("TIMES UP!");
             Timer = TickTimer.None;
             OnTimerEnd?.Invoke();
 

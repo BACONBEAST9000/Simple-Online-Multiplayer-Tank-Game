@@ -126,7 +126,6 @@ public class Player : NetworkBehaviour, IDamageable {
         }
 
         if (_playerInvincibility == null || _playerInvincibility.IsInvincible) {
-            print("Got hit while invincible!");
             return;
         }
 
