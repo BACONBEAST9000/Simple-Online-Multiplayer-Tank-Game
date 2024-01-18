@@ -19,16 +19,26 @@ public class PlayerReadyUp : NetworkBehaviour {
     }
 
     public override void FixedUpdateNetwork() {
-        if (GetInput(out PlayerInput input)) {
-            if (IsReadyButtonPressed(input)) {
-                IsReady = !IsReady;
-            }
+        UpdateReadyUp();
+    }
+
+    private void UpdateReadyUp() {
+        if (!GetInput(out PlayerInput input)) {
+            return;
+        }
+
+        if (ShouldToggleReadyState(input)) {
+            IsReady = !IsReady;
         }
     }
+
+    private bool ShouldToggleReadyState(PlayerInput input) => IsStateWhereCanToggleReady && IsReadyButtonPressed(input);
 
     private bool IsReadyButtonPressed(PlayerInput input) {
         return input.Buttons.WasPressed(PreviousButtons, ActionButtons.Ready);
     }
+
+    private bool IsStateWhereCanToggleReady => GameStateManager.CurrentState == GameState.Lobby;
 
     private static void OnPlayerReadyChanged(Changed<PlayerReadyUp> changed) {
         PlayerReadyUp playerWhoToggledReady = changed.Behaviour;
