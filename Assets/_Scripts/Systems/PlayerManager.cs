@@ -40,6 +40,9 @@ public static class PlayerManager {
         _players.Remove(playerToRemove.PlayerID);
     }
 
+    /// <summary>
+    /// Links a PlayerRef to a Player via a dictionary.
+    /// </summary>
     public static void UpdatePlayerWithReference(PlayerRef playerRefToUpdate, Player newPlayer) {
         if (!_players.ContainsKey(playerRefToUpdate)) {
             Debug.LogWarning($"[UpdatePlayerWithReference] Key: ({playerRefToUpdate}) not found! Can't update value with Player ({newPlayer.NickName}, {newPlayer.PlayerID}). Returning.");

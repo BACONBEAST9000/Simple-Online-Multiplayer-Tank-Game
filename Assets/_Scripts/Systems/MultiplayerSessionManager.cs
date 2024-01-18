@@ -25,11 +25,10 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     [SerializeField] private Player _playerPrefab;
     [SerializeField] private LocalPlayerData _playerDataPrefab;
     [SerializeField] private TMP_InputField _nameInputField;
-    
-    // TODO: Remove
-    [SerializeField] private Transform[] _playerOrderedSpawnPositions;
 
     private NetworkRunner _runner;
+
+    private PlayerSpawnHandler _spawnHandler;
 
     private void OnEnable() {
         ReadyUpManager.OnAllPlayersReady -= WhenAllPlayersAreReady;
@@ -54,7 +53,7 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     }
 
     private void UpdatePlayerData() {
-        var playerData = FindObjectOfType<LocalPlayerData>();
+        LocalPlayerData playerData = FindObjectOfType<LocalPlayerData>();
         if (playerData == null) {
             playerData = Instantiate(_playerDataPrefab);
         }
@@ -73,9 +72,11 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         if (Runner.IsServer) {
             Player newPlayer = SpawnPlayer(playerRef);
 
-            Transform spawnPoint = _playerOrderedSpawnPositions[playerRef.RawEncoded % _playerOrderedSpawnPositions.Length];
+            if (_spawnHandler == null) {
+                _spawnHandler = FindObjectOfType<PlayerSpawnHandler>();
+            }
 
-            PlayerSpawnHandler.SetPlayerToTransform(spawnPoint, newPlayer);
+            _spawnHandler?.SetPlayerToSpawnPoint(newPlayer);
 
             OnPlayerJoinedGame?.Invoke();
         }
@@ -101,7 +102,6 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         }
     }
 
-
     private async void StartSession(GameMode mode) {
         UpdatePlayerData();
 
@@ -119,10 +119,6 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
         OnConnectingStart?.Invoke();
         await _runner.StartGame(game);
         OnConnectingEnd?.Invoke();
-
-        if (_runner && _runner.IsRunning) {
-            print("Session Started and Is RUNNING!");
-        }
     }
 
     public void StartHostSession() => StartSession(GameMode.Host);
@@ -151,21 +147,6 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
 
     private void LoadScene(string sceneName) => Runner.SetActiveScene(sceneName);
 
-    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
-
-    }
-
-    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {
-        
-    }
-
-    public void OnInput(NetworkRunner runner, NetworkInput input) {
-        
-    }
-
-    public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) {
-        
-    }
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) {
         print("Shutdown! The reason message: " + shutdownReason);
@@ -197,7 +178,32 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) {
         print("Failed to connect! " + reason);
     }
+    public void OnSceneLoadDone(NetworkRunner runner) {
+        print("Scene Load Done!");
+        OnSceneLoaded?.Invoke();
+    }
 
+    public void OnSceneLoadStart(NetworkRunner runner) {
+        print("Scene Load Start");
+        OnSceneStartedLoading?.Invoke();
+    }
+
+    #region Unused Functions from INetworkRunnerCallbacks
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
+
+    }
+
+    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {
+        
+    }
+
+    public void OnInput(NetworkRunner runner, NetworkInput input) {
+        
+    }
+
+    public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) {
+        
+    }
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) {
         
     }
@@ -217,14 +223,5 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data) {
         
     }
-
-    public void OnSceneLoadDone(NetworkRunner runner) {
-        print("Scene Load Done!");
-        OnSceneLoaded?.Invoke();
-    }
-
-    public void OnSceneLoadStart(NetworkRunner runner) {
-        print("Scene Load Start");
-        OnSceneStartedLoading?.Invoke();
-    }
+    #endregion
 }

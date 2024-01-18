@@ -16,14 +16,15 @@ public class PlayerSpawnHandler : NetworkBehaviour {
     public void SpawnPlayers() {
         if (Object.HasStateAuthority == false) return;
 
-        int positionIndex = 0;
         foreach (PlayerRef playerRef in Runner.ActivePlayers) {
             Player player = MultiplayerSessionManager.Instance.SpawnPlayer(playerRef);
-
-            SetPlayerToTransform(_spawnPoints[positionIndex], player);
-
-            positionIndex++;
+            SetPlayerToSpawnPoint(player);
         }
+    }
+
+    public void SetPlayerToSpawnPoint(Player player) {
+        Transform respawnPoint = Utils.GetFarthestTransformFromPlayers(_spawnPoints);
+        SetPlayerToTransform(respawnPoint, player);
     }
 
     public static void SetPlayerToTransform(Transform transformPoint, Player player) {
