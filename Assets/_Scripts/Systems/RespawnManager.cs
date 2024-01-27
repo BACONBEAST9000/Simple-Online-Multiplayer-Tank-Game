@@ -1,25 +1,13 @@
-using Fusion;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class RespawnManager : NetworkBehaviour {
-    
-    public static RespawnManager Instance;
+public class RespawnManager : SingletonNetwork<RespawnManager> {
 
     public static event Action<Player> OnRespawnedPlayer;
 
     [SerializeField] private List<Transform> _spawnPoints;
-    
-    private void Awake() {
-        if (Instance == null) {
-            Instance = this;
-        }
-        else {
-            Destroy(this);
-        }
-    }
 
     public void Respawn(Player player) {
         Transform respawnPoint = (PlayerManager.GetPlayerCount < 2)

@@ -36,7 +36,6 @@ public class Player : NetworkBehaviour, IDamageable {
 
     public int PlayerID { get; private set; }
 
-    public bool IsHost => PlayerID == Runner.SessionInfo.MaxPlayers - 1;
 
     public override void Spawned() {
         IsAlive = true;
@@ -69,6 +68,7 @@ public class Player : NetworkBehaviour, IDamageable {
 
         IsAlive = true;
         _collider.enabled = true;
+
         _respawnTimer = default;
         RespawnManager.Instance.Respawn(this);
     }
@@ -127,9 +127,11 @@ public class Player : NetworkBehaviour, IDamageable {
         OnPlayerDestroyed?.Invoke(this);
         _respawnTimer = TickTimer.CreateFromSeconds(Runner, RESPAWN_DELAY_SECONDS);
     }
+    
+    public bool IsHost => PlayerID == Runner.SessionInfo.MaxPlayers - 1;
 
     private bool PlayerIsInvincible() {
-        return _playerInvincibility == null || _playerInvincibility.IsInvincible;
+        return _playerInvincibility != null && _playerInvincibility.IsInvincible;
     }
 
     private bool IsGameStateWhereScoreCanBeUpdated => GameStateManager.CurrentState == GameState.Game;

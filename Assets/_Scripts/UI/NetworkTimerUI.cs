@@ -15,7 +15,7 @@ public abstract class NetworkTimerUI : NetworkBehaviour {
     }
 
     private void UpdateTime() {
-        _currentTimeLeft = (int)_gameTimer.GetTimeLeft();
+        _currentTimeLeft = (int)_gameTimer?.GetTimeLeft();
 
         if (_currentTimeLeft != _previousTimeLeft) {
             _previousTimeLeft = _currentTimeLeft;

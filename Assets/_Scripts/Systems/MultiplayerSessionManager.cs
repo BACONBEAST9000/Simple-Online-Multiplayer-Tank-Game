@@ -7,8 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 // TODO: Refactor
-public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPlayerLeft, INetworkRunnerCallbacks {
-    public static MultiplayerSessionManager Instance;
+public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerSessionManager>, IPlayerJoined, IPlayerLeft, INetworkRunnerCallbacks {
     
     private const string SESSION_NAME = "TestRoom";
     private const string MENU_SCENE_NAME = "MainMenu";
@@ -41,15 +40,6 @@ public class MultiplayerSessionManager : SimulationBehaviour, IPlayerJoined, IPl
     
     private void WhenAllPlayersAreReady() {
         StartGame();
-    }
-
-    private void Awake() {
-        if (Instance == null) {
-            Instance = this;
-        }
-        else {
-            Destroy(gameObject);
-        }
     }
 
     private void UpdatePlayerData() {

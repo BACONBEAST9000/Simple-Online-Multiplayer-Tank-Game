@@ -2,8 +2,7 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 
-public class DebugManager : MonoBehaviour {
-    private static DebugManager Instance;
+public class DebugManager : SingletonPersistent<DebugManager> {
 
     [SerializeField] private TextMeshProUGUI _debugText;
 
@@ -15,16 +14,6 @@ public class DebugManager : MonoBehaviour {
 
     private void OnDisable() {
         ClearEvents();
-    }
-
-    private void Awake() {
-        if (Instance == null) {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else {
-            Destroy(gameObject);
-        }
     }
 
     private void SetEvents() {

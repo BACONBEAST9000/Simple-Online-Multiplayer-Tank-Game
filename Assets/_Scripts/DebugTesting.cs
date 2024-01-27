@@ -1,23 +1,14 @@
-using Fusion;
 using TMPro;
 using UnityEngine;
 
-public class DebugTesting : NetworkBehaviour {
-
-    private static DebugTesting _privateInstance;
+public class DebugTesting : SingletonNetworkPersistent<DebugTesting> {
 
     [SerializeField] private bool _testModeEnabled;
     [SerializeField] private TMP_Text _gameStateText;
 
-    private void Awake() {
-        if (_privateInstance == null) {
-            _privateInstance = this;
-            WhenStateChanges(GameStateManager.CurrentState);
-            DontDestroyOnLoad(gameObject);
-        }
-        else {
-            Destroy(gameObject);
-        }
+    public override void Awake() {
+        base.Awake();
+        WhenStateChanges(GameStateManager.CurrentState);
     }
 
     private void OnEnable() {
