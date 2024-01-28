@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class PlayerDetailsDisplayManager : MonoBehaviour {
 
-    [SerializeField] protected PlayerDisplayUI _playerDisplayPrefab;
-
+    [SerializeField] protected PlayerDisplayUI[] _playerUIPanels;
     protected Dictionary<PlayerRef, PlayerDisplayUI> _playerEntries = new();
 
     protected virtual void OnEnable() {
@@ -45,11 +44,16 @@ public class PlayerDetailsDisplayManager : MonoBehaviour {
             return;
         }
 
-        PlayerDisplayUI display = Instantiate(_playerDisplayPrefab, transform);
+        PlayerDisplayUI display = GetPanelBasedOnPlayer(player);
+        display.gameObject.SetActive(true);
 
         _playerEntries.Add(player.PlayerID, display);
 
         display.Initalize(player);
+    }
+
+    protected PlayerDisplayUI GetPanelBasedOnPlayer(Player player) {
+        return player.IsHost ? _playerUIPanels[0] : _playerUIPanels[player.PlayerID + 1];
     }
 
     protected virtual void RemoveEntry(Player player) {
@@ -59,7 +63,7 @@ public class PlayerDetailsDisplayManager : MonoBehaviour {
         }
 
         if (playerDisplay != null) {
-            Destroy(playerDisplay.gameObject);
+            playerDisplay.gameObject.SetActive(false);
         }
 
         _playerEntries.Remove(player.PlayerID);
