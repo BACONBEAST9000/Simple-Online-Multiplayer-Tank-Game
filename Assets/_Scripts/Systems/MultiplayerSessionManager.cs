@@ -20,6 +20,10 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
     public static event Action OnSessionShutdown;
     public static event Action OnSceneStartedLoading;
     public static event Action OnSceneLoaded;
+    public static event Action<NetConnectFailedReason> OnConnectionFailed;
+
+    public static event Action OnHostShutdownSession;
+    public static event Action OnClientShutdownSession;
 
     [SerializeField] private Player _playerPrefab;
     [SerializeField] private LocalPlayerData _playerDataPrefab;
@@ -140,6 +144,14 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) {
         print("Shutdown! The reason message: " + shutdownReason);
+        if (shutdownReason == ShutdownReason.DisconnectedByPluginLogic) {
+            OnHostShutdownSession?.Invoke();
+        }
+
+        else {
+            OnClientShutdownSession?.Invoke();
+        }
+        
         Shutdown();
     }
 
@@ -167,6 +179,7 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
 
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) {
         print("Failed to connect! " + reason);
+        OnConnectionFailed?.Invoke(reason);
     }
     public void OnSceneLoadDone(NetworkRunner runner) {
         print("Scene Load Done!");
@@ -178,14 +191,15 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
         OnSceneStartedLoading?.Invoke();
     }
 
-    #region Unused Functions from INetworkRunnerCallbacks
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
-
+        print($"Player {player} has joined!");
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {
-        
+        print($"Player {player} has left!");
     }
+
+    #region Unused Functions from INetworkRunnerCallbacks
 
     public void OnInput(NetworkRunner runner, NetworkInput input) {
         
