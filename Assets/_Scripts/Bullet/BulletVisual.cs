@@ -3,6 +3,7 @@ using Fusion;
 
 public class BulletVisual : NetworkBehaviour {
 
+    [SerializeField] private Bullet _thisBullet;
     [SerializeField] private MeshRenderer _renderer;
 
     private void OnEnable() {
@@ -14,8 +15,12 @@ public class BulletVisual : NetworkBehaviour {
         PlayerShoot.OnPlayerShotBullet -= WhenPlayerShoots;
     }
 
-    private void WhenPlayerShoots(Bullet bullet, Player player) {
-        RPC_SetMaterialColour(player.Visuals.PlayerColour);
+    private void WhenPlayerShoots(Bullet bulletShot, Player playerThatShot) {
+        if (bulletShot != _thisBullet) {
+            return;
+        }
+
+        RPC_SetMaterialColour(playerThatShot.Visuals.PlayerColour);
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]

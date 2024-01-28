@@ -150,6 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  _thisBullet: {fileID: 8029772854575541321}
   _renderer: {fileID: 8210214270198462341}
 --- !u!135 &8907423764228437288
 SphereCollider:
