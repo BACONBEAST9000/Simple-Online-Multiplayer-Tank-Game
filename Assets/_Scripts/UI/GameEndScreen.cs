@@ -1,12 +1,15 @@
+using Fusion;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameEndScreen : MonoBehaviour {
+public class GameEndScreen : NetworkBehaviour {
 
     private static string[] _ordinalNumbers = { "1st", "2nd", "3rd", "4th" };
     private static float[] _fontSizes = { 72, 64, 56, 42 };
+
+    [SerializeField] private RectTransform _waitingText;
 
     [Header("Buttons")]
     [SerializeField] private Button _continueButton;
@@ -19,6 +22,7 @@ public class GameEndScreen : MonoBehaviour {
     private void OnEnable() {
         HideAllTextEntries();
         DisplayResults();
+        ShowContinueButtonOrWaitingText();
 
         _continueButton.onClick.AddListener(() => {
             MultiplayerSessionManager.Instance.LoadMenuScene();
@@ -53,10 +57,19 @@ public class GameEndScreen : MonoBehaviour {
                 positionIndex++;
             }
 
+            // TODO: Refactor
             _playerPositionTextElements[i].text = $"{_ordinalNumbers[positionIndex]} {player.NickName}";
             _playerPositionTextElements[i].fontSize = _fontSizes[positionIndex];
             _playerPositionTextElements[i].color = _positionColours[positionIndex];
             _playerPositionTextElements[i].gameObject.SetActive(true);
         }
     }
+    
+    private void ShowContinueButtonOrWaitingText() {
+        SetContinueButtonActive(Object.HasStateAuthority);
+        SetWaitingTextActive(Object.HasStateAuthority == false);
+    }
+
+    private void SetContinueButtonActive(bool isActive) => _continueButton.gameObject.SetActive(isActive);
+    private void SetWaitingTextActive(bool isActive) => _waitingText.gameObject.SetActive(isActive);
 }
