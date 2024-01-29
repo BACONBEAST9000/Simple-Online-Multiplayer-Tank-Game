@@ -22,8 +22,10 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
     public static event Action OnSceneLoaded;
     public static event Action<NetConnectFailedReason> OnConnectionFailed;
 
+    public static event Action<NetworkRunner> OnDisconnected;
     public static event Action OnHostShutdownSession;
     public static event Action OnClientShutdownSession;
+    public static event Action OnPlayerKicked;
 
     [SerializeField] private Player _playerPrefab;
     [SerializeField] private LocalPlayerData _playerDataPrefab;
@@ -120,7 +122,15 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
 
     public void ShutdownSession() => _runner.Shutdown();
 
-    public void KickPlayer(Player player) => _runner.Disconnect(player.PlayerID); 
+    public void KickPlayer(Player player) {
+        Test();
+        OnPlayerKicked?.Invoke();
+        _runner.Disconnect(player.PlayerID);
+    }
+
+    private static void Test() {
+        print("Testing Kick Player! Everybody has this message, right?!");
+    }
 
     public void StartGame() {
         CloseGameSession();
@@ -169,7 +179,7 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
 
     public void OnDisconnectedFromServer(NetworkRunner runner) {
         print("Disconnected from server");
-
+        OnDisconnected?.Invoke(runner);
         Shutdown();
     }
 

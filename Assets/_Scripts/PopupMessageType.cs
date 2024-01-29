@@ -7,4 +7,5 @@ public enum PopupMessageType {
     TIMEDOUT,
     UNKNOWN,
     SHUTDOWN,
+    DISCONNECTED,
 }
