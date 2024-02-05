@@ -19,7 +19,8 @@ public class BulletAudio : AudioPlayingInstance {
     private void WhenABulletHitsWall(Bullet bulletThatHitWall) {
         if (BulletIsNotThisBullet(bulletThatHitWall)) return;
 
-        soundEmitter.Play(_hitWallSound);
+        AudioPlayManager.Instance.Play(_hitWallSound);
+        //soundEmitter.Play(_hitWallSound);
     }
 
     private bool BulletIsNotThisBullet(Bullet bullet) => bullet != _bullet;
