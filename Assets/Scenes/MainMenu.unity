@@ -18182,8 +18182,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7fb754730e8a1d47af65ba2d3e554cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerDisplayPrefab: {fileID: 7899505003028085354, guid: 408ea0b820078264ba684ba6078a06fe,
-    type: 3}
   _playerUIPanels:
   - {fileID: 1946335171}
   - {fileID: 1752720695}

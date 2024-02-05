@@ -1,12 +1,17 @@
 using Fusion;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : NetworkBehaviour {
 
+    public static event Action<Bullet> OnLocalCollisionHitWall;
+
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private SphereCollider _sphereCollider;
     [SerializeField] private LayerMask _collisionLayers;
+    [SerializeField] private LayerMask _wallLayers;
+
     [field: SerializeField] public BulletVisual BulletVisual { get; private set; }
     [SerializeField] private float _additionalRadius = 0;
 
@@ -20,7 +25,7 @@ public class Bullet : NetworkBehaviour {
 
     public Player Owner { get; private set; }
 
-    private List<LagCompensatedHit> _hits = new List<LagCompensatedHit>();
+    private List<LagCompensatedHit> _hits = new();
 
     public void Initialize(Vector3 directionOfFire, float force, Player owner) {
         LifeTime = TickTimer.CreateFromSeconds(Runner, _secondsOfLifeTime);
@@ -46,8 +51,8 @@ public class Bullet : NetworkBehaviour {
             return;
         }
 
-        for (int i = 0; i < bulletHitCount; i++) {
-            GameObject hitGameObject = _hits[i].GameObject;
+        foreach (LagCompensatedHit hit in _hits) {
+            GameObject hitGameObject = hit.GameObject;
 
             if (hitGameObject == null || hitGameObject == gameObject) {
                 continue;
@@ -55,19 +60,23 @@ public class Bullet : NetworkBehaviour {
 
             if (hitGameObject.TryGetComponent(out Bullet bullet)) {
                 bullet.Despawn();
-                Despawn();
-                break;
             }
 
-            if (hitGameObject.TryGetComponent(out IDamageable damageable)) {
+            else if (hitGameObject.TryGetComponent(out IDamageable damageable)) {
                 damageable.OnDamage(this);
-                Despawn();
-                break;
             }
 
             print($"[Hit Info]: GameObject Name: {hitGameObject.name}");
+            Despawn();
+            break;
         }
     }
 
     private void Despawn() => Runner.Despawn(Object);
+
+    private void OnCollisionEnter(Collision collision) {
+        if (Utils.IsInLayer(collision.collider.gameObject, _wallLayers)) {
+            OnLocalCollisionHitWall?.Invoke(this);
+        }
+    }
 }

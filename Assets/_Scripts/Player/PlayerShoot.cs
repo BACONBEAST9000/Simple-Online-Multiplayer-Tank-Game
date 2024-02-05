@@ -33,9 +33,11 @@ public class PlayerShoot : NetworkBehaviour {
         }
     }
 
-    private bool ShouldShoot(PlayerInput input) => IsGameStateWhereCanShoot() && NoShootDelay() && ShootButtonPressed(input) && NoWallAhead();
+    private bool ShouldShoot(PlayerInput input) => PlayerIsAlive() && IsGameStateWhereCanShoot() && NoShootDelay() && ShootButtonPressed(input) && NoWallAhead();
 
     private bool IsGameStateWhereCanShoot() => GameStateManager.CurrentState != GameState.GameEnd && GameStateManager.CurrentState != GameState.PreGameStart;
+
+    private bool PlayerIsAlive() => _player.IsAlive;
 
     private bool ShootButtonPressed(PlayerInput input) => input.Buttons.WasPressed(_previousButtons, ActionButtons.Shoot);
 
