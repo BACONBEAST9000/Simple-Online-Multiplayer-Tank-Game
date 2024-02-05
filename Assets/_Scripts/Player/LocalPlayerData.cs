@@ -30,10 +30,4 @@ public class LocalPlayerData : MonoBehaviour {
 
         DontDestroyOnLoad(gameObject);
     }
-
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.Alpha2)) {
-            print(NickName);
-        }
-    }
 }

@@ -17,11 +17,17 @@ public class PlayerAudio : AudioPlayingInstance {
         PlayerShoot.OnPlayerShotBullet -= WhenAPlayerShootsBullet;
     }
 
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.Alpha2)) {
+            soundEmitter.Play(_shootSound);
+        }
+    }
+
     private void WhenAPlayerShootsBullet(Bullet bullet, Player playerWhoShot) {
         if (PlayerIsNotThisPlayer(playerWhoShot)) return;
 
-        AudioPlayManager.Instance.Play(_shootSound);
-        //soundEmitter.Play(_shootSound);
+        //AudioPlayManager.Instance.Play(_shootSound);
+        soundEmitter.Play(_shootSound);
     }
 
     private bool PlayerIsNotThisPlayer(Player player) => _player != player;
