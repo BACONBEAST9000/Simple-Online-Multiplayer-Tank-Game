@@ -24,16 +24,12 @@ public class Bullet : NetworkBehaviour {
 
     public Player Owner { get; private set; }
 
-    private List<LagCompensatedHit> _hits = new();
+    private List<LagCompensatedHit> _bulletCollisions = new();
 
     public void Initialize(Vector3 directionOfFire, float force, Player owner) {
         LifeTime = TickTimer.CreateFromSeconds(Runner, _secondsOfLifeTime);
         _rigidbody.AddForce(directionOfFire * force, ForceMode.Impulse);
         Owner = owner;
-    }
-
-    public override void Spawned() {
-        //_soundEmitter.Play(_soundToPlay);
     }
 
     public override void FixedUpdateNetwork() {
@@ -45,29 +41,27 @@ public class Bullet : NetworkBehaviour {
         CheckForCollisions();
     }
 
-    // TODO: Refactor
     private void CheckForCollisions() {
         float radius = _sphereCollider.radius + _additionalRadius;
-        int bulletHitCount = Runner.LagCompensation.OverlapSphere(transform.position, radius, Object.InputAuthority, _hits, _collisionLayers, HitOptions.IncludePhysX);
+        Runner.LagCompensation.OverlapSphere(transform.position, radius, Object.InputAuthority, _bulletCollisions, _collisionLayers, HitOptions.IncludePhysX);
 
-        if (bulletHitCount == 0) {
+        if (_bulletCollisions.Count == 0) {
             return;
         }
 
-        foreach (LagCompensatedHit hit in _hits) {
+        foreach (LagCompensatedHit hit in _bulletCollisions) {
             GameObject hitGameObject = hit.GameObject;
 
-            if (hitGameObject == null || hitGameObject == gameObject) {
+            bool hitObjectIsNullOrThisObject = hitGameObject == null || hitGameObject == gameObject;
+            if (hitObjectIsNullOrThisObject) {
                 continue;
             }
 
             if (hitGameObject.TryGetComponent(out Bullet bullet)) {
-                print("Bullet hit another bullet");
                 bullet.Despawn();
             }
 
             else if (hitGameObject.TryGetComponent(out IDamageable damageable)) {
-                print("Bullet hit damagable!");
                 damageable.OnDamage(this);
             }
 
