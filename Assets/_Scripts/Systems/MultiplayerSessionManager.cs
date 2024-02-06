@@ -114,7 +114,11 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
     public void StartHostSession() => StartSession(GameMode.Host);
     public void StartClientSession() => StartSession(GameMode.Client);
 
-    public void ShutdownSession() => _runner.Shutdown();
+    public void ShutdownSession() {
+        if (_runner == null) return;
+
+        _runner.Shutdown();
+    }
 
     public void KickPlayer(Player player) => _runner.Disconnect(player.PlayerID); 
 

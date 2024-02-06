@@ -254,7 +254,7 @@ GameObject:
   - component: {fileID: 78491921699914235}
   - component: {fileID: 78491921699914234}
   - component: {fileID: 4875208631195821416}
-  - component: {fileID: 4222750723248402386}
+  - component: {fileID: 9188322722489776083}
   m_Layer: 11
   m_Name: Player
   m_TagString: Untagged
@@ -357,6 +357,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   <Visuals>k__BackingField: {fileID: 491863125254404042}
   _collider: {fileID: 78491921699914234}
+  _hitbox: {fileID: 9188322722489776083}
   _playerInvincibility: {fileID: 6688664076082182664}
   <ReadyUp>k__BackingField: {fileID: 8783976540221669435}
   _Score: 0
@@ -524,8 +525,8 @@ MonoBehaviour:
   Offset: {x: 0, y: 0, z: 0}
   GizmosColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   Hitboxes:
-  - {fileID: 0}
---- !u!114 &4222750723248402386
+  - {fileID: 9188322722489776083}
+--- !u!114 &9188322722489776083
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

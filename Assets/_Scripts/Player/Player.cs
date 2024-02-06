@@ -17,6 +17,7 @@ public class Player : NetworkBehaviour, IDamageable {
     [field: SerializeField] public PlayerVisuals Visuals { get; private set; }
     
     [SerializeField] private Collider _collider;
+    [SerializeField] private Hitbox _hitbox;
     [SerializeField] private PlayerInvincibility _playerInvincibility;
     [field: SerializeField] public PlayerReadyUp ReadyUp { get; private set; }
 
@@ -61,6 +62,7 @@ public class Player : NetworkBehaviour, IDamageable {
         CheckRespawnTimer();
     }
 
+    // TODO: Refactor
     private void CheckRespawnTimer() {
         if (!_respawnTimer.Expired(Runner)) {
             return;
@@ -68,6 +70,7 @@ public class Player : NetworkBehaviour, IDamageable {
 
         IsAlive = true;
         _collider.enabled = true;
+        _hitbox.HitboxActive = true;
 
         _respawnTimer = default;
         RespawnManager.Instance.Respawn(this);
@@ -98,9 +101,7 @@ public class Player : NetworkBehaviour, IDamageable {
         }
         playerData.Behaviour.Visuals.DestroyedEffect();
     }
-
-    
-    
+ 
     public void OnDamage(Bullet damager) {
         if (damager == null || PlayerIsInvincible()) {
             return;
@@ -122,6 +123,7 @@ public class Player : NetworkBehaviour, IDamageable {
     private void OnDefeated() {
         IsAlive = false;
         _collider.enabled = false;
+        _hitbox.HitboxActive = false;
         Visuals.DestroyedEffect();      
         _respawnTimer = TickTimer.CreateFromSeconds(Runner, RESPAWN_DELAY_SECONDS);
         RPC_PlayerDefeated();
