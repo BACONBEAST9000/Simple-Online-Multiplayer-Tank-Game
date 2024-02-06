@@ -5992,4 +5992,4 @@ MonoBehaviour:
   _interpolationDataSource: 0
   soundEmitter: {fileID: 9062661689595028101}
   _player: {fileID: 6106064112569594434}
-  _shootSound: {fileID: 8300000, guid: cc6f2cc6dcdb05c4b8e8eb509bdb6ee0, type: 3}
+  _destroyedSound: {fileID: 8300000, guid: e6bbc9a7b2070bd4ab87d58ce2cf779d, type: 3}

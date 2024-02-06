@@ -73,7 +73,6 @@ public class Player : NetworkBehaviour, IDamageable {
         RespawnManager.Instance.Respawn(this);
     }
 
-    // RPC used to send player information to the Host
     [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
     private void RpcSetNickName(string nickName) {
         if (string.IsNullOrEmpty(nickName)) return;
@@ -123,11 +122,16 @@ public class Player : NetworkBehaviour, IDamageable {
     private void OnDefeated() {
         IsAlive = false;
         _collider.enabled = false;
-        Visuals.DestroyedEffect();
-        OnPlayerDestroyed?.Invoke(this);
+        Visuals.DestroyedEffect();      
         _respawnTimer = TickTimer.CreateFromSeconds(Runner, RESPAWN_DELAY_SECONDS);
+        RPC_PlayerDefeated();
     }
-    
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+    private void RPC_PlayerDefeated() {
+        OnPlayerDestroyed?.Invoke(this);
+    }
+
     public bool IsHost => PlayerID == Runner.SessionInfo.MaxPlayers - 1;
 
     private bool PlayerIsInvincible() {
