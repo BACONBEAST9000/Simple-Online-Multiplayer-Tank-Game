@@ -9,6 +9,7 @@ public class BulletAudio : AudioPlayingInstance {
     [SerializeField] private AudioClip _hitWallSound;
 
     private void OnEnable() {
+        Bullet.OnLocalCollisionHitWall -= WhenABulletHitsWall;
         Bullet.OnLocalCollisionHitWall += WhenABulletHitsWall;
     }
 
@@ -19,8 +20,7 @@ public class BulletAudio : AudioPlayingInstance {
     private void WhenABulletHitsWall(Bullet bulletThatHitWall) {
         if (BulletIsNotThisBullet(bulletThatHitWall)) return;
 
-        AudioPlayManager.Instance.Play(_hitWallSound);
-        //soundEmitter.Play(_hitWallSound);
+        soundEmitter.Play(_hitWallSound);
     }
 
     private bool BulletIsNotThisBullet(Bullet bullet) => bullet != _bullet;

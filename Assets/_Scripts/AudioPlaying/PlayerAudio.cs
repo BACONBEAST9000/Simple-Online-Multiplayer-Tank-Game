@@ -26,7 +26,6 @@ public class PlayerAudio : AudioPlayingInstance {
     private void WhenAPlayerShootsBullet(Bullet bullet, Player playerWhoShot) {
         if (PlayerIsNotThisPlayer(playerWhoShot)) return;
 
-        //AudioPlayManager.Instance.Play(_shootSound);
         soundEmitter.Play(_shootSound);
     }
 
