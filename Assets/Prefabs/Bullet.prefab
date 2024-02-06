@@ -155,8 +155,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67137ddfc1cbe9f41adb3858457fff83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
   soundEmitter: {fileID: 5402293213934600624}
   _bullet: {fileID: 8029772854575541321}
+  _bulletSpawnSound: {fileID: 8300000, guid: cc6f2cc6dcdb05c4b8e8eb509bdb6ee0, type: 3}
   _hitWallSound: {fileID: 8300000, guid: c7ebc11121bc0dc48b22671686f6a386, type: 3}
 --- !u!1 &8210214270198462346
 GameObject:
@@ -376,6 +378,7 @@ MonoBehaviour:
   - {fileID: 6699884371812932575}
   - {fileID: 2881800460350272744}
   - {fileID: 357471077187526370}
+  - {fileID: 1572867969609355933}
   SimulationBehaviours: []
 --- !u!114 &2881800460350272744
 MonoBehaviour:

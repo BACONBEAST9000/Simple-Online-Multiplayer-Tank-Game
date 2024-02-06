@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Fusion;
+using UnityEngine;
 
-public abstract class AudioPlayingInstance : MonoBehaviour {
+public abstract class AudioPlayingInstance : NetworkBehaviour {
     [Header("Sound Emitter")]
     [SerializeField] protected SoundEmitter soundEmitter;
 }

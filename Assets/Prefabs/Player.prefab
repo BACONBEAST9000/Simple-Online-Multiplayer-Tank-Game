@@ -312,6 +312,7 @@ MonoBehaviour:
   - {fileID: 78491921699914228}
   - {fileID: 1738468249552305674}
   - {fileID: 4875208631195821416}
+  - {fileID: 3123703053978089130}
   SimulationBehaviours: []
 --- !u!114 &4814418892433255776
 MonoBehaviour:
@@ -5988,8 +5989,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6a722fec883ca0468c11e4af01898fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
   soundEmitter: {fileID: 9062661689595028101}
   _player: {fileID: 6106064112569594434}
-  _playerMovement: {fileID: 0}
-  _playerShoot: {fileID: 0}
   _shootSound: {fileID: 8300000, guid: cc6f2cc6dcdb05c4b8e8eb509bdb6ee0, type: 3}

@@ -6,6 +6,7 @@ public class BulletAudio : AudioPlayingInstance {
     [SerializeField] private Bullet _bullet;
 
     [Header("Sounds")]
+    [SerializeField] private AudioClip _bulletSpawnSound;
     [SerializeField] private AudioClip _hitWallSound;
 
     private void OnEnable() {
@@ -15,6 +16,10 @@ public class BulletAudio : AudioPlayingInstance {
 
     private void OnDisable() {
         Bullet.OnLocalCollisionHitWall -= WhenABulletHitsWall;
+    }
+
+    public override void Spawned() {
+        soundEmitter.Play(_bulletSpawnSound);
     }
 
     private void WhenABulletHitsWall(Bullet bulletThatHitWall) {
