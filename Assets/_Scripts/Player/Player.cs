@@ -127,7 +127,7 @@ public class Player : NetworkBehaviour, IDamageable {
         RPC_PlayerDefeated();
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void RPC_PlayerDefeated() {
         OnPlayerDestroyed?.Invoke(this);
     }
