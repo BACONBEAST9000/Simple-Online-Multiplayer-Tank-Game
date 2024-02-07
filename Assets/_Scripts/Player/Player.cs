@@ -2,6 +2,7 @@ using Fusion;
 using System;
 using UnityEngine;
 
+// TODO: Refactor! Consider separating Score functionality from Player.
 [RequireComponent(typeof(NetworkObject))]
 public class Player : NetworkBehaviour, IDamageable {
     public const float RESPAWN_DELAY_SECONDS = 2;
@@ -68,9 +69,7 @@ public class Player : NetworkBehaviour, IDamageable {
             return;
         }
 
-        IsAlive = true;
-        _collider.enabled = true;
-        _hitbox.HitboxActive = true;
+        SetAliveAndCollisionEnabled(true);
 
         _respawnTimer = default;
         RespawnManager.Instance.Respawn(this);
@@ -102,28 +101,32 @@ public class Player : NetworkBehaviour, IDamageable {
         playerData.Behaviour.Visuals.DestroyedEffect();
     }
  
-    public void OnDamage(Bullet damager) {
-        if (damager == null || PlayerIsInvincible()) {
+    public void OnDamage(Bullet bullet) {
+        if (bullet == null || PlayerIsInvincible()) {
             return;
         }
 
-        if (IsGameStateWhereScoreCanBeUpdated) {
-            if (damager.Owner == this) {
-                DecrementScoreBy(1);
-            }
-            else {
-                damager.Owner.IncrementScoreBy(1);
-            }
-        }
+        UpdateScores(bullet);
 
         OnDefeated();
     }
 
+    private void UpdateScores(Bullet bullet) {
+        if (!IsGameStateWhereScoreCanBeUpdated || bullet.Owner == null) {
+            return;
+        }
+
+        if (bullet.Owner == this) {
+            DecrementScoreBy(1);
+        }
+        else {
+            bullet.Owner.IncrementScoreBy(1);
+        }
+    }
+
     // TODO: Refactor
     private void OnDefeated() {
-        IsAlive = false;
-        _collider.enabled = false;
-        _hitbox.HitboxActive = false;
+        SetAliveAndCollisionEnabled(false);
         Visuals.DestroyedEffect();      
         _respawnTimer = TickTimer.CreateFromSeconds(Runner, RESPAWN_DELAY_SECONDS);
         RPC_PlayerDefeated();
@@ -133,6 +136,12 @@ public class Player : NetworkBehaviour, IDamageable {
     private void RPC_PlayerDefeated() {
         OnPlayerDestroyed?.Invoke(this);
     }
+    
+    private void SetAliveAndCollisionEnabled(bool value) {
+        IsAlive = value;
+        _collider.enabled = value;
+        _hitbox.HitboxActive = value;
+    }
 
     public bool IsHost => PlayerID == Runner.SessionInfo.MaxPlayers - 1;
 
@@ -141,4 +150,5 @@ public class Player : NetworkBehaviour, IDamageable {
     }
 
     private bool IsGameStateWhereScoreCanBeUpdated => GameStateManager.CurrentState == GameState.Game;
+
 }
