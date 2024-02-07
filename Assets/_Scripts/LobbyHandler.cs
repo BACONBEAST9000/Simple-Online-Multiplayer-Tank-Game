@@ -4,6 +4,20 @@ using UnityEngine;
 public class LobbyHandler : NetworkBehaviour {
 
     [SerializeField] private PlayerSpawnHandler _playerSpawner;
+    [SerializeField] private NetworkTimer _lobbyTimer;
+
+    private void OnEnable() {
+        _lobbyTimer.OnTimerEnd -= WhenLobbyTimerEnds;
+        _lobbyTimer.OnTimerEnd += WhenLobbyTimerEnds;
+    }
+
+    private void OnDisable() {
+        _lobbyTimer.OnTimerEnd -= WhenLobbyTimerEnds;
+    }
+
+    private void WhenLobbyTimerEnds() {
+        MultiplayerSessionManager.Instance.StartGame();
+    }
 
     public override void Spawned() {
         if (GameStateManager.CurrentState == GameState.GameEnd) {
