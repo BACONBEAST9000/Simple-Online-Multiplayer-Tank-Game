@@ -3871,16 +3871,6 @@ MonoBehaviour:
   _allPlayersLeftUI: {fileID: 1314084587}
   _continueButton: {fileID: 1578447465}
   _quitButton: {fileID: 240017511}
-  _playerPositionTextElements:
-  - {fileID: 1904539450}
-  - {fileID: 336231369}
-  - {fileID: 494589895}
-  - {fileID: 1337905462}
-  _positionColours:
-  - {r: 1, g: 0.8129244, b: 0, a: 1}
-  - {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
-  - {r: 0.8679245, g: 0.4431955, b: 0, a: 1}
-  - {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &1142299269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3904,6 +3894,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 1142299268}
+  - {fileID: 1603519214}
   SimulationBehaviours: []
 --- !u!1 &1208663885
 GameObject:
@@ -5366,13 +5357,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1603519213}
+  - component: {fileID: 1603519214}
   m_Layer: 5
   m_Name: Results
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1603519213
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5395,6 +5387,29 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1603519214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603519212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b83e673c9fcfff74d8d6df5eebd5adc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  _playerPositionTextElements:
+  - {fileID: 1904539450}
+  - {fileID: 336231369}
+  - {fileID: 494589895}
+  - {fileID: 1337905462}
+  _positionColours:
+  - {r: 1, g: 0.8129244, b: 0, a: 1}
+  - {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
+  - {r: 0.8679245, g: 0.4431955, b: 0, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &1686613334
 PrefabInstance:
   m_ObjectHideFlags: 0

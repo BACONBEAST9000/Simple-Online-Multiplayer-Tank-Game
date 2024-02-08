@@ -1,14 +1,8 @@
 using Fusion;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameEndScreen : NetworkBehaviour {
-
-    private static string[] _ordinalNumbers = { "1st", "2nd", "3rd", "4th" };
-    private static float[] _fontSizes = { 72, 64, 56, 42 };
-
     [SerializeField] private RectTransform _waitingText;
     [SerializeField] private RectTransform _resultsUI;
     [SerializeField] private RectTransform _allPlayersLeftUI;
@@ -17,17 +11,16 @@ public class GameEndScreen : NetworkBehaviour {
     [SerializeField] private Button _continueButton;
     [SerializeField] private Button _quitButton;
 
-    [Header("List of Players")]
-    [SerializeField] private TMP_Text[] _playerPositionTextElements;
-    [SerializeField] private Color[] _positionColours;
-
     private void OnEnable() {
+        if (GameStateManager.CurrentState != GameState.GameEnd) {
+            gameObject.SetActive(false);
+            return;
+        }
+        
+        // TODO: Refactor
         if (PlayerManager.IsEnoughPlayersToStartGame) {
             _resultsUI.gameObject.SetActive(true);
             _allPlayersLeftUI.gameObject.SetActive(false);
-
-            HideAllTextEntries();
-            DisplayResults();
         }
         else {
             _allPlayersLeftUI.gameObject.SetActive(true);
@@ -35,7 +28,14 @@ public class GameEndScreen : NetworkBehaviour {
         }
 
         ShowContinueButtonOrWaitingText();
+        AddListenersToButtons();
+    }
+    
+    private void OnDisable() {
+        RemoveListenersFromButtons();
+    }
 
+    private void AddListenersToButtons() {
         _continueButton.onClick.AddListener(() => {
             MultiplayerSessionManager.Instance.LoadMenuScene();
         });
@@ -45,38 +45,11 @@ public class GameEndScreen : NetworkBehaviour {
         });
     }
 
-    private void OnDisable() {
+    private void RemoveListenersFromButtons() {
         _continueButton?.onClick.RemoveAllListeners();
         _quitButton?.onClick.RemoveAllListeners();
     }
 
-    private void HideAllTextEntries() {
-        foreach (var textElement in _playerPositionTextElements) {
-            textElement.gameObject.SetActive(false);
-        }
-    }
-
-    private void DisplayResults() {
-        List<Player> playersOrderedByScore = PlayerManager.GetPlayersInOrderOfDescendingScore;
-        
-        int positionIndex = 0;
-        int currentScore = playersOrderedByScore[0].Score;
-
-        for (int i = 0; i < playersOrderedByScore.Count; i++) {
-            Player player = playersOrderedByScore[i];
-            if (currentScore != player.Score) {
-                currentScore = player.Score;
-                positionIndex++;
-            }
-
-            // TODO: Refactor
-            _playerPositionTextElements[i].text = $"{_ordinalNumbers[positionIndex]} {player.NickName}";
-            _playerPositionTextElements[i].fontSize = _fontSizes[positionIndex];
-            _playerPositionTextElements[i].color = _positionColours[positionIndex];
-            _playerPositionTextElements[i].gameObject.SetActive(true);
-        }
-    }
-    
     private void ShowContinueButtonOrWaitingText() {
         SetContinueButtonActive(Object.HasStateAuthority);
         SetWaitingTextActive(Object.HasStateAuthority == false);
