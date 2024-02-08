@@ -10,6 +10,8 @@ public class GameEndScreen : NetworkBehaviour {
     private static float[] _fontSizes = { 72, 64, 56, 42 };
 
     [SerializeField] private RectTransform _waitingText;
+    [SerializeField] private RectTransform _resultsUI;
+    [SerializeField] private RectTransform _allPlayersLeftUI;
 
     [Header("Buttons")]
     [SerializeField] private Button _continueButton;
@@ -20,8 +22,18 @@ public class GameEndScreen : NetworkBehaviour {
     [SerializeField] private Color[] _positionColours;
 
     private void OnEnable() {
-        HideAllTextEntries();
-        DisplayResults();
+        if (PlayerManager.IsEnoughPlayersToStartGame) {
+            _resultsUI.gameObject.SetActive(true);
+            _allPlayersLeftUI.gameObject.SetActive(false);
+
+            HideAllTextEntries();
+            DisplayResults();
+        }
+        else {
+            _allPlayersLeftUI.gameObject.SetActive(true);
+            _resultsUI.gameObject.SetActive(false);
+        }
+
         ShowContinueButtonOrWaitingText();
 
         _continueButton.onClick.AddListener(() => {

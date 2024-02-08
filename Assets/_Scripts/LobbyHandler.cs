@@ -50,11 +50,11 @@ public class LobbyHandler : NetworkBehaviour {
 
     private bool JustGotEnoughPlayersToPlay() => _notEnoughPlayersBeforeNow && PlayerManager.IsEnoughPlayersToStartGame;
 
-    private void ShowWaitingForPlayersUI() => _waitingForPlayersUI.gameObject.SetActive(true);
-    private void HideWaitingForPlayersUI() => _waitingForPlayersUI.gameObject.SetActive(false);
+    private void ShowWaitingForPlayersUI() => _waitingForPlayersUI?.gameObject?.SetActive(true);
+    private void HideWaitingForPlayersUI() => _waitingForPlayersUI?.gameObject?.SetActive(false);
 
-    private void ShowTimeLeftUI() => _timeLeftUI.gameObject.SetActive(true);
-    private void HideTimeLeftUI() => _timeLeftUI.gameObject.SetActive(false);
+    private void ShowTimeLeftUI() => _timeLeftUI?.gameObject?.SetActive(true);
+    private void HideTimeLeftUI() => _timeLeftUI?.gameObject?.SetActive(false);
 
 
     private void WhenLobbyTimerEnds() {
