@@ -16,7 +16,7 @@ public class LobbyHandler : NetworkBehaviour {
         _lobbyTimer.OnTimerEnd += WhenLobbyTimerEnds;
 
         PlayerManager.OnPlayerListUpdated -= WhenPlayerListUpdated;
-        PlayerManager.OnPlayerListUpdated += WhenPlayerListUpdated;
+        PlayerManager.OnPlayerListUpdated += WhenPlayerListUpdated;  
     }
 
 
@@ -28,7 +28,7 @@ public class LobbyHandler : NetworkBehaviour {
     private void WhenPlayerListUpdated() {
         CheckIfUpdateLobbyTimerAndUI();
     }
-
+    
     private void CheckIfUpdateLobbyTimerAndUI() {
         if (JustGotEnoughPlayersToPlay()) {
             _lobbyTimer.StartTimer(SECONDS_UNTIL_GAME_START);
@@ -69,6 +69,8 @@ public class LobbyHandler : NetworkBehaviour {
         GameStateManager.ChangeState(GameState.Lobby);
         
         MultiplayerSessionManager.Instance.OpenGameSession();
+
+        CheckIfUpdateLobbyTimerAndUI();
     }
 
     private void Update() {
