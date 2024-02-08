@@ -14,6 +14,7 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
     private const string GAME_SCENE_NAME = "MainGame";
 
     public static event Action OnPlayerJoinedGame;
+    public static event Action OnPlayerLeftGame;
     public static event Action OnPlayerConnectedToGame;
     public static event Action OnConnectingStart;
     public static event Action OnConnectingEnd;
@@ -90,6 +91,8 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
         if (playerThatLeftGame) {
             Runner.Despawn(playerThatLeftGame.Object);
         }
+
+        OnPlayerLeftGame?.Invoke();
     }
 
     private async void StartSession(GameMode mode) {
