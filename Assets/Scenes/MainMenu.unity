@@ -3658,6 +3658,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   _allowSoloPlayForTesting: 1
+  _lobbyHandler: {fileID: 1306736119}
 --- !u!4 &535246575
 Transform:
   m_ObjectHideFlags: 0

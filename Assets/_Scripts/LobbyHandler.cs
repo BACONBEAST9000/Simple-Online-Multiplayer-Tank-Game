@@ -15,21 +15,21 @@ public class LobbyHandler : NetworkBehaviour {
         _lobbyTimer.OnTimerEnd -= WhenLobbyTimerEnds;
         _lobbyTimer.OnTimerEnd += WhenLobbyTimerEnds;
 
-        PlayerManager.OnPlayerListUpdated -= WhenPlayerListUpdated;
-        PlayerManager.OnPlayerListUpdated += WhenPlayerListUpdated;  
+        PlayerManager.OnPlayerListUpdated -= WhenPlayerJoinsOrLeavesGame;
+        PlayerManager.OnPlayerListUpdated += WhenPlayerJoinsOrLeavesGame;
     }
 
+    private void WhenPlayerJoinsOrLeavesGame() {
+        PlayerManager.PrintPlayers();
+        CheckIfUpdateLobbyTimerAndUI();
+    }
 
     private void OnDisable() {
         _lobbyTimer.OnTimerEnd -= WhenLobbyTimerEnds;
-        PlayerManager.OnPlayerListUpdated -= WhenPlayerListUpdated;
+        PlayerManager.OnPlayerListUpdated -= WhenPlayerJoinsOrLeavesGame;
     }
-    
-    private void WhenPlayerListUpdated() {
-        CheckIfUpdateLobbyTimerAndUI();
-    }
-    
-    private void CheckIfUpdateLobbyTimerAndUI() {
+
+    private void CheckIfUpdateLobbyTimerAndUI() {        
         if (JustGotEnoughPlayersToPlay()) {
             _lobbyTimer.StartTimer(SECONDS_UNTIL_GAME_START);
             
@@ -50,12 +50,24 @@ public class LobbyHandler : NetworkBehaviour {
 
     private bool JustGotEnoughPlayersToPlay() => _notEnoughPlayersBeforeNow && PlayerManager.IsEnoughPlayersToStartGame;
 
-    private void ShowWaitingForPlayersUI() => _waitingForPlayersUI?.gameObject?.SetActive(true);
-    private void HideWaitingForPlayersUI() => _waitingForPlayersUI?.gameObject?.SetActive(false);
+    private void ShowWaitingForPlayersUI() {
+        if (_waitingForPlayersUI)
+            _waitingForPlayersUI?.gameObject?.SetActive(true);
+    }
+    private void HideWaitingForPlayersUI() {
+        if (_waitingForPlayersUI)
+            _waitingForPlayersUI?.gameObject?.SetActive(false);
+    }
 
-    private void ShowTimeLeftUI() => _timeLeftUI?.gameObject?.SetActive(true);
-    private void HideTimeLeftUI() => _timeLeftUI?.gameObject?.SetActive(false);
+    private void ShowTimeLeftUI() {
+        if (_timeLeftUI)
+            _timeLeftUI?.gameObject?.SetActive(true);
+    }
 
+    private void HideTimeLeftUI() {
+        if (_timeLeftUI)
+            _timeLeftUI?.gameObject?.SetActive(false);
+    }
 
     private void WhenLobbyTimerEnds() {
         MultiplayerSessionManager.Instance.StartGame();
@@ -76,6 +88,10 @@ public class LobbyHandler : NetworkBehaviour {
     private void Update() {
         if (Input.GetKeyDown(KeyCode.Escape)) {
             MultiplayerSessionManager.Instance.ShutdownSession();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Alpha1)) {
+            PlayerManager.PrintPlayers();
         }
     }
 }

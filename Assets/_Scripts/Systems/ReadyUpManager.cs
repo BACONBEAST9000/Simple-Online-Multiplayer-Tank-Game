@@ -31,6 +31,8 @@ public class ReadyUpManager : NetworkBehaviour {
 
     private bool _displayedReadyToPlay = false;
     public override void FixedUpdateNetwork() {
+        if (!HasStateAuthority) return;
+        
         if (ValadNumberOfPlayersReady()) {
             print("ALL PLAYERS ARE READY TO PLAY!");
             _displayedReadyToPlay = true;

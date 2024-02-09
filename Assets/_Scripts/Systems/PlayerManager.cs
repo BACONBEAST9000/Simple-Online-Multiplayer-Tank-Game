@@ -63,4 +63,11 @@ public static class PlayerManager {
     }
 
     public static List<Player> GetPlayersInOrderOfDescendingScore => GetAllPlayers.Values.OrderByDescending(player => player.Score).ToList();
+
+    // TODO: TESTING ONLY
+    public static void PrintPlayers() {
+        foreach (var player in GetAllPlayers.Values) {
+            Debug.Log(player.NickName);
+        }
+    }
 }
