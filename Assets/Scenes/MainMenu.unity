@@ -3657,7 +3657,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
-  _allowSoloPlayForTesting: 0
+  _allowSoloPlayForTesting: 1
 --- !u!4 &535246575
 Transform:
   m_ObjectHideFlags: 0

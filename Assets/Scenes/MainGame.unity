@@ -3097,7 +3097,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b617bc0a6181814cbb8cbf4a062f709, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _materialToUpdate: {fileID: 2100000, guid: fb5f87c31a40534499743788fadce1ee, type: 2}
+  _originalMaterial: {fileID: 2100000, guid: fb5f87c31a40534499743788fadce1ee, type: 2}
+  _renderersToOverrideMaterial:
+  - {fileID: 676332150}
+  - {fileID: 1056431163}
+  - {fileID: 1859615887}
+  - {fileID: 358558670}
+  - {fileID: 1922032540}
+  - {fileID: 470984430}
+  - {fileID: 1781895836}
+  - {fileID: 182110743}
+  - {fileID: 135721125}
+  - {fileID: 1126220117}
+  - {fileID: 507500035}
   _coloursToUse:
   - {r: 0, g: 0, b: 1, a: 1}
   - {r: 0, g: 1, b: 0, a: 1}
