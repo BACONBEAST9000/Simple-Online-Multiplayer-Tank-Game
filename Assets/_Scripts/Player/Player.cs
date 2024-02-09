@@ -10,34 +10,32 @@ public class Player : NetworkBehaviour, IDamageable {
     public static event Action<Player> OnPlayerDestroyed;
     public static event Action<Player> OnPlayerRespawned;
 
-    public static event Action<Player, int> OnScoreUpdated;
     public static event Action<Player, string> OnNameUpdated;
     public static event Action<Player> OnSpawned;
     public static event Action<Player> OnDespawned;
 
+
     [field: SerializeField] public PlayerVisuals Visuals { get; private set; }
+    [field: SerializeField] public PlayerScore Scoring { get; private set; }
+    [field: SerializeField] public PlayerReadyUp ReadyUp { get; private set; }
     
+
     [SerializeField] private Collider _collider;
     [SerializeField] private Hitbox _hitbox;
     [SerializeField] private PlayerInvincibility _playerInvincibility;
-    [field: SerializeField] public PlayerReadyUp ReadyUp { get; private set; }
-
-    [Networked(OnChanged = nameof(OnScoreChanged))]
-    [HideInInspector]
-    public int Score { get; private set; }
+    
 
     [Networked(OnChanged = nameof(OnNameChanged))]
     [HideInInspector]
     public NetworkString<_16> NickName { get; private set; }
 
-    [Networked] private TickTimer _respawnTimer { get; set; }
-
     [Networked(OnChanged = nameof(OnPlayerAliveChanged))]
     [HideInInspector]
     public NetworkBool IsAlive { get; private set; } = true;
 
-    public int PlayerID { get; private set; }
+    [Networked] private TickTimer _respawnTimer { get; set; }
 
+    public int PlayerID { get; private set; }
 
     public override void Spawned() {
         IsAlive = true;
@@ -80,13 +78,6 @@ public class Player : NetworkBehaviour, IDamageable {
         if (string.IsNullOrEmpty(nickName)) return;
         NickName = nickName;
     }
-
-    public void IncrementScoreBy(int value) => Score += value;
-    public void DecrementScoreBy(int value) => Score = Mathf.Max(0, Score - value);
-
-    public static void OnScoreChanged(Changed<Player> playerData) {
-        OnScoreUpdated?.Invoke(playerData.Behaviour, playerData.Behaviour.Score);
-    }
     
     private static void OnNameChanged(Changed<Player> playerData) {
         OnNameUpdated?.Invoke(playerData.Behaviour, playerData.Behaviour.NickName.ToString());
@@ -117,17 +108,17 @@ public class Player : NetworkBehaviour, IDamageable {
         }
 
         if (bullet.Owner == this) {
-            DecrementScoreBy(1);
+            Scoring.DecrementScoreBy(1);
         }
         else {
-            bullet.Owner.IncrementScoreBy(1);
+            bullet.Owner.Scoring.IncrementScoreBy(1);
         }
     }
 
     // TODO: Refactor
     private void OnDefeated() {
         SetAliveAndCollisionEnabled(false);
-        Visuals.DestroyedEffect();      
+        Visuals.DestroyedEffect();
         _respawnTimer = TickTimer.CreateFromSeconds(Runner, RESPAWN_DELAY_SECONDS);
         RPC_PlayerDefeated();
     }
@@ -150,5 +141,4 @@ public class Player : NetworkBehaviour, IDamageable {
     }
 
     private bool IsGameStateWhereScoreCanBeUpdated => GameStateManager.CurrentState == GameState.Game;
-
 }

@@ -247,6 +247,7 @@ GameObject:
   - component: {fileID: 6106064112569594434}
   - component: {fileID: 491863125254404042}
   - component: {fileID: 8783976540221669435}
+  - component: {fileID: 2546477919826734737}
   - component: {fileID: 78491921699914232}
   - component: {fileID: 78491921699914228}
   - component: {fileID: 6688664076082182664}
@@ -308,6 +309,7 @@ MonoBehaviour:
   - {fileID: 6106064112569594434}
   - {fileID: 491863125254404042}
   - {fileID: 8783976540221669435}
+  - {fileID: 2546477919826734737}
   - {fileID: 78491921699914232}
   - {fileID: 78491921699914228}
   - {fileID: 1738468249552305674}
@@ -360,7 +362,7 @@ MonoBehaviour:
   _hitbox: {fileID: 9188322722489776083}
   _playerInvincibility: {fileID: 6688664076082182664}
   <ReadyUp>k__BackingField: {fileID: 8783976540221669435}
-  _Score: 0
+  <Scoring>k__BackingField: {fileID: 2546477919826734737}
   _NickName:
     _length: 0
     _data:
@@ -405,6 +407,21 @@ MonoBehaviour:
   _player: {fileID: 6106064112569594434}
   _IsReady:
     _value: 0
+--- !u!114 &2546477919826734737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78491921699914239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b69384b53889c3a409fde32feffd04c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  _player: {fileID: 6106064112569594434}
+  _Score: 0
 --- !u!114 &78491921699914232
 MonoBehaviour:
   m_ObjectHideFlags: 0

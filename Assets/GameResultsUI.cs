@@ -21,14 +21,14 @@ public class GameResultsUI : NetworkBehaviour {
         List<Player> playersOrderedByScore = PlayerManager.GetPlayersInOrderOfDescendingScore;
 
         int positionIndex = 0;
-        int currentScore = playersOrderedByScore[0].Score;
+        int currentScore = playersOrderedByScore[0].Scoring.Score;
 
         for (int i = 0; i < playersOrderedByScore.Count; i++) {
             Player player = playersOrderedByScore[i];
 
-            bool twoPlayerScoresAreNotTied = currentScore != player.Score;
+            bool twoPlayerScoresAreNotTied = currentScore != player.Scoring.Score;
             if (twoPlayerScoresAreNotTied) {
-                currentScore = player.Score;
+                currentScore = player.Scoring.Score;
                 positionIndex++;
             }
 

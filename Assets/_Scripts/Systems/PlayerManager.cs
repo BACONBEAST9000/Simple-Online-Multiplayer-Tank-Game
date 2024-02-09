@@ -62,7 +62,7 @@ public static class PlayerManager {
         return GetAllPlayers.Where(player => player.Key == playerRef).FirstOrDefault().Value;
     }
 
-    public static List<Player> GetPlayersInOrderOfDescendingScore => GetAllPlayers.Values.OrderByDescending(player => player.Score).ToList();
+    public static List<Player> GetPlayersInOrderOfDescendingScore => GetAllPlayers.Values.OrderByDescending(player => player.Scoring.Score).ToList();
 
     // TODO: TESTING ONLY
     public static void PrintPlayers() {
