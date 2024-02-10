@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ConnectionMessageSender : SingletonPersistent<ConnectionMessageSender> {
 
@@ -13,40 +14,39 @@ public class ConnectionMessageSender : SingletonPersistent<ConnectionMessageSend
         { PopupMessageType.CANNOTCONNECT, "Cannot connect to game." },
         { PopupMessageType.TIMEDOUT, "Connection Timed Out! Try again later!" },
         { PopupMessageType.DISCONNECTED, "You were disconnected from the game session!" },
+        { PopupMessageType.CONNECTIONFAILED, "Failed to connect to game session." },
         { PopupMessageType.UNKNOWN, "Unknown error" },
     };
 
     [SerializeField] private RectTransform _popupUI;
     [SerializeField] private TMP_Text _messageText;
+    [SerializeField] private Button _closeButton;
 
     private void OnEnable() {
         HidePopup();
-        
-        //MultiplayerSessionManager.OnSessionShutdown += WhenSessionShutsDown;
+        _closeButton.onClick.AddListener(() => {
+            HidePopup();
+        });
+
         MultiplayerSessionManager.OnHostShutdownSession += WhenHostShutsDownSession;
         MultiplayerSessionManager.OnClientShutdownSession += WhenClientShutsDownSession;
-
-        //MultiplayerSessionManager.OnPlayerKicked += WhenPlayerKicked;
         MultiplayerSessionManager.OnDisconnected += WhenDisconnected;
         MultiplayerSessionManager.OnConnectionFailed += WhenConnectionFailed;
     }
 
-    private void WhenConnectionFailed(Fusion.Sockets.NetConnectFailedReason obj) {
-        // TODO: ADD the popup message!
-        print("Connection Failed -> Popup!");
-    }
 
     private void OnDisable() {
-        //MultiplayerSessionManager.OnSessionShutdown -= WhenSessionShutsDown;
+        _closeButton.onClick.RemoveAllListeners();
+        
         MultiplayerSessionManager.OnHostShutdownSession -= WhenHostShutsDownSession;
         MultiplayerSessionManager.OnClientShutdownSession -= WhenClientShutsDownSession;
-        //MultiplayerSessionManager.OnPlayerKicked -= WhenPlayerKicked;
         MultiplayerSessionManager.OnDisconnected -= WhenDisconnected;
         MultiplayerSessionManager.OnConnectionFailed -= WhenConnectionFailed;
     }
 
     private void WhenClientShutsDownSession() => Show(PopupMessageType.LEFTGAME);
     private void WhenDisconnected(Fusion.NetworkRunner runner) => Show(PopupMessageType.DISCONNECTED);
+    private void WhenConnectionFailed(Fusion.Sockets.NetConnectFailedReason obj) => Show(PopupMessageType.CONNECTIONFAILED);
 
     private void WhenHostShutsDownSession() => Show(PopupMessageType.HOSTLEFT);
 
