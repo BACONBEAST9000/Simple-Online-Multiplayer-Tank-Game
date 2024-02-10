@@ -11,6 +11,8 @@ public abstract class NetworkTimerUI : NetworkBehaviour {
     protected int _currentTimeLeft;
 
     public override void FixedUpdateNetwork() {
+        if (_gameTimer == null) return;
+
         UpdateTime();
     }
 

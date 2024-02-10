@@ -8,21 +8,21 @@ public class PlayerScoreDisplayUI : PlayerNameDisplayUI {
     public override void Initalize(Player player) {
         base.Initalize(player);
 
-        Player.OnScoreUpdated -= WhenPlayerScoreUpdated;
-        Player.OnScoreUpdated += WhenPlayerScoreUpdated;
+        PlayerScore.OnScoreUpdated -= WhenPlayerScoreUpdated;
+        PlayerScore.OnScoreUpdated += WhenPlayerScoreUpdated;
     }
 
     protected override void OnDisable() {
         base.OnDisable();
 
-        Player.OnScoreUpdated -= WhenPlayerScoreUpdated;
+        PlayerScore.OnScoreUpdated -= WhenPlayerScoreUpdated;
     }
 
     private void WhenPlayerScoreUpdated(Player playerWithUpdatedScore, int newScore) => UpdateEntryIfPlayer(playerWithUpdatedScore);
     
     public override void UpdateEntry(Player player) {
         UpdateNameText(player.NickName.ToString());
-        UpdateScoreText(player.Score);
+        UpdateScoreText(player.Scoring.Score);
     }
 
     public void UpdateNameText(string newName) => PlayerNameText.text = newName;

@@ -19,13 +19,8 @@ public class PlayerMovement : NetworkBehaviour {
     private bool _canMove = true;
 
     private void OnEnable() {
-        Player.OnPlayerDestroyed -= WhenPlayerDestroyed;
         Player.OnPlayerDestroyed += WhenPlayerDestroyed;
-
-        Player.OnPlayerRespawned -= WhenPlayerRespawned;
         Player.OnPlayerRespawned += WhenPlayerRespawned;
-
-        GameStateManager.OnStateChanged -= WhenGameStateChanges;
         GameStateManager.OnStateChanged += WhenGameStateChanges;
     }
 
@@ -37,30 +32,37 @@ public class PlayerMovement : NetworkBehaviour {
     }
     
     private void WhenGameStateChanges(GameState newState) {
-        SetCanMove();
+        UpdateCanMove();
     }
 
-    private void WhenPlayerDestroyed(Player player) {
-        if (player.PlayerID != Object.InputAuthority) return;
+    private void WhenPlayerDestroyed(Player destroyedPlayer) {
+        if (PlayerIsNotThisPlayer(destroyedPlayer)) return;
 
         _canMove = false;
     }
-    
-    private void WhenPlayerRespawned(Player player) {
-        if (player.PlayerID != Object.InputAuthority) return;
 
-        SetCanMove();
+
+    private void WhenPlayerRespawned(Player respawnedPlayer) {
+        if (PlayerIsNotThisPlayer(respawnedPlayer)) return;
+
+        UpdateCanMove();
     }
+
+    private bool PlayerIsNotThisPlayer(Player player) => player.PlayerID != Object.InputAuthority;
 
     private static bool ShouldBeAbleToMove() {
         return (GameStateManager.CurrentState != GameState.PreGameStart);
     }
 
-    private void SetCanMove() => _canMove = ShouldBeAbleToMove();
+    private void UpdateCanMove() => _canMove = ShouldBeAbleToMove();
 
     public override void FixedUpdateNetwork() {
+        HandleMovement();
+    }
+
+    private void HandleMovement() {
         if (!_canMove) return;
-        
+
         if (!GetInput(out PlayerInput input)) {
             _moveInput = Vector2.zero;
             return;
@@ -79,7 +81,8 @@ public class PlayerMovement : NetworkBehaviour {
     }
 
     private void HandleAcceleration() {
-        float targetMoveSpeed = _moveInput.y * ((_moveInput.y > 0) ? _maxMoveSpeed : _minMoveSpeed);
+        float speedMoveTowards = (_moveInput.y > 0) ? _maxMoveSpeed : _minMoveSpeed;
+        float targetMoveSpeed = _moveInput.y * speedMoveTowards;
 
         float moveAmount = (targetMoveSpeed > _currentMoveSpeed ? _acceleration : _deceleration) * Runner.DeltaTime;
 

@@ -11,7 +11,7 @@ public class NetworkTimer : NetworkBehaviour {
     [SerializeField] private float _timerSeconds = 0f;
 
     [Networked]
-    private TickTimer Timer { get; set; }
+    public TickTimer Timer { get; set; }
 
     public override void Spawned() {
         if (_startOnSpawned) {
@@ -21,7 +21,7 @@ public class NetworkTimer : NetworkBehaviour {
 
     public override void FixedUpdateNetwork() {
         if (Timer.Expired(Runner)) {
-            Timer = TickTimer.None;
+            StopTimer();
             OnTimerEnd?.Invoke();
 
             if (_repeatOnTimerEnd) {

@@ -1,15 +1,20 @@
 ﻿using Fusion;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public static class PlayerManager {
 
+    public static event Action OnPlayerListUpdated;
+
     public static Dictionary<PlayerRef, Player> _players = new();
     public static Dictionary<PlayerRef, Player> GetAllPlayers => _players;
 
     public static List<Player> GetAllPlayerTanks => GetAllPlayers.Values.ToList();
     public static List<Vector3> GetAllPlayerTankPositions => GetAllPlayerTanks.Select(player => player.transform.position).ToList();
+
+    public static bool IsEnoughPlayersToStartGame => GetPlayerCount > 1;
 
     public static List<PlayerRef> GetAllPlayersReferencesStartingWithHost() {
         List<PlayerRef> playerRefs = GetAllPlayers.Keys.ToList();
@@ -29,6 +34,7 @@ public static class PlayerManager {
         }
         
         _players.Add(playerToAdd.PlayerID, playerToAdd);
+        OnPlayerListUpdated?.Invoke();
     }
 
     public static void RemovePlayer(Player playerToRemove) {
@@ -38,6 +44,7 @@ public static class PlayerManager {
         }
 
         _players.Remove(playerToRemove.PlayerID);
+        OnPlayerListUpdated?.Invoke();
     }
 
     /// <summary>
@@ -55,5 +62,12 @@ public static class PlayerManager {
         return GetAllPlayers.Where(player => player.Key == playerRef).FirstOrDefault().Value;
     }
 
-    public static List<Player> GetPlayersInOrderOfDescendingScore => GetAllPlayers.Values.OrderByDescending(player => player.Score).ToList();
+    public static List<Player> GetPlayersInOrderOfDescendingScore => GetAllPlayers.Values.OrderByDescending(player => player.Scoring.Score).ToList();
+
+    // TODO: TESTING ONLY
+    public static void PrintPlayers() {
+        foreach (var player in GetAllPlayers.Values) {
+            Debug.Log(player.NickName);
+        }
+    }
 }

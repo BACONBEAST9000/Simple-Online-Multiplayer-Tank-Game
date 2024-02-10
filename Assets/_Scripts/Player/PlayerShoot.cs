@@ -33,9 +33,11 @@ public class PlayerShoot : NetworkBehaviour {
         }
     }
 
-    private bool ShouldShoot(PlayerInput input) => IsGameStateWhereCanShoot() && NoShootDelay() && ShootButtonPressed(input) && NoWallAhead();
+    private bool ShouldShoot(PlayerInput input) => PlayerIsAlive() && IsGameStateWhereCanShoot() && NoShootDelay() && ShootButtonPressed(input) && NoWallAhead();
 
     private bool IsGameStateWhereCanShoot() => GameStateManager.CurrentState != GameState.GameEnd && GameStateManager.CurrentState != GameState.PreGameStart;
+
+    private bool PlayerIsAlive() => _player.IsAlive;
 
     private bool ShootButtonPressed(PlayerInput input) => input.Buttons.WasPressed(_previousButtons, ActionButtons.Shoot);
 
@@ -46,10 +48,11 @@ public class PlayerShoot : NetworkBehaviour {
     private void Shoot() {
         Vector3 bulletSpawnPosition = _bulletSpawnTransform.position;
         Quaternion bulletSpawnRotation = Quaternion.identity;
+        Bullet bulletToShoot = null;
 
         Runner.Spawn(_bulletPrefab, bulletSpawnPosition, bulletSpawnRotation, Object.InputAuthority,
             (runner, networkObject) => {
-                Bullet bulletToShoot = networkObject.GetComponent<Bullet>();
+                bulletToShoot = networkObject.GetComponent<Bullet>();
                 bulletToShoot.Initialize(_bulletSpawnTransform.forward, _shootForce, _player);
                 OnPlayerShotBullet?.Invoke(bulletToShoot, _player);
             }
