@@ -20,6 +20,9 @@ public class LobbyHandler : NetworkBehaviour {
     }
 
     private void WhenPlayerJoinsOrLeavesGame() {
+        if (GameStateManager.CurrentState != GameState.Lobby)
+            return;
+
         PlayerManager.PrintPlayers();
         CheckIfUpdateLobbyTimerAndUI();
     }

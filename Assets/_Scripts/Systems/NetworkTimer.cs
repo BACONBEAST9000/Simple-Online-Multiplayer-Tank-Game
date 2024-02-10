@@ -20,13 +20,15 @@ public class NetworkTimer : NetworkBehaviour {
     }
 
     public override void FixedUpdateNetwork() {
-        if (Timer.Expired(Runner)) {
-            StopTimer();
-            OnTimerEnd?.Invoke();
+        if (!Timer.Expired(Runner)) {
+            return;
+        }
 
-            if (_repeatOnTimerEnd) {
-                StartTimer();
-            }
+        StopTimer();
+        OnTimerEnd?.Invoke();
+
+        if (_repeatOnTimerEnd) {
+            StartTimer();
         }
     }
 

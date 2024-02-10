@@ -139,7 +139,7 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
         print("Testing Kick Player! Everybody has this message, right?!");
     }
 
-    public void StartGame() {
+    public void StartGame() {   
         CloseGameSession();
         GameStateManager.ChangeState(GameState.PreGameStart);
         LoadGameScene();
