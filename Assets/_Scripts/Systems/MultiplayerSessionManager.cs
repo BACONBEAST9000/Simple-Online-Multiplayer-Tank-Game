@@ -18,14 +18,12 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
     public static event Action OnPlayerConnectedToGame;
     public static event Action OnConnectingStart;
     public static event Action OnConnectingEnd;
-    public static event Action OnSessionShutdown;
+    public static event Action<ShutdownReason> OnSessionShutdown;
     public static event Action OnSceneStartedLoading;
     public static event Action OnSceneLoaded;
     public static event Action<NetConnectFailedReason> OnConnectionFailed;
 
     public static event Action<NetworkRunner> OnDisconnected;
-    public static event Action OnHostShutdownSession;
-    public static event Action OnClientShutdownSession;
     public static event Action OnPlayerKicked;
 
     [SerializeField] private Player _playerPrefab;
@@ -130,13 +128,14 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
     }
 
     public void KickPlayer(Player player) {
-        Test();
+        RPC_Kick(_runner, player.PlayerID);
         OnPlayerKicked?.Invoke();
         _runner.Disconnect(player.PlayerID);
     }
 
-    private static void Test() {
-        print("Testing Kick Player! Everybody has this message, right?!");
+    [Rpc]
+    private static void RPC_Kick(NetworkRunner runner, [RpcTarget] PlayerRef playerToKick) {
+        print($"[{playerToKick}] YOU GOT KICKED!");
     }
 
     public void StartGame() {   
@@ -160,22 +159,14 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
 
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) {
-        print("Shutdown! The reason message: " + shutdownReason);
-        if (shutdownReason == ShutdownReason.DisconnectedByPluginLogic) {
-            OnHostShutdownSession?.Invoke();
-        }
-
-        else {
-            OnClientShutdownSession?.Invoke();
-        }
-        
-        Shutdown();
+        print("Shutdown! The reason message: " + shutdownReason);        
+        Shutdown(shutdownReason);
     }
 
-    private void Shutdown() {
+    private void Shutdown(ShutdownReason reason = ShutdownReason.Ok) {
         GameStateManager.ChangeState(GameState.Menu);
         SceneManager.LoadScene(0);
-        OnSessionShutdown?.Invoke();
+        OnSessionShutdown?.Invoke(reason);
         Destroy(gameObject);
     }
 
