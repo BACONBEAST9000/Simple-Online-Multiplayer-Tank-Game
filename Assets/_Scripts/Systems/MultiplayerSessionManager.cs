@@ -28,7 +28,8 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
 
     [SerializeField] private Player _playerPrefab;
     [SerializeField] private LocalPlayerData _playerDataPrefab;
-    [SerializeField] private TMP_InputField _nameInputField;
+    // Still probabily need alternative...
+    [SerializeField] private MainMenuUI _mainMenuUI;
 
     private NetworkRunner _runner;
 
@@ -47,17 +48,18 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
         StartGame();
     }
 
+    // TODO: Refactor
     private void UpdatePlayerData() {
         LocalPlayerData playerData = FindObjectOfType<LocalPlayerData>();
         if (playerData == null) {
             playerData = Instantiate(_playerDataPrefab);
         }
 
-        if (string.IsNullOrWhiteSpace(_nameInputField.text)) {
+        if (string.IsNullOrWhiteSpace(_mainMenuUI.GetNicknameInputField.text)) {
             playerData.NickName = LocalPlayerData.GetRandomNickName();
         }
         else {
-            playerData.NickName = _nameInputField.text;
+            playerData.NickName = _mainMenuUI.GetNicknameInputField.text;
         }
     }
 
@@ -108,7 +110,7 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
         StartGameArgs game = new StartGameArgs() {
             PlayerCount = 4,
             GameMode = mode,
-            SessionName = SESSION_NAME,
+            SessionName = _mainMenuUI.GetRoomNameInputField.text,
             Scene = SceneManager.GetActiveScene().buildIndex,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
         };

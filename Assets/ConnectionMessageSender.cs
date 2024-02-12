@@ -23,7 +23,7 @@ public class ConnectionMessageSender : SingletonPersistent<ConnectionMessageSend
         { new PopupMessageType(ShutdownReason.ConnectionTimeout), "Connection to remote server timed out." },
         { new PopupMessageType(ShutdownReason.PhotonCloudTimeout), "Connection to Photon Cloud timed out." },
        
-        { new PopupMessageType(CustomMessageType.Disconnected), "You have been Disconnected from the game." },
+        { new PopupMessageType(CustomMessageType.Disconnected), "You have been disconnected from the game." },
         { new PopupMessageType(CustomMessageType.ConnectionFailed), "Failed to connect to game session" },
     };
 
