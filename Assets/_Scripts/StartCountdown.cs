@@ -4,6 +4,7 @@ public class StartCountdown : MonoBehaviour {
 
     [SerializeField] private NetworkTimer _networkTimerForGameStart;
     [SerializeField] private NetworkTimer _gameTimerObject;
+    [SerializeField] private RectTransform _countdownUI;
 
     private void OnEnable() {
         _networkTimerForGameStart.OnTimerEnd -= WhenTimerEnds;
@@ -16,6 +17,11 @@ public class StartCountdown : MonoBehaviour {
 
     private void WhenTimerEnds() {
         GameStateManager.ChangeState(GameState.Game);
-        _gameTimerObject.gameObject.SetActive(true);
+        HideCountdownUI();
+        SetGameTimerActive();
     }
+
+    private void SetGameTimerActive() => _gameTimerObject.gameObject.SetActive(true);
+
+    private void HideCountdownUI() => _countdownUI.gameObject.SetActive(false);
 }
