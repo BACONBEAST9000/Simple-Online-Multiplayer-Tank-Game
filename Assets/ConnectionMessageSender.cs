@@ -10,7 +10,7 @@ public class ConnectionMessageSender : SingletonPersistent<ConnectionMessageSend
         { new PopupMessageType(ShutdownReason.Ok), "You left the game." },
         { new PopupMessageType(ShutdownReason.Error), "There was an error. Make sure you're connected to the internet or try again later." },
         { new PopupMessageType(ShutdownReason.IncompatibleConfiguration), "Somehow, you tried to connect to a game that uses Shared Mode instead of Client-Server." },
-        { new PopupMessageType(ShutdownReason.ServerInRoom), "You are already hosting a game session." },
+        { new PopupMessageType(ShutdownReason.ServerInRoom), "The room name is already being used. Please use a different name." },
         { new PopupMessageType(ShutdownReason.DisconnectedByPluginLogic), "The host disconnected." },
         { new PopupMessageType(ShutdownReason.GameClosed), "The game session you tried to join is closed off and not accepting players currently." },
         { new PopupMessageType(ShutdownReason.GameNotFound), "The game session you tried to join doesn't exist." },

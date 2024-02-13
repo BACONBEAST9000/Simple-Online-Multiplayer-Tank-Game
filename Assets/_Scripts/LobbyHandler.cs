@@ -23,7 +23,6 @@ public class LobbyHandler : NetworkBehaviour {
         if (GameStateManager.CurrentState != GameState.Lobby)
             return;
 
-        PlayerManager.PrintPlayers();
         CheckIfUpdateLobbyTimerAndUI();
     }
 
@@ -91,10 +90,6 @@ public class LobbyHandler : NetworkBehaviour {
     private void Update() {
         if (Input.GetKeyDown(KeyCode.Escape)) {
             MultiplayerSessionManager.Instance.ShutdownSession();
-        }
-        
-        if (Input.GetKeyDown(KeyCode.Alpha1)) {
-            PlayerManager.PrintPlayers();
         }
     }
 }

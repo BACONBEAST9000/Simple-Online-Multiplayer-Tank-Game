@@ -9,7 +9,9 @@ public class ReadyUpManager : NetworkBehaviour {
 
     private static List<Player> _readyPlayers = new();
 
-    [SerializeField] private bool _allowSoloPlayForTesting;
+    [SerializeField] public bool AllowForSoloPlay { get; set; } = false;
+
+    private bool _displayedReadyToPlay = false;
 
     private void OnEnable() {
         PlayerReadyUp.OnPlayerToggledReady -= WhenPlayerTogglesReady;
@@ -29,7 +31,6 @@ public class ReadyUpManager : NetworkBehaviour {
         }
     }
 
-    private bool _displayedReadyToPlay = false;
     public override void FixedUpdateNetwork() {
         if (!HasStateAuthority) return;
         
@@ -44,7 +45,7 @@ public class ReadyUpManager : NetworkBehaviour {
         return !_displayedReadyToPlay && ValidNumberOfPlayers && AllPlayersReady;
     }
 
-    private bool ValidNumberOfPlayers => _allowSoloPlayForTesting || _readyPlayers.Count > 1;
+    private bool ValidNumberOfPlayers => AllowForSoloPlay || _readyPlayers.Count > 1;
     private bool AllPlayersReady => _readyPlayers.Count > 0 && _readyPlayers.Count == PlayerManager.GetPlayerCount;
 
     public void ReadyPlayer(Player readyPlayer) {
