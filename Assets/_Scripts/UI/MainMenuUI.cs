@@ -1,9 +1,12 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Windows;
 
 public class MainMenuUI : MonoBehaviour {
-    
+
+    private const string PLAYERPREFS_NICKNAME = "LocalPlayerNickname";
+
     [Header("Host/Join Buttons")]
     [SerializeField] private Button _hostGameButton;
     [SerializeField] private Button _joinGameButton;
@@ -22,10 +25,12 @@ public class MainMenuUI : MonoBehaviour {
     private void Awake() {
         _hostGameButton.onClick.AddListener(() => {
             MultiplayerSessionManager.Instance.StartHostSession();
+            SaveEnteredNickname();
         });
         
         _joinGameButton.onClick.AddListener(() => {
             MultiplayerSessionManager.Instance.StartClientSession();
+            SaveEnteredNickname();
         });
 
         UpdateButtonsText();
@@ -33,6 +38,8 @@ public class MainMenuUI : MonoBehaviour {
         _roomNameInputField.onValueChanged.AddListener((inputString) => {
             UpdateButtonsText();
         });
+
+        _nicknameInputField.text = PlayerPrefs.HasKey(PLAYERPREFS_NICKNAME) ? PlayerPrefs.GetString(PLAYERPREFS_NICKNAME) : "";
     }
 
     private void UpdateButtonsText() {
@@ -58,6 +65,16 @@ public class MainMenuUI : MonoBehaviour {
 
     private void SetTextBasedOnInputEmptyOrNot(string input, TMP_Text textElement, string textIfEmpty, string textIfNotEmpty) {
         textElement.text = string.IsNullOrWhiteSpace(input) ? textIfEmpty : textIfNotEmpty;
+    }
+
+    private void SaveEnteredNickname() {
+        string playerNameEntered = _nicknameInputField.text;
+        if (string.IsNullOrWhiteSpace(playerNameEntered)) {
+            return;
+        }
+
+        PlayerPrefs.SetString(PLAYERPREFS_NICKNAME, playerNameEntered);
+        PlayerPrefs.Save();
     }
 
     private void OnDestroy() {
