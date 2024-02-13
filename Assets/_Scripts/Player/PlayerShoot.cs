@@ -54,8 +54,13 @@ public class PlayerShoot : NetworkBehaviour {
             (runner, networkObject) => {
                 bulletToShoot = networkObject.GetComponent<Bullet>();
                 bulletToShoot.Initialize(_bulletSpawnTransform.forward, _shootForce, _player);
-                OnPlayerShotBullet?.Invoke(bulletToShoot, _player);
+                RPC_InvokePlayerShotEvent(bulletToShoot);
             }
         );
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void RPC_InvokePlayerShotEvent(Bullet bulletToShoot) {
+        OnPlayerShotBullet?.Invoke(bulletToShoot, _player);
     }
 }

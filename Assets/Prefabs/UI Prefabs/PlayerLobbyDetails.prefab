@@ -504,7 +504,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TargetGraphic
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3480457516278846494}
     - target: {fileID: 2365195865536145253, guid: 0a755df6596581445861854dda5cb61f,
         type: 3}
       propertyPath: m_Colors.m_NormalColor.b
@@ -638,7 +638,7 @@ PrefabInstance:
     - target: {fileID: 2365195865536145254, guid: 0a755df6596581445861854dda5cb61f,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -123.3
+      value: -115
       objectReference: {fileID: 0}
     - target: {fileID: 2365195865536145254, guid: 0a755df6596581445861854dda5cb61f,
         type: 3}
@@ -694,6 +694,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &3480457516278846494 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2365195865536145252, guid: 0a755df6596581445861854dda5cb61f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1197901082259534714}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3480457516278846493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3480457516278846495 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2365195865536145253, guid: 0a755df6596581445861854dda5cb61f,

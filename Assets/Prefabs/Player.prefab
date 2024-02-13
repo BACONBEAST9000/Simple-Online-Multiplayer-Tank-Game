@@ -256,6 +256,9 @@ GameObject:
   - component: {fileID: 78491921699914234}
   - component: {fileID: 4875208631195821416}
   - component: {fileID: 9188322722489776083}
+  - component: {fileID: 8122512074530851611}
+  - component: {fileID: 5489635846316735255}
+  - component: {fileID: 6275005381854744179}
   m_Layer: 11
   m_Name: Player
   m_TagString: Untagged
@@ -314,6 +317,7 @@ MonoBehaviour:
   - {fileID: 78491921699914228}
   - {fileID: 1738468249552305674}
   - {fileID: 4875208631195821416}
+  - {fileID: 5489635846316735255}
   - {fileID: 3123703053978089130}
   SimulationBehaviours: []
 --- !u!114 &4814418892433255776
@@ -358,11 +362,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   <Visuals>k__BackingField: {fileID: 491863125254404042}
+  <Scoring>k__BackingField: {fileID: 2546477919826734737}
+  <ReadyUp>k__BackingField: {fileID: 8783976540221669435}
   _collider: {fileID: 78491921699914234}
   _hitbox: {fileID: 9188322722489776083}
   _playerInvincibility: {fileID: 6688664076082182664}
-  <ReadyUp>k__BackingField: {fileID: 8783976540221669435}
-  <Scoring>k__BackingField: {fileID: 2546477919826734737}
   _NickName:
     _length: 0
     _data:
@@ -561,6 +565,70 @@ MonoBehaviour:
   Offset: {x: 0, y: 0, z: 0}
   Root: {fileID: 4875208631195821416}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+--- !u!95 &8122512074530851611
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78491921699914239}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 61fdabb388d053246ba3d43af095cb47, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5489635846316735255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78491921699914239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 506319458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  Animator: {fileID: 8122512074530851611}
+  TotalWords: 1
+  SyncSettings: 8
+  FloatAccuracy:
+    _value: 0
+    _inverse: Infinity
+    _hash: -814817977
+  TimeAccuracy:
+    _value: 0
+    _inverse: 0
+    _hash: 1061325578
+  WeightAccuracy:
+    _value: 0
+    _inverse: 0
+    _hash: -814817977
+  StateHashes: 00000000fdf15d8b1632d576b0efc2de835ce7e9
+  TriggerHashes: 00000000bad385b1
+--- !u!114 &6275005381854744179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78491921699914239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5036477cf9ae9784f99a0a31ab2dce44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 8122512074530851611}
+  _player: {fileID: 6106064112569594434}
 --- !u!1 &78491921831636553
 GameObject:
   m_ObjectHideFlags: 0
