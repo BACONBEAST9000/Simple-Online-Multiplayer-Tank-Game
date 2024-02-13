@@ -10,6 +10,10 @@ public class RoomNameLabel : NetworkBehaviour {
     [SerializeField] private TMP_Text _label;
 
     public override void Spawned() {
+        UpdateRoomNameUI();
+    }
+
+    private void UpdateRoomNameUI() {
         string roomName = Runner.SessionInfo.Name;
         bool roomNameTooLong = roomName.Length > MAX_CHARACTERS_UNTIL_TOO_MUCH;
 
