@@ -2009,7 +2009,7 @@ GameObject:
   - component: {fileID: 588085576}
   - component: {fileID: 588085577}
   m_Layer: 0
-  m_Name: Multiplayer Session Manager
+  m_Name: (REMOVE?) Multiplayer Session Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4653,6 +4653,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   _gameTimer: {fileID: 960166132}
   _timeText: {fileID: 500152814}
+  _countdownSound: {fileID: 8300000, guid: 7f8f6f148a1718f4ba8b73d6401fde0b, type: 3}
 --- !u!1 &1781895833
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,6 +2,8 @@
 
 public class StartGameTimerUI : NetworkTimerUI {
 
+    [SerializeField] private AudioClip _countdownSound;
+
     private void OnEnable() {
         _gameTimer.OnTimerEnd -= WhenCountdownEnds;
         _gameTimer.OnTimerEnd += WhenCountdownEnds;
@@ -19,5 +21,6 @@ public class StartGameTimerUI : NetworkTimerUI {
 
     protected override void UpdateTimeText() {
         _timeText.text = Mathf.CeilToInt(_gameTimer.GetTimeLeft()).ToString();
+        AudioPlayManager.Instance.Play(_countdownSound);
     }
 }
