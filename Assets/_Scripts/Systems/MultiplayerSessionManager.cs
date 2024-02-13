@@ -48,6 +48,14 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
         StartGame();
     }
 
+    public SessionInfo GetSessionInfo() {
+        if (_runner == null) {
+            return null;
+        }
+
+        return _runner.SessionInfo;
+    }
+
     // TODO: Refactor
     private void UpdatePlayerData() {
         LocalPlayerData playerData = FindObjectOfType<LocalPlayerData>();

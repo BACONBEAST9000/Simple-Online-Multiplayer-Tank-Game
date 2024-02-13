@@ -2292,7 +2292,7 @@ MonoBehaviour:
     type: 3}
   _playerDataPrefab: {fileID: 2532706259258048181, guid: 902a13a35da8d9a49af7240409dd57ea,
     type: 3}
-  _nameInputField: {fileID: 625342360}
+  _mainMenuUI: {fileID: 0}
 --- !u!114 &588085577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4665,8 +4665,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b233c64c68141bf409f6d1ff3f960962, type: 2}
-  m_sharedMaterial: {fileID: 3318624750316781391, guid: b233c64c68141bf409f6d1ff3f960962,
+  m_fontAsset: {fileID: 11400000, guid: 02a965b1b3073a34082e013e41ab07e4, type: 2}
+  m_sharedMaterial: {fileID: 3318624750316781391, guid: 02a965b1b3073a34082e013e41ab07e4,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
