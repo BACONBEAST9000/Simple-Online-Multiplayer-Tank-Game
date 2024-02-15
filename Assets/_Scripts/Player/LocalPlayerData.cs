@@ -16,10 +16,9 @@ public class LocalPlayerData : MonoBehaviour {
     }
 
     public static string GetRandomNickName() {
-        return "Player " + UnityEngine.Random.Range(0, 10000);
+        return "Player " + Random.Range(0, 10000);
     }
 
-    // TODO: Turn this into a proper singleton?
     private void Awake() {
         int instancesCount = FindObjectsOfType<LocalPlayerData>().Length;
 

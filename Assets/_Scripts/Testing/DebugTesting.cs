@@ -10,6 +10,9 @@ public class DebugTesting : SingletonNetworkPersistent<DebugTesting> {
 
     [Tooltip("Enabling this allows the host to play the game without the need for other players to be in the lobby.")]
     [SerializeField] private bool _allowSoloPlay;
+       
+    [Tooltip("Whether to have Debug.Log()/print() statements show or not.")]
+    [SerializeField] private bool _showDebugLogStatements;
 
     [Header("Requirements")]
     [SerializeField] private DebugManager _debugManager;
@@ -21,6 +24,8 @@ public class DebugTesting : SingletonNetworkPersistent<DebugTesting> {
 
     public override void Awake() {
         base.Awake();
+
+        Debug.unityLogger.logEnabled = _showDebugLogStatements;
 
         _debugManager.gameObject.SetActive(_testModeEnabled);
 

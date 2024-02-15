@@ -2,7 +2,6 @@ using Fusion;
 using System;
 using UnityEngine;
 
-// TODO: Refactor! Consider separating Score functionality from Player.
 [RequireComponent(typeof(NetworkObject))]
 public class Player : NetworkBehaviour, IDamageable {
     public const float RESPAWN_DELAY_SECONDS = 2;
@@ -38,18 +37,21 @@ public class Player : NetworkBehaviour, IDamageable {
     public int PlayerID { get; private set; }
 
     public override void Spawned() {
+        Initalize();
+
+        OnSpawned?.Invoke(this);
+
+        PlayerManager.AddPlayer(this);
+    }
+
+    private void Initalize() {
         IsAlive = true;
-        
         PlayerID = Object.InputAuthority;
 
         if (Object.HasInputAuthority) {
             var name = FindObjectOfType<LocalPlayerData>().NickName;
             RpcSetNickName(name);
         }
-
-        OnSpawned?.Invoke(this);
-
-        PlayerManager.AddPlayer(this);
     }
 
     public override void Despawned(NetworkRunner runner, bool hasState) {
@@ -61,7 +63,6 @@ public class Player : NetworkBehaviour, IDamageable {
         CheckRespawnTimer();
     }
 
-    // TODO: Refactor
     private void CheckRespawnTimer() {
         if (!_respawnTimer.Expired(Runner)) {
             return;
@@ -115,16 +116,19 @@ public class Player : NetworkBehaviour, IDamageable {
         }
     }
 
-    // TODO: Refactor
     private void OnDefeated() {
         SetAliveAndCollisionEnabled(false);
         Visuals.DestroyedEffect();
+        StartRespawnTimer();
+        RPC_InvokePlayerDestroyed();
+    }
+
+    private void StartRespawnTimer() {
         _respawnTimer = TickTimer.CreateFromSeconds(Runner, RESPAWN_DELAY_SECONDS);
-        RPC_PlayerDefeated();
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_PlayerDefeated() {
+    private void RPC_InvokePlayerDestroyed() {
         OnPlayerDestroyed?.Invoke(this);
     }
     

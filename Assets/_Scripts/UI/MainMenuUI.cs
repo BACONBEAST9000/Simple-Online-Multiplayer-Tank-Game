@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Windows;
 
 public class MainMenuUI : MonoBehaviour {
 
@@ -23,18 +22,25 @@ public class MainMenuUI : MonoBehaviour {
     public TMP_InputField GetRoomNameInputField => _roomNameInputField;
 
     private void Awake() {
+        SetupButtons();
+        SetupInputFields();
+    }
+
+    private void SetupButtons() {
         _hostGameButton.onClick.AddListener(() => {
             MultiplayerSessionManager.Instance.StartHostSession();
             SaveEnteredNickname();
         });
-        
+
         _joinGameButton.onClick.AddListener(() => {
             MultiplayerSessionManager.Instance.StartClientSession();
             SaveEnteredNickname();
         });
 
         UpdateButtonsText();
+    }
 
+    private void SetupInputFields() {
         _roomNameInputField.onValueChanged.AddListener((inputString) => {
             UpdateButtonsText();
         });

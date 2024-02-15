@@ -1,8 +1,5 @@
-using Fusion;
 using System;
-using UnityEngine;
 
-// TODO: Rework to be networked
 public static class GameStateManager {
 
     public static event Action<GameState> OnStateChanged;

@@ -2,14 +2,10 @@ using Fusion;
 using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// TODO: Refactor
 public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerSessionManager>, IPlayerJoined, IPlayerLeft, INetworkRunnerCallbacks {
-    
-    private const string SESSION_NAME = "TestRoom";
     private const string MENU_SCENE_NAME = "MainMenu";
     private const string GAME_SCENE_NAME = "MainGame";
 
@@ -28,7 +24,6 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
 
     [SerializeField] private Player _playerPrefab;
     [SerializeField] private LocalPlayerData _playerDataPrefab;
-    // Still probabily need alternative...
     [SerializeField] private MainMenuUI _mainMenuUI;
 
     private NetworkRunner _runner;
@@ -43,10 +38,8 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
     private void OnDisable() {
         ReadyUpManager.OnAllPlayersReady -= WhenAllPlayersAreReady;
     }
-    
-    private void WhenAllPlayersAreReady() {
-        StartGame();
-    }
+
+    private void WhenAllPlayersAreReady() => StartGame();
 
     public SessionInfo GetSessionInfo() {
         if (_runner == null) {
@@ -56,19 +49,21 @@ public class MultiplayerSessionManager : SingletonSimulationNetwork<MultiplayerS
         return _runner.SessionInfo;
     }
 
-    // TODO: Refactor
     private void UpdatePlayerData() {
+        LocalPlayerData playerData = GetLocalPlayerData();
+
+        string nickname = _mainMenuUI.GetNicknameInputField.text;
+        bool nickNameFieldEmpty = string.IsNullOrWhiteSpace(nickname);
+        playerData.NickName = (nickNameFieldEmpty) ? LocalPlayerData.GetRandomNickName() : nickname;
+    }
+
+    private LocalPlayerData GetLocalPlayerData() {
         LocalPlayerData playerData = FindObjectOfType<LocalPlayerData>();
         if (playerData == null) {
             playerData = Instantiate(_playerDataPrefab);
         }
 
-        if (string.IsNullOrWhiteSpace(_mainMenuUI.GetNicknameInputField.text)) {
-            playerData.NickName = LocalPlayerData.GetRandomNickName();
-        }
-        else {
-            playerData.NickName = _mainMenuUI.GetNicknameInputField.text;
-        }
+        return playerData;
     }
 
     public void PlayerJoined(PlayerRef playerRef) {

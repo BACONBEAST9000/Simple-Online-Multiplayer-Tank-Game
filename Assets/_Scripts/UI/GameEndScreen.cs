@@ -13,24 +13,23 @@ public class GameEndScreen : NetworkBehaviour {
 
     private void OnEnable() {
         if (GameStateManager.CurrentState != GameState.GameEnd) {
-            gameObject.SetActive(false);
+            HideEndScreenUI();
             return;
         }
-        
-        // TODO: Refactor
-        if (PlayerManager.IsEnoughPlayersToStartGame) {
-            _resultsUI.gameObject.SetActive(true);
-            _allPlayersLeftUI.gameObject.SetActive(false);
-        }
-        else {
-            _allPlayersLeftUI.gameObject.SetActive(true);
-            _resultsUI.gameObject.SetActive(false);
-        }
 
+        DisplayContent();
         ShowContinueButtonOrWaitingText();
         AddListenersToButtons();
     }
-    
+
+
+    private void DisplayContent() {
+        bool enoughPlayersInGame = PlayerManager.IsEnoughPlayersToStartGame;
+
+        _resultsUI.gameObject.SetActive(enoughPlayersInGame);
+        _allPlayersLeftUI.gameObject.SetActive(!enoughPlayersInGame);
+    }
+
     private void OnDisable() {
         RemoveListenersFromButtons();
     }
@@ -54,6 +53,8 @@ public class GameEndScreen : NetworkBehaviour {
         SetContinueButtonActive(Object.HasStateAuthority);
         SetWaitingTextActive(Object.HasStateAuthority == false);
     }
+
+    private void HideEndScreenUI() => gameObject.SetActive(false);
 
     private void SetContinueButtonActive(bool isActive) => _continueButton.gameObject.SetActive(isActive);
     private void SetWaitingTextActive(bool isActive) => _waitingText.gameObject.SetActive(isActive);
