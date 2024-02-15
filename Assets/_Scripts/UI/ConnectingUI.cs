@@ -28,24 +28,26 @@ public class ConnectingUI : MonoBehaviour {
         _cancelConnectionButton.onClick.AddListener(() => {
             MultiplayerSessionManager.Instance.ShutdownSession();
         });
+
+        HideUI();
     }
 
     private void OnDestroy() {
+        MultiplayerSessionManager.OnPlayerConnectedToGame -= WhenPlayerConnectsToAGame;
+        MultiplayerSessionManager.OnConnectingStart -= WhenConnecting;
+        MultiplayerSessionManager.OnConnectingEnd -= WhenConnectingEnds;
+        
         _cancelConnectionButton.onClick.RemoveAllListeners();
     }
 
-    private void WhenConnecting() {
-        Show();
-    }
-    
-    private void WhenConnectingEnds() {
-        Hide();
-    }
 
-    private void WhenPlayerConnectsToAGame() {
-        Hide();
-    }
+    private void WhenConnecting() => ShowUI();
 
-    public void Show() => _UIElement.gameObject.SetActive(true);
-    public void Hide() => _UIElement.gameObject.SetActive(false);
+    private void WhenConnectingEnds() => HideUI();
+
+    private void WhenPlayerConnectsToAGame() => HideUI();
+
+
+    public void ShowUI() => _UIElement.gameObject.SetActive(true);
+    public void HideUI() => _UIElement.gameObject.SetActive(false);
 }

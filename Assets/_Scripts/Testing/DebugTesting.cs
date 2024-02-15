@@ -66,7 +66,7 @@ public class DebugTesting : SingletonNetworkPersistent<DebugTesting> {
 
         if (Input.GetKeyDown(KeyCode.Alpha1)) {
             if (GameStateManager.CurrentState == GameState.Game) {
-                GameManager gameManagerInstance = FindObjectOfType<GameManager>();
+                GameHandler gameManagerInstance = FindObjectOfType<GameHandler>();
 
                 gameManagerInstance?.RPC_EndGame();
             }

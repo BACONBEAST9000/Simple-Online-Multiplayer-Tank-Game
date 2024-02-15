@@ -7,9 +7,9 @@ public class ReadyUpManager : NetworkBehaviour {
 
     public static event Action OnAllPlayersReady;
 
-    private static List<Player> _readyPlayers = new();
+    private static readonly List<Player> _readyPlayers = new();
 
-    [SerializeField] public bool AllowForSoloPlay { get; set; } = false;
+    public bool AllowForSoloPlay { get; set; } = false;
 
     private bool _displayedReadyToPlay = false;
 

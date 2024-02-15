@@ -1,11 +1,10 @@
 using Fusion;
 using UnityEngine;
 
-public class GameManager : NetworkBehaviour {
+public class GameHandler : NetworkBehaviour {
 
     [SerializeField] private NetworkTimer _gameTimer;
     [SerializeField] private NetworkTimer _endScreenTimer;
-    [SerializeField] private bool _testingStopGameFromEndng = false;
 
     private void OnEnable() {
         GameStateManager.OnStateChanged -= WhenGameStateChanges;
@@ -36,9 +35,6 @@ public class GameManager : NetworkBehaviour {
     }
 
     private void WhenGameTimerEnds() {
-        if (_testingStopGameFromEndng)
-            return;
-        
         RPC_EndGame();
     }
 

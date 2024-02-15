@@ -54,21 +54,21 @@ public class LobbyHandler : NetworkBehaviour {
 
     private void ShowWaitingForPlayersUI() {
         if (_waitingForPlayersUI)
-            _waitingForPlayersUI?.gameObject?.SetActive(true);
+            _waitingForPlayersUI.gameObject.SetActive(true);
     }
     private void HideWaitingForPlayersUI() {
         if (_waitingForPlayersUI)
-            _waitingForPlayersUI?.gameObject?.SetActive(false);
+            _waitingForPlayersUI.gameObject.SetActive(false);
     }
 
     private void ShowTimeLeftUI() {
         if (_timeLeftUI)
-            _timeLeftUI?.gameObject?.SetActive(true);
+            _timeLeftUI.gameObject.SetActive(true);
     }
 
     private void HideTimeLeftUI() {
         if (_timeLeftUI)
-            _timeLeftUI?.gameObject?.SetActive(false);
+            _timeLeftUI.gameObject.SetActive(false);
     }
 
     private void WhenLobbyTimerEnds() {
