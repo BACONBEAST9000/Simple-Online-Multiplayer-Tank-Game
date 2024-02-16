@@ -36,6 +36,8 @@ public class Player : NetworkBehaviour, IDamageable {
 
     public int PlayerID { get; private set; }
 
+    public Collider Collider => _collider;
+
     public override void Spawned() {
         Initalize();
 

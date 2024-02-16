@@ -997,7 +997,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   _testModeEnabled: 1
   _allowSoloPlay: 1
-  _showDebugLogStatements: 0
+  _showDebugLogStatements: 1
   _debugManager: {fileID: 652819979}
   _gameStateText: {fileID: 126819225}
 --- !u!1 &182110740

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Bullet : NetworkBehaviour {
 
+    private const float INVINCIBLITY_TIME = 0.25f;
+
     public static event Action<Bullet> OnLocalCollisionHitWall;
 
     [Header("Collision")]
@@ -26,16 +28,29 @@ public class Bullet : NetworkBehaviour {
 
     private List<LagCompensatedHit> _bulletCollisions = new();
 
+    private TickTimer _playerSelfHitInvincibilityTimer;
+    private bool _canHurtPlayerWhoShotThis;
+
     public void Initialize(Vector3 directionOfFire, float force, Player owner) {
         LifeTime = TickTimer.CreateFromSeconds(Runner, _secondsOfLifeTime);
+        _playerSelfHitInvincibilityTimer = TickTimer.CreateFromSeconds(Runner, INVINCIBLITY_TIME);
+        
         _rigidbody.AddForce(directionOfFire * force, ForceMode.Impulse);
         Owner = owner;
+        
+        _canHurtPlayerWhoShotThis = false;
+        Physics.IgnoreCollision(_sphereCollider, Owner.Collider);
     }
 
     public override void FixedUpdateNetwork() {
         if (!Object.HasStateAuthority || LifeTime.Expired(Runner)) {
             Despawn();
             return;
+        }
+
+        if (!_canHurtPlayerWhoShotThis && _playerSelfHitInvincibilityTimer.Expired(Runner)) {
+            Physics.IgnoreCollision(_sphereCollider, Owner.Collider, false);
+            _canHurtPlayerWhoShotThis = true;
         }
 
         CheckForCollisions();
@@ -57,6 +72,11 @@ public class Bullet : NetworkBehaviour {
                 continue;
             }
 
+            bool hitPlayerWhenJustSpawned = !_canHurtPlayerWhoShotThis && hitGameObject == Owner.gameObject;
+            if (hitPlayerWhenJustSpawned) {
+                return;
+            }
+
             if (hitGameObject.TryGetComponent(out Bullet bullet)) {
                 bullet.Despawn();
             }
@@ -73,7 +93,7 @@ public class Bullet : NetworkBehaviour {
 
     private void Despawn() => Runner.Despawn(Object);
 
-    // Only works for Host player.
+    // Only works for Host player, so RPC needed to invoke event.
     private void OnCollisionEnter(Collision collision) {
         if (Utils.IsInLayer(collision.collider.gameObject, _wallLayers)) {
             RPC_HitWall();

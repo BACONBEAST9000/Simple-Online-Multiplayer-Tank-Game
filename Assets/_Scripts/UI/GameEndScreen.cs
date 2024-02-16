@@ -22,7 +22,6 @@ public class GameEndScreen : NetworkBehaviour {
         AddListenersToButtons();
     }
 
-
     private void DisplayContent() {
         bool enoughPlayersInGame = PlayerManager.IsEnoughPlayersToStartGame;
 

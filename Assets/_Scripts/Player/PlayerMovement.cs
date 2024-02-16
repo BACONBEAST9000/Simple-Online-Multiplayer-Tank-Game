@@ -84,7 +84,7 @@ public class PlayerMovement : NetworkBehaviour {
         float speedMoveTowards = (_moveInput.y > 0) ? _maxMoveSpeed : _minMoveSpeed;
         float targetMoveSpeed = _moveInput.y * speedMoveTowards;
 
-        float moveAmount = (targetMoveSpeed > _currentMoveSpeed ? _acceleration : _deceleration) * Runner.DeltaTime;
+        float moveAmount = ((targetMoveSpeed > _currentMoveSpeed) ? _acceleration : _deceleration) * Runner.DeltaTime;
 
         _currentMoveSpeed = Mathf.MoveTowards(_currentMoveSpeed, targetMoveSpeed, moveAmount);
 
